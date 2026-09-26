@@ -153,3 +153,16 @@ def test_reslice_keeps_masks_binary(tmp_path):
     out = np.asarray(nib.load(tmp_path / "out.nii.gz").dataobj)
     assert set(np.unique(out).tolist()) <= {0, 1}
     assert abs(int((out > 0).sum()) - int(m.sum())) <= 0.1 * m.sum()
+
+
+def test_synthetic_jacobian_matches_nominal_factor():
+    from lesiontrack.synth import _jacobian_det, _radial_displacement
+
+    shape = (41, 41, 41)
+    c = np.array([20.0, 20.0, 20.0])
+    for f in (1.15, 1.4, 2.0):
+        d = _radial_displacement(shape, c, 10, f, 6)
+        expansion = 1.0 / _jacobian_det(d)
+        assert abs(expansion[20, 20, 20] - f) < 1e-3
+        assert abs(expansion[25, 20, 20] - f) < 1e-3   # still inside the uniform window
+        assert abs(expansion[0, 0, 0] - 1.0) < 1e-6    # untouched far away

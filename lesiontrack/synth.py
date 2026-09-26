@@ -31,10 +31,11 @@ from .tracking import label_lesions
 class SynthLesion:
     lesion_id: int
     n_voxels: int
-    volume_factor: float  # follow-up volume / baseline volume; 1.0 = untouched
+    volume_factor: float  # nominal follow-up volume / baseline volume; 1.0 = untouched
     cx: float
     cy: float
     cz: float
+    true_mean_expansion_pct: float = float("nan")  # mean analytic expansion inside the lesion
 
 
 def _radial_displacement(shape: tuple, centre: np.ndarray, radius_vox: float,
@@ -62,6 +63,16 @@ def _rigid_field(shape: tuple, rot_deg: np.ndarray, trans_vox: np.ndarray) -> np
     rot = Rotation.from_euler("xyz", rot_deg, degrees=True).as_matrix().astype(np.float32)
     xr = np.tensordot(rot, x, axes=(1, 0))
     return xr - x + trans_vox[:, None, None, None].astype(np.float32)
+
+
+def _jacobian_det(displacement: np.ndarray) -> np.ndarray:
+    """det(I + grad u) of a displacement field shaped (3, X, Y, Z), central differences."""
+    g = np.empty((3, 3, *displacement.shape[1:]), dtype=np.float32)
+    for i in range(3):
+        for j in range(3):
+            g[i, j] = np.gradient(displacement[i], axis=j)
+        g[i, i] += 1.0
+    return np.linalg.det(np.moveaxis(g, (0, 1), (-2, -1)))
 
 
 def _warp(image: np.ndarray, displacement: np.ndarray, order: int, cval: float = 0.0) -> np.ndarray:
@@ -106,6 +117,11 @@ def make_followup(t1: Path, flair: Path, mask: Path, out_dir: Path, *,
             c = centroids[k]
             truth.append(SynthLesion(int(k), int(sizes[k]), 1.0, *map(float, c)))
 
+    # Analytic truth: the sampling map is x -> x + u(x); its Jacobian determinant is the
+    # follow-up-to-baseline volume ratio, so the expansion the pipeline should measure is
+    # its reciprocal. Computed before the rigid part, which has unit determinant.
+    truth_expansion = (1.0 / _jacobian_det(disp) - 1.0) * 100.0
+
     rot = rng.uniform(-rigid_rot_deg, rigid_rot_deg, size=3)
     trans = rng.uniform(-rigid_trans_vox, rigid_trans_vox, size=3)
     disp_total = disp + _rigid_field(t1_arr.shape, rot, trans)
@@ -135,12 +151,17 @@ def make_followup(t1: Path, flair: Path, mask: Path, out_dir: Path, *,
         "mask": out_dir / "synth_mask.nii.gz",
         "brainmask": out_dir / "synth_brainmask.nii.gz",
         "baseline_lesion_labels": out_dir / "baseline_lesion_labels.nii.gz",
+        "truth_expansion_pct": out_dir / "truth_expansion_pct.nii.gz",
     }
+    nib.save(nib.Nifti1Image(truth_expansion.astype(np.float32), aff), paths["truth_expansion_pct"])
     nib.save(nib.Nifti1Image(t1_fu.astype(np.float32), aff), paths["t1"])
     nib.save(nib.Nifti1Image(fl_fu.astype(np.float32), aff), paths["flair"])
     nib.save(nib.Nifti1Image(mask_fu.astype(np.uint8), aff), paths["mask"])
     nib.save(nib.Nifti1Image(brain_fu.astype(np.uint8), aff), paths["brainmask"])
     nib.save(nib.Nifti1Image(labels.astype(np.int32), aff), paths["baseline_lesion_labels"])
+
+    for les in truth:
+        les.true_mean_expansion_pct = float(truth_expansion[labels == les.lesion_id].mean())
 
     record = {
         "source": {"t1": str(t1), "flair": str(flair), "mask": str(mask)},
@@ -161,13 +182,15 @@ def score(truth: dict, baseline_lesion_labels: np.ndarray, expansion_pct_per_yea
 
     A lesion counts as detected when any SEL candidate overlaps it. The
     measured rate is the mean expansion inside the lesion, compared with the
-    true rate ``(factor - 1) * 100 / dt``.
+    mean of the analytic Jacobian of the injected deformation inside that
+    lesion (which is below the nominal factor wherever the lesion extends past
+    the radial window), divided by ``dt``.
     """
     rows = []
     for les in truth["lesions"]:
         k = les["lesion_id"]
         sel = baseline_lesion_labels == k
-        true_rate = (les["volume_factor"] - 1.0) * 100.0 / dt_years
+        true_rate = les["true_mean_expansion_pct"] / dt_years
         measured = float(expansion_pct_per_year[sel].mean())
         detected = bool((candidate_labels[sel] > 0).any())
         rows.append({
