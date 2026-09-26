@@ -112,8 +112,46 @@ Per subject you get, on the baseline grid in halfway space:
 
 ## Results on public data
 
-Pending: the MSLesSeg backtest and cohort run are being executed; this section is
-filled in from `derivatives/` when they finish.
+### Backtest on MSLesSeg patient P1 (2026-09-26)
+
+Three synthetic series (seeds 0, 1, 2), each with scans at 0, 0.5 and 1 year, eight of
+eighteen lesions expanded by nominal factors 1.15 / 1.25 / 1.40 (analytic mean inside the
+lesion 11 to 25 % because elongated lesions extend past the radial window), rigid
+perturbation about 1 degree and 1 voxel per scan, intensity rescale 0.9 to 1.1, 2 % noise.
+Default registration (greedy stationary-velocity, NCC 3x3x3, halfway space).
+
+| quantity | value |
+|---|---|
+| recovery fraction (measured / true, robust slope) | **0.30** |
+| recovery by lesion size: >= 500 / 100-500 / < 100 voxels | 0.55 / 0.27 / 0.33 |
+| candidate sensitivity, Elliott thresholds | 0.88 |
+| candidate false positive rate, Elliott thresholds | 0.47 (1.00 on untouched lesions >= 500 voxels) |
+| definite SEL (cohort z-scored S >= 0): sensitivity / FPR | 0.29 / 0.27 |
+| noise floor: 95th percentile of per-voxel expansion in untouched lesions | 5 to 10 %/yr |
+| candidate mean expansion as a classifier, AUC | 0.85 to 0.96 |
+
+Three conclusions the tool would not have earned without the gate:
+
+1. **The Jacobian under-reports by about 3x** on sub-voxel boundary shifts at 1 mm, and
+   more so for small lesions. SEL rates from any pipeline of this kind are lower bounds.
+2. **Elliott's candidate rule is noise-limited on confluent lesions.** A one-voxel peak
+   over 12.5 %/yr, grown by hysteresis to 4 %/yr, makes a 10-voxel candidate; large
+   lesions contain enough voxels to produce one by chance. Concentricity and constancy,
+   the published filters, were at chance here (AUC 0.54 and 0.40).
+3. **The candidate's mean rate is the filter that works** (AUC 0.90). It is exposed as
+   `min_mean_pct_per_year`, off by default. Trade-off on this registration:
+
+| min mean (%/yr) | sensitivity | false positive rate |
+|---|---|---|
+| 0 (Elliott) | 0.88 | 0.47 |
+| 8 | 0.67 | 0.23 |
+| 10 | 0.50 | 0.00 |
+
+Full record with the registration sweep: `docs/BACKTEST_NOTES.md`.
+
+### MSLesSeg cohort
+
+Pending: 25 patients running; filled in from `derivatives/` when done.
 
 ## Data used
 

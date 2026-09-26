@@ -79,3 +79,18 @@ candidate equals its full-year rate (ratio 1.0, linear growth); for noise it is 
 
 Decision: `min_mean_pct_per_year` added to `SELParams`, default 0 (Elliott unchanged); the
 backtest prints the sensitivity / false-positive trade-off at 0, 6, 8, 10, 12.5 %/yr.
+
+**Trade-off table from the re-score (three seeds pooled, lesion level):**
+
+| min mean (%/yr) | sensitivity | false positive rate |
+|---|---|---|
+| 0 (Elliott) | 0.88 | 0.47 |
+| 8 | 0.67 | 0.23 |
+| 10 | 0.50 | 0.00 |
+| 12.5 | 0.21 | 0.00 |
+
+Candidate-mean AUC per seed 0.96 / 0.85 / 0.92; noise candidates per 1000 untouched
+lesion voxels 1.7 / 2.0 / 1.1. On this registration a user who wants no false positives
+pays half the sensitivity; the injected rates (15–40 % nominal, 11–25 % analytic over one
+year) are at the low end of what SEL studies report, so real SELs over two years would sit
+higher on the curve.
