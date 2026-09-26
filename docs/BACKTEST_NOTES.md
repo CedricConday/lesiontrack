@@ -51,3 +51,31 @@ the backtest now generates three timepoints (0, 0.5, 1 year).
 **Open:** whether constancy filters the noise candidates; whether a small minimum
 seed-voxel count would be a defensible addition (it is not in Elliott 2019 and is not
 enabled).
+
+## 2026-09-26 — three seeds, three timepoints (0, 0.5, 1 yr), `-sv` NCC 3x3x3
+
+Pooled over 24 injected and 30 untouched lesions: candidate sensitivity 0.88, false
+positive rate 0.47 (1.0 on untouched lesions ≥ 500 voxels, 0.07 under 100 voxels).
+Elliott's definite/possible split (cohort z-scored S ≥ 0): sensitivity 0.29, false
+positive rate 0.27, i.e. no separation. Recovery fraction 0.30 (median 0.55 for ≥ 500
+voxels, 0.27 for 100–500, 0.33 under 100).
+
+**What separates injected from noise candidates** (139 candidates, 50 injected, rank AUC):
+
+| feature | AUC | injected median | noise median |
+|---|---|---|---|
+| mean expansion in candidate | **0.90** | 8.6 %/yr | 6.3 %/yr |
+| fitted expansion slope (constancy fit) | 0.90 | 8.3 | 5.8 |
+| expansion at the half-year scan | 0.76 | 8.7 | 4.3 |
+| seed voxels | 0.57 | 2 | 2 |
+| concentricity | 0.54 | 2.6 | 2.4 |
+| peak expansion | 0.45 | 15.5 | 15.8 |
+| constancy residual | 0.40 | 0.01 | 0.01 |
+| candidate size | 0.23 | 31 | 111 |
+
+Noise candidates are hysteresis regions grown from a one- or two-voxel peak just over
+JE1; 62 of 89 sit in lesions over 2000 voxels. The half-year expansion of an injected
+candidate equals its full-year rate (ratio 1.0, linear growth); for noise it is 0.71.
+
+Decision: `min_mean_pct_per_year` added to `SELParams`, default 0 (Elliott unchanged); the
+backtest prints the sensitivity / false-positive trade-off at 0, 6, 8, 10, 12.5 %/yr.
