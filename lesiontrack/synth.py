@@ -39,16 +39,20 @@ class SynthLesion:
 
 
 def _radial_displacement(shape: tuple, centre: np.ndarray, radius_vox: float,
-                         volume_factor: float, falloff_vox: float) -> np.ndarray:
+                         volume_factor: float, falloff_vox: float,
+                         positions: np.ndarray | None = None) -> np.ndarray:
     """Displacement (3, X, Y, Z) that pulls follow-up voxels from baseline positions.
 
     Inside ``radius_vox`` the field is a pure radial scaling by
     ``volume_factor ** (1/3)``; it fades to zero over ``falloff_vox`` beyond
-    that, so the surrounding brain is untouched.
+    that, so the surrounding brain is untouched. ``positions`` (3, X, Y, Z)
+    lets the field be evaluated at arbitrary points instead of the grid.
     """
     lam = volume_factor ** (1.0 / 3.0)
-    grids = np.meshgrid(*[np.arange(n, dtype=np.float32) for n in shape], indexing="ij")
-    d = np.stack([g - c for g, c in zip(grids, centre)])
+    if positions is None:
+        grids = np.meshgrid(*[np.arange(n, dtype=np.float32) for n in shape], indexing="ij")
+        positions = np.stack(grids)
+    d = np.stack([positions[i] - c for i, c in enumerate(centre)])
     r = np.sqrt((d**2).sum(axis=0))
     # follow-up(x) = baseline(x + u(x)), u = (x - c) * (1/lam - 1) * w(r)
     w = np.clip(1.0 - (r - radius_vox) / falloff_vox, 0.0, 1.0)
@@ -113,7 +117,17 @@ def make_followup(t1: Path, flair: Path, mask: Path, out_dir: Path, *,
     rng.shuffle(factors)
     centroids = dict(zip(range(1, sizes.size), ndi.center_of_mass(mk_arr, labels, range(1, sizes.size))))
 
-    disp = np.zeros((3, *t1_arr.shape), dtype=np.float32)
+    # The synthetic follow-up samples the baseline through rigid motion composed with the
+    # radial expansions: F(x) = B(y + u_r(y)) with y = x + u_rigid(x). The radial field is
+    # evaluated at y so each window stays centred on its lesion in baseline coordinates.
+    rot = rng_tp.uniform(-rigid_rot_deg, rigid_rot_deg, size=3)
+    trans = rng_tp.uniform(-rigid_trans_vox, rigid_trans_vox, size=3)
+    rigid_disp = _rigid_field(t1_arr.shape, rot, trans)
+    grids = np.meshgrid(*[np.arange(n, dtype=np.float32) for n in t1_arr.shape], indexing="ij")
+    y = np.stack(grids) + rigid_disp
+
+    disp = np.zeros((3, *t1_arr.shape), dtype=np.float32)       # radial field on the grid (truth)
+    disp_at_y = np.zeros((3, *t1_arr.shape), dtype=np.float32)  # radial field at rigidly moved points
     truth = []
     for k, f in zip(chosen, factors):
         c = np.array(centroids[k], dtype=np.float32)
@@ -121,6 +135,7 @@ def make_followup(t1: Path, flair: Path, mask: Path, out_dir: Path, *,
         radius = (3 * sizes[k] / (4 * np.pi)) ** (1 / 3) + margin_vox
         f_here = f ** time_fraction
         disp += _radial_displacement(t1_arr.shape, c, radius, f_here, falloff_vox)
+        disp_at_y += _radial_displacement(t1_arr.shape, c, radius, f_here, falloff_vox, positions=y)
         truth.append(SynthLesion(int(k), int(sizes[k]), f_here, *map(float, c)))
     for k in range(1, sizes.size):
         if k not in chosen:
@@ -132,9 +147,7 @@ def make_followup(t1: Path, flair: Path, mask: Path, out_dir: Path, *,
     # its reciprocal. Computed before the rigid part, which has unit determinant.
     truth_expansion = (1.0 / _jacobian_det(disp) - 1.0) * 100.0
 
-    rot = rng_tp.uniform(-rigid_rot_deg, rigid_rot_deg, size=3)
-    trans = rng_tp.uniform(-rigid_trans_vox, rigid_trans_vox, size=3)
-    disp_total = disp + _rigid_field(t1_arr.shape, rot, trans)
+    disp_total = rigid_disp + disp_at_y
 
     def synth(arr: np.ndarray, order: int, cval: float = 0.0) -> np.ndarray:
         return _warp(arr, disp_total, order, cval)

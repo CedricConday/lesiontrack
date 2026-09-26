@@ -43,8 +43,14 @@ def run_subject(subject: str, timepoints: list[Timepoint], out_dir: Path,
     log = out_dir / "greedy.log"
     log.write_text("")
 
-    pairs = [register_pair(baseline, fu, out_dir / "reg", params.reg, log) for fu in follows]
-    last = pairs[-1]
+    for fu in follows:
+        if fu.time_years <= baseline.time_years:
+            raise ValueError(f"{subject}: {fu.name} is not after baseline {baseline.name}")
+    # The last follow-up defines the subject's halfway frame; earlier follow-ups are
+    # registered into that same frame so all maps share one grid.
+    last = register_pair(baseline, follows[-1], out_dir / "reg", params.reg, log)
+    pairs = [register_pair(baseline, fu, out_dir / "reg", params.reg, log, frame=last.halfway_matrix)
+             for fu in follows[:-1]] + [last]
 
     # Expansion maps (percent per year) for every pair, on the halfway baseline grid.
     expansion = {}
@@ -114,6 +120,7 @@ def run_subject(subject: str, timepoints: list[Timepoint], out_dir: Path,
         "params": {
             "sel": params.sel.__dict__, "track": params.track.__dict__, "reg": params.reg.__dict__,
         },
+        "registration_records": [str(out_dir / "reg" / f"{p.follow_up}_reg_params.json") for p in pairs],
     }
     with open(out_dir / "summary.json", "w") as fh:
         json.dump(summary, fh, indent=2)

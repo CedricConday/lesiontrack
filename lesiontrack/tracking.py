@@ -13,6 +13,8 @@ Classes (rates are percent of baseline volume per year):
   shrinking  <= -change_pct_per_year and at least min_change_voxels lost
   stable     within +/- stable_pct_per_year
   trend_up / trend_down   between the stable and change thresholds
+  adjacent_fragment       follow-up component with no baseline overlap that touches the
+             dilated baseline mask: an edge fragment, not counted as new
 """
 
 from __future__ import annotations
@@ -74,7 +76,10 @@ def track_pair(mask_baseline: np.ndarray, mask_followup: np.ndarray, dt_years: f
     lb = label_lesions(mask_baseline, params.connectivity)
     lf = label_lesions(mask_followup, params.connectivity)
     st = ndi.generate_binary_structure(3, params.connectivity)
-    bl_dilated = ndi.binary_dilation(lb > 0, structure=st, iterations=params.new_lesion_margin_voxels)
+    if params.new_lesion_margin_voxels > 0:
+        bl_dilated = ndi.binary_dilation(lb > 0, structure=st, iterations=params.new_lesion_margin_voxels)
+    else:
+        bl_dilated = lb > 0  # scipy treats iterations=0 as "until convergence", never wanted here
 
     vol_b = np.bincount(lb.ravel())
     vol_f = np.bincount(lf.ravel())

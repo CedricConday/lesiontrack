@@ -175,3 +175,43 @@ def test_min_mean_drops_weak_candidates():
     exp[ball(shape, (20, 20, 20), 2)] = 13.0   # one small seed, candidate mean stays near 5
     assert sel_candidates(exp, mask, SELParams()).max() == 1
     assert sel_candidates(exp, mask, SELParams(min_mean_pct_per_year=8.0)).max() == 0
+
+
+def test_zero_margin_does_not_flood_the_baseline():
+    shape = (50, 50, 50)
+    bl = ball(shape, (15, 15, 15), 5)
+    fu = ball(shape, (15, 15, 15), 5) | ball(shape, (38, 38, 38), 4)
+    table, maps = track_pair(bl, fu, 1.0, 1.0, TrackParams(new_lesion_margin_voxels=0))
+    assert sorted(table["class"]) == ["new", "stable"]
+    assert maps["new_or_enlarging_voxels"].sum() > 0
+
+
+def test_unscorable_candidates_are_never_definite():
+    df = pd.DataFrame({"concentricity": [2.0, np.nan, -1.0], "constancy_residual": [0.1, 0.1, 0.5]})
+    out = cohort_score(df)
+    assert out.loc[1, "score_basis"] == "unscorable" and not bool(out.loc[1, "definite_sel"])
+    assert bool(out.loc[0, "definite_sel"])
+
+
+def test_swapped_je_thresholds_are_rejected():
+    with pytest.raises(ValueError):
+        SELParams(je1_pct_per_year=4.0, je2_pct_per_year=12.5)
+
+
+def test_synthetic_composition_keeps_window_on_lesion():
+    """With rigid motion, the injected expansion must still be centred on the lesion."""
+    from lesiontrack.synth import _jacobian_det, _radial_displacement, _rigid_field
+
+    shape = (61, 61, 61)
+    c = np.array([45.0, 45.0, 45.0])  # off-centre so a rotation moves it
+    rigid = _rigid_field(shape, np.array([1.0, -1.0, 1.0]), np.array([1.0, 0.5, -0.5]))
+    grids = np.stack(np.meshgrid(*[np.arange(n, dtype=np.float32) for n in shape], indexing="ij"))
+    y = grids + rigid
+    d_at_y = _radial_displacement(shape, c, 6, 1.4, 6, positions=y)
+    # the radial part evaluated at y is a function of y - c: exact scaling where |y - c| <= 6
+    dist = np.sqrt(((y - c[:, None, None, None]) ** 2).sum(0))
+    inside = dist <= 5
+    lam = 1.4 ** (1 / 3)
+    expected = (y - c[:, None, None, None]) * (1 / lam - 1)
+    assert np.allclose(d_at_y[:, inside], expected[:, inside], atol=1e-4)
+    assert abs(1 / _jacobian_det(_radial_displacement(shape, c, 6, 1.4, 6))[45, 45, 45] - 1.4) < 1e-3

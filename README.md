@@ -44,11 +44,14 @@ missing check.
    z-scored across the cohort; `S = z(concentricity) - z(constancy)`; `S >= 0` is a
    definite SEL. Because the z-scores are cohort-relative, the definite/possible split
    is a ranking within your cohort, not an absolute threshold; raw values are kept.
+   Candidates with no interior voxel have no concentricity and are marked unscorable.
 6. **Lesion tracking** from the binary masks: connected components at baseline and
    follow-up are matched on the bipartite overlap graph, so merges and splits are
-   explicit. Volume change is annualised and classified with the +/-9 %/year change and
-   +/-4 %/year stable bands of Vanden Bulcke et al. 2025; a follow-up component that
-   clears the 1-voxel-dilated baseline mask is *new*.
+   explicit. Volume change is annualised and classified as enlarging or shrinking beyond
+   +/-9 %/year, stable within +/-4 %/year, and trend_up / trend_down between (bands of
+   Vanden Bulcke et al. 2025). A follow-up component with no baseline overlap is *new* if
+   it clears the 1-voxel-dilated baseline mask and *adjacent_fragment* if it touches it;
+   a baseline component with no follow-up overlap is *resolved*.
 
 ## The backtest gate
 
@@ -59,7 +62,9 @@ runs the full pipeline on the pair and reports:
 
 * sensitivity: expanded lesions that receive a SEL candidate
 * false positive rate: untouched lesions that receive one
-* rate error: measured mean expansion minus the true rate, in %/year
+* recovery fraction: robust slope of measured against true expansion (1.0 = exact)
+* the noise floor inside untouched lesions and, per candidate, how well its mean rate
+  separates injected from spurious candidates
 
 It is the only place the pipeline is checked against a known answer. Run it on your own
 data before trusting a count. The numbers for MSLesSeg are in the section below.
@@ -126,7 +131,7 @@ Default registration (greedy stationary-velocity, NCC 3x3x3, halfway space).
 | recovery by lesion size: >= 500 / 100-500 / < 100 voxels | 0.55 / 0.27 / 0.33 |
 | candidate sensitivity, Elliott thresholds | 0.88 |
 | candidate false positive rate, Elliott thresholds | 0.47 (1.00 on untouched lesions >= 500 voxels) |
-| definite SEL (cohort z-scored S >= 0): sensitivity / FPR | 0.29 / 0.27 |
+| definite SEL (S >= 0, z-scored within the run, so about half by construction): sensitivity / FPR | 0.29 / 0.27 |
 | noise floor: 95th percentile of per-voxel expansion in untouched lesions | 5 to 10 %/yr |
 | candidate mean expansion as a classifier, AUC | 0.85 to 0.96 |
 
@@ -139,7 +144,8 @@ Three conclusions the tool would not have earned without the gate:
    lesions contain enough voxels to produce one by chance. Concentricity and constancy,
    the published filters, were at chance here (AUC 0.54 and 0.40).
 3. **The candidate's mean rate is the filter that works** (AUC 0.90). It is exposed as
-   `min_mean_pct_per_year`, off by default. Trade-off on this registration:
+   `min_mean_pct_per_year`, off by default. Trade-off on this registration (mean over
+   the three seeds):
 
 | min mean (%/yr) | sensitivity | false positive rate |
 |---|---|---|

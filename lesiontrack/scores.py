@@ -104,6 +104,8 @@ def cohort_score(table: pd.DataFrame) -> pd.DataFrame:
     Expects columns ``concentricity`` and ``constancy_residual`` (NaN allowed).
     Candidates without a constancy value (two-timepoint studies) get
     S = z(concentricity) and ``score_basis`` = "concentricity_only".
+    Candidates with no interior voxel have no concentricity; they are marked
+    ``score_basis`` = "unscorable" and are never definite.
     """
     out = table.copy()
 
@@ -121,5 +123,7 @@ def cohort_score(table: pd.DataFrame) -> pd.DataFrame:
         has_const, out["z_concentricity"] - out["z_constancy"], out["z_concentricity"]
     )
     out["score_basis"] = np.where(has_const, "concentricity_and_constancy", "concentricity_only")
-    out["definite_sel"] = out["score_S"] >= 0
+    unscorable = out["z_concentricity"].isna()
+    out.loc[unscorable, "score_basis"] = "unscorable"  # no interior voxel, no concentricity
+    out["definite_sel"] = (out["score_S"] >= 0) & ~unscorable
     return out

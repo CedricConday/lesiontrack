@@ -151,7 +151,8 @@ def cmd_backtest(a: argparse.Namespace) -> int:
     agg["noise_candidates_per_1000_untouched_voxels_per_seed"] = [
         m["noise_candidates_per_1000_untouched_voxels"] for m in all_metrics]
     thrs = list(all_metrics[0]["min_mean_tradeoff"].keys()) if all_metrics and all_metrics[0]["min_mean_tradeoff"] else []
-    agg["min_mean_tradeoff"] = {
+    # Averaged over seeds (each seed has its own lesion set), not pooled at the lesion level.
+    agg["min_mean_tradeoff_mean_over_seeds"] = {
         thr: {
             "sensitivity": float(np.nanmean([m["min_mean_tradeoff"][thr]["sensitivity"] for m in all_metrics])),
             "false_positive_rate": float(np.nanmean([m["min_mean_tradeoff"][thr]["false_positive_rate"] for m in all_metrics])),

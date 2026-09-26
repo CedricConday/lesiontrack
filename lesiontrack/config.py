@@ -21,6 +21,10 @@ class SELParams:
     # trade-off at several values so a user can choose one for their registration.
     min_mean_pct_per_year: float = 0.0
 
+    def __post_init__(self) -> None:
+        if self.je1_pct_per_year < self.je2_pct_per_year:
+            raise ValueError("je1 (seed) must be >= je2 (growth); a swapped pair yields no candidates")
+
 
 @dataclass(frozen=True)
 class TrackParams:

@@ -19,6 +19,7 @@ synthetic backtest (:mod:`lesiontrack.synth`) checks this sign empirically.
 from __future__ import annotations
 
 import io
+import json
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -128,19 +129,37 @@ def _existing_pair(baseline: Timepoint, follow: Timepoint, out_dir: Path, tag: s
     )
 
 
+def _params_record(params: RegParams, frame: Path | None) -> dict:
+    return {"reg": dict(params.__dict__), "frame": str(frame) if frame else None}
+
+
 def register_pair(baseline: Timepoint, follow: Timepoint, out_dir: Path,
                   params: RegParams | None = None, log: Path | None = None,
-                  force: bool = False) -> PairResult:
-    """Align a follow-up to the baseline in halfway space and compute the Jacobian map."""
+                  force: bool = False, frame: Path | None = None) -> PairResult:
+    """Align a follow-up to the baseline in halfway space and compute the Jacobian map.
+
+    ``frame`` is an optional halfway matrix H from another pair of the same
+    subject. When given, the baseline is resliced with that H^-1 and this
+    follow-up with H^-1 @ (its own rigid to baseline), so every pair of the
+    subject lives on one common grid. The pipeline uses the last follow-up's
+    halfway matrix as the frame, which keeps that pair unbiased and lets
+    constancy and tracking compare voxels across follow-ups directly.
+    """
     params = params or RegParams()
     _check_paths(out_dir, baseline.t1, baseline.flair, baseline.mask, baseline.brainmask,
                  follow.t1, follow.flair, follow.mask)
     out_dir.mkdir(parents=True, exist_ok=True)
     tag = follow.name
+    if follow.time_years <= baseline.time_years:
+        raise ValueError(f"{tag}: time_years {follow.time_years} is not after baseline {baseline.time_years}")
     done = out_dir / f"{tag}_jacobian.nii.gz"
+    record = out_dir / f"{tag}_reg_params.json"
     if done.exists() and not force:
-        # Registration is the expensive step; reuse it so candidate rules can be re-scored.
-        return _existing_pair(baseline, follow, out_dir, tag)
+        # Registration is the expensive step; reuse it so candidate rules can be re-scored,
+        # but only when it was produced with the same settings and frame.
+        previous = json.loads(record.read_text()) if record.exists() else None
+        if previous == _params_record(params, frame):
+            return _existing_pair(baseline, follow, out_dir, tag)
     thr = params.threads
     full = out_dir / f"{tag}_to_baseline_rigid.mat"
     half = out_dir / f"{tag}_halfway.mat"
@@ -152,10 +171,19 @@ def register_pair(baseline: Timepoint, follow: Timepoint, out_dir: Path,
         f"-i {baseline.t1} {follow.t1} -o {full}",
         log,
     )
-    write_matrix(half, half_transform(read_matrix(full)))
+    rigid = read_matrix(full)
+    write_matrix(half, half_transform(rigid))
 
-    # 2. Both timepoints into halfway space on the baseline grid.
-    #    baseline -> halfway is H^-1, follow-up -> halfway is H.
+    # 2. Both timepoints into the common frame on the baseline grid.
+    #    baseline -> frame is H^-1; follow-up -> frame is H^-1 @ rigid (== H for its own H).
+    if frame is None:
+        frame_mat = half
+        fu_to_frame = half
+    else:
+        frame_mat = frame
+        fu_to_frame = out_dir / f"{tag}_to_frame.mat"
+        write_matrix(fu_to_frame, np.linalg.inv(read_matrix(frame)) @ rigid)
+
     def name(tp: str, what: str) -> Path:
         return out_dir / f"{tag}_{tp}_{what}_halfway.nii.gz"
 
@@ -167,12 +195,12 @@ def register_pair(baseline: Timepoint, follow: Timepoint, out_dir: Path,
         src_fu = getattr(follow, {"T1w": "t1", "FLAIR": "flair", "mask": "mask"}[what])
         bl[what] = name("baseline", what)
         fu[what] = name("followup", what)
-        _reslice(ref, src_bl, bl[what], f"{half},-1", interp, thr, log)
-        _reslice(ref, src_fu, fu[what], f"{half}", interp, thr, log)
+        _reslice(ref, src_bl, bl[what], f"{frame_mat},-1", interp, thr, log)
+        _reslice(ref, src_fu, fu[what], f"{fu_to_frame}", interp, thr, log)
     bl_brain = None
     if baseline.brainmask is not None:
         bl_brain = name("baseline", "brainmask")
-        _reslice(ref, baseline.brainmask, bl_brain, f"{half},-1", "NN", thr, log)
+        _reslice(ref, baseline.brainmask, bl_brain, f"{frame_mat},-1", "NN", thr, log)
 
     # 3. Deformable, T1 and FLAIR jointly, baseline fixed, follow-up moving.
     warp = out_dir / f"{tag}_warp.nii.gz"
@@ -193,6 +221,7 @@ def register_pair(baseline: Timepoint, follow: Timepoint, out_dir: Path,
     run_greedy(
         f"-d 3 -threads {thr} -rf {bl['T1w']} -rm {fu['T1w']} {warped} -r {warp} -rj {jac}", log
     )
+    record.write_text(json.dumps(_params_record(params, frame), indent=2))
 
     return PairResult(
         follow_up=tag,
