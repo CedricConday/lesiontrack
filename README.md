@@ -155,9 +155,41 @@ Three conclusions the tool would not have earned without the gate:
 
 Full record with the registration sweep: `docs/BACKTEST_NOTES.md`.
 
-### MSLesSeg cohort
+### MSLesSeg cohort (24 patients, 2026-09-26)
 
-Pending: 25 patients running; filled in from `derivatives/` when done.
+All longitudinal MSLesSeg patients, baseline against their last scan (median interval
+1.5 years, range 0.16 to 6.0), default settings. One patient (P49) was refused by the
+input gate: its follow-up T1 in the released dataset has 0.1 % nonzero voxels.
+
+**Lesion tracking, all subjects, last follow-up** (baseline lesions 573, matched groups):
+new 216, resolved 250, enlarging 127, shrinking 115, stable 36, trend 45. That churn is
+real signal, not just segmentation noise: voxels the masks call new go from FLAIR z 0.73
+at baseline to 1.49 at follow-up and only 6 % were already lesion-bright; resolved voxels
+go from 1.45 to 0.87. But masks are segmented per timepoint in MSLesSeg, so "new" and
+"resolved" also carry every difference between two segmentations.
+
+**SEL candidates.** 530 candidates in 24 subjects, median 15 per subject (12.5 with mean
+>= 8 %/yr); the literature reports about 2 to 4 SELs per patient over two years. On this
+registration the Elliott rule is noise-dominated on real data as it was on the backtest.
+
+**The Jacobian does not see what the masks see.** Per subject, mask-based total lesion
+volume change and the Jacobian integrated over baseline lesions correlate at Spearman 0.10
+(median magnitudes 21 % and 6 %). Per 1:1 matched lesion (n = 276) the correlation is 0.09;
+0.18 for lesions over 100 voxels. The largest mask growers (+100 to +680 %) have Jacobian
+means near zero. A candidate is no more likely on a mask-enlarging lesion (42 %) than on a
+shrinking one (45 %).
+
+Read together with the backtest, the picture is consistent: a 1 mm deformable registration
+recovers a fraction of true tissue displacement, and lesion growth that arrives as a change
+of intensity at the boundary rather than as displacement is largely invisible to it. Whether
+a stronger registration (ANTs SyN as in the original studies, or multi-resolution around
+lesions) changes this is exactly the question the backtest lets anyone answer for their own
+pipeline: inject, run, report recovery fraction and noise floor. We would like to see those
+numbers for the pipelines behind published SEL counts.
+
+Cohort tables: `derivatives/mslesseg/cohort_summary.tsv`, `sel_cohort.tsv`,
+`check_volume_change_by_lesion.tsv`, `check_flair_consistency.tsv`
+(`scripts/summarize_cohort.py`, `scripts/cohort_checks.py`).
 
 ## Data used
 

@@ -103,3 +103,15 @@ candidate sensitivity 0.88, false positive rate 0.47, definite 0.42 / 0.30, mean
 0.38 / 0.00. The composed motion tightened the 8 %/yr operating point (false positives 0.23
 before, 0.10 now); everything else moved within seed noise. These are the numbers in the
 README.
+
+## 2026-09-26 — MSLesSeg cohort, 24 subjects, default settings
+
+Numbers as in the README. Additional detail: subject-level mask vs Jacobian volume change,
+worst disagreements: P50 mask +298 % / Jacobian −6 %, P49 excluded (empty follow-up T1),
+P3 −36 % / −0.2 %, P31 +52 % / −5 %. Agreements exist (P20 +107 % / +26 %, P22 −8 % / −12 %)
+but are the minority. Brain-mean Jacobian −1.1 % per interval (plausible atrophy plus bias).
+Elliott's definite/possible split kept 116 of 530 candidates (S >= 0 after z-scoring; 22 %
+because unscorable candidates are never definite).
+
+Failure found and gated: P49's follow-up T1 (0.1 % nonzero) produced a 52-degree, 190 mm
+rigid transform that the pipeline accepted. Inputs and rigid transforms are now checked.
