@@ -166,3 +166,12 @@ def test_synthetic_jacobian_matches_nominal_factor():
         assert abs(expansion[20, 20, 20] - f) < 1e-3
         assert abs(expansion[25, 20, 20] - f) < 1e-3   # still inside the uniform window
         assert abs(expansion[0, 0, 0] - 1.0) < 1e-6    # untouched far away
+
+
+def test_min_mean_drops_weak_candidates():
+    shape = (40, 40, 40)
+    mask = ball(shape, (20, 20, 20), 8)
+    exp = np.where(mask, 5.0, 0.0).astype(np.float32)
+    exp[ball(shape, (20, 20, 20), 2)] = 13.0   # one small seed, candidate mean stays near 5
+    assert sel_candidates(exp, mask, SELParams()).max() == 1
+    assert sel_candidates(exp, mask, SELParams(min_mean_pct_per_year=8.0)).max() == 0

@@ -15,6 +15,11 @@ class SELParams:
     je2_pct_per_year: float = 4.0  # hysteresis growth threshold, Elliott 2019
     min_voxels: int = 10  # reliability criterion, Elliott 2019
     connectivity: int = 2  # scipy structure rank: 2 = 18-connectivity in 3D
+    # Not in Elliott 2019. The backtest (docs/BACKTEST_NOTES.md) found that a candidate's
+    # mean expansion separates injected expansion from registration noise (AUC 0.90) where
+    # peak, concentricity and constancy do not. 0 disables it; the backtest reports the
+    # trade-off at several values so a user can choose one for their registration.
+    min_mean_pct_per_year: float = 0.0
 
 
 @dataclass(frozen=True)

@@ -12,7 +12,7 @@ import numpy as np
 import pandas as pd
 
 from . import __version__
-from .config import Params, RegParams
+from .config import Params, RegParams, SELParams
 from .registration import Timepoint
 
 MANIFEST_COLUMNS = ("subject", "session", "time_years", "t1", "flair", "mask")
@@ -105,7 +105,7 @@ def cmd_backtest(a: argparse.Namespace) -> int:
     nib.save(nib.Nifti1Image((np.asarray(t1_img.dataobj) > 0).astype(np.uint8), t1_img.affine), bm)
     factors = tuple(float(x) for x in a.factors.split(","))
     seeds = [int(x) for x in a.seeds.split(",")]
-    params = Params(reg=RegParams(threads=a.threads))
+    params = Params(reg=RegParams(threads=a.threads), sel=SELParams(min_mean_pct_per_year=a.min_mean))
     tables, all_metrics = [], []
     fractions = [float(x) for x in a.timepoints.split(",")]
     if fractions[-1] != 1.0:
@@ -147,6 +147,17 @@ def cmd_backtest(a: argparse.Namespace) -> int:
     combined = pd.concat(tables, ignore_index=True)
     combined.to_csv(out / "backtest_lesions.tsv", sep="\t", index=False, float_format="%.5g")
     _, agg = score_aggregate(combined)
+    agg["candidate_mean_auc_per_seed"] = [m["candidate_mean_auc"] for m in all_metrics]
+    agg["noise_candidates_per_1000_untouched_voxels_per_seed"] = [
+        m["noise_candidates_per_1000_untouched_voxels"] for m in all_metrics]
+    thrs = list(all_metrics[0]["min_mean_tradeoff"].keys()) if all_metrics and all_metrics[0]["min_mean_tradeoff"] else []
+    agg["min_mean_tradeoff"] = {
+        thr: {
+            "sensitivity": float(np.nanmean([m["min_mean_tradeoff"][thr]["sensitivity"] for m in all_metrics])),
+            "false_positive_rate": float(np.nanmean([m["min_mean_tradeoff"][thr]["false_positive_rate"] for m in all_metrics])),
+        }
+        for thr in thrs
+    }
     agg.update({"seeds": seeds, "dt_years": a.dt_years, "factors": list(factors), "n_expand": a.n_expand,
                 "per_seed": all_metrics, "registration": params.reg.__dict__, "sel": params.sel.__dict__})
     with open(out / "backtest_metrics.json", "w") as fh:
@@ -224,6 +235,8 @@ def main(argv: list[str] | None = None) -> int:
                    help="comma-separated fractions of --dt-years at which synthetic follow-ups are made; must end in 1.0")
     b.add_argument("--factors", default="1.15,1.25,1.40", help="comma-separated volume factors to inject")
     b.add_argument("--threads", type=int, default=4)
+    b.add_argument("--min-mean", type=float, default=0.0,
+                   help="drop candidates whose mean expansion is below this (%%/yr); 0 = Elliott's rule")
     b.set_defaults(func=cmd_backtest)
 
     a = ap.parse_args(argv)

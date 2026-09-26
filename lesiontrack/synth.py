@@ -213,6 +213,7 @@ def score(truth: dict, baseline_lesion_labels: np.ndarray, expansion_pct_per_yea
 
     rows = []
     untouched_voxels = []
+    cand_rows = _candidate_rows(truth, baseline_lesion_labels, expansion_pct_per_year, candidate_labels)
     for les in truth["lesions"]:
         k = les["lesion_id"]
         sel = baseline_lesion_labels == k
@@ -244,7 +245,12 @@ def score(truth: dict, baseline_lesion_labels: np.ndarray, expansion_pct_per_yea
     else:
         slope = float("nan")
     un_vox = np.concatenate(untouched_voxels) if untouched_voxels else np.array([np.nan])
+    untouched_lesion_voxels = int(sum(v.size for v in untouched_voxels))
+    n_noise_cands = int((~cand_rows["injected"]).sum()) if len(cand_rows) else 0
     metrics = {
+        "candidate_mean_auc": _auc(cand_rows["mean_pct_per_year"], cand_rows["injected"]) if len(cand_rows) else float("nan"),
+        "noise_candidates_per_1000_untouched_voxels": 1000.0 * n_noise_cands / untouched_lesion_voxels if untouched_lesion_voxels else float("nan"),
+        "min_mean_tradeoff": _min_mean_tradeoff(None, cand_rows, truth, baseline_lesion_labels, candidate_labels) if len(cand_rows) else {},
         "n_expanded": len(exp), "n_unexpanded": len(unexp),
         "sensitivity": float(exp["detected"].mean()) if len(exp) else float("nan"),
         "false_positive_rate": float(unexp["detected"].mean()) if len(unexp) else float("nan"),
@@ -267,6 +273,54 @@ def score(truth: dict, baseline_lesion_labels: np.ndarray, expansion_pct_per_yea
         },
     }
     return table, metrics
+
+
+def _candidate_rows(truth: dict, lesion_labels: np.ndarray, expansion: np.ndarray,
+                    candidate_labels: np.ndarray) -> pd.DataFrame:
+    """One row per candidate: mean expansion, parent lesion, whether the parent was injected."""
+    expanded = {les["lesion_id"] for les in truth["lesions"] if les["volume_factor"] > 1.0}
+    rows = []
+    for k in range(1, int(candidate_labels.max()) + 1):
+        sel = candidate_labels == k
+        parents = lesion_labels[sel]
+        parents = parents[parents > 0]
+        parent = int(np.bincount(parents).argmax()) if parents.size else 0
+        rows.append({"candidate_id": k, "parent_lesion_id": parent, "injected": parent in expanded,
+                     "mean_pct_per_year": float(expansion[sel].mean()), "n_voxels": int(sel.sum())})
+    return pd.DataFrame(rows)
+
+
+def _auc(values, positive) -> float:
+    """Rank AUC of ``values`` for the ``positive`` class."""
+    from scipy.stats import rankdata
+
+    x = np.asarray(values, dtype=float)
+    y = np.asarray(positive, dtype=bool)
+    ok = ~np.isnan(x)
+    x, y = x[ok], y[ok]
+    if y.sum() == 0 or (~y).sum() == 0:
+        return float("nan")
+    r = rankdata(x)
+    return float((r[y].sum() - y.sum() * (y.sum() + 1) / 2) / (y.sum() * (~y).sum()))
+
+
+def _min_mean_tradeoff(_unused, cand_rows: pd.DataFrame, truth: dict, lesion_labels: np.ndarray,
+                       candidate_labels: np.ndarray, thresholds=(0.0, 6.0, 8.0, 10.0, 12.5)) -> dict:
+    """Lesion-level sensitivity and false positive rate if candidates below a mean rate were dropped."""
+    expanded = {les["lesion_id"] for les in truth["lesions"] if les["volume_factor"] > 1.0}
+    present = {les["lesion_id"] for les in truth["lesions"] if (lesion_labels == les["lesion_id"]).any()}
+    out = {}
+    for thr in thresholds:
+        kept = cand_rows[cand_rows["mean_pct_per_year"] >= thr]
+        hit = set(kept["parent_lesion_id"])
+        pos = [k for k in present if k in expanded]
+        neg = [k for k in present if k not in expanded]
+        out[f"{thr:g}"] = {
+            "sensitivity": float(np.mean([k in hit for k in pos])) if pos else float("nan"),
+            "false_positive_rate": float(np.mean([k in hit for k in neg])) if neg else float("nan"),
+            "candidates_kept": len(kept),
+        }
+    return out
 
 
 def _stratum(n_voxels: int) -> str:

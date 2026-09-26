@@ -48,6 +48,10 @@ def sel_candidates(expansion_pct_per_year: np.ndarray, lesion_mask: np.ndarray,
     counts = np.bincount(labels.ravel())
     keep = np.flatnonzero(counts >= params.min_voxels)
     keep = keep[keep != 0]
+    if params.min_mean_pct_per_year > 0 and keep.size:
+        sums = np.bincount(labels.ravel(), weights=exp.ravel(), minlength=counts.size)
+        means = sums[keep] / counts[keep]
+        keep = keep[means >= params.min_mean_pct_per_year]
     lut = np.zeros(counts.size, dtype=np.int32)
     lut[keep] = np.arange(1, keep.size + 1, dtype=np.int32)
     return lut[labels]
