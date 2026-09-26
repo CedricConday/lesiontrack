@@ -25,9 +25,18 @@ def overview(out_dir: Path, follow_up: str, n_slices: int = 4) -> Path:
     cand = _load(out_dir / "sel_candidates.nii.gz")
     new = _load(out_dir / f"new_or_enlarging_{follow_up}.nii.gz")
 
+    # Slices with the most lesion voxels, at least min_gap apart so the page spans the brain.
     lesion_per_slice = (les > 0).sum(axis=(0, 1))
-    order = np.argsort(lesion_per_slice)[::-1]
-    slices = sorted(order[:n_slices].tolist())
+    min_gap = max(3, les.shape[2] // (4 * n_slices))
+    slices: list[int] = []
+    for z in np.argsort(lesion_per_slice)[::-1]:
+        if lesion_per_slice[z] == 0:
+            break
+        if all(abs(int(z) - s) >= min_gap for s in slices):
+            slices.append(int(z))
+        if len(slices) == n_slices:
+            break
+    slices.sort()
     vmax = np.percentile(t1[t1 > 0], 99) if (t1 > 0).any() else 1.0
 
     fig, axes = plt.subplots(len(slices), 3, figsize=(10, 3.3 * len(slices)))
