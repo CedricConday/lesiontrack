@@ -97,7 +97,7 @@ def make_followup(t1: Path, flair: Path, mask: Path, out_dir: Path, *,
     timepoint.
     """
     rng = np.random.default_rng(seed)
-    rng_tp = np.random.default_rng([seed, int(round(time_fraction * 1000))])
+    rng_tp = np.random.default_rng([seed, round(time_fraction * 1000)])
     out_dir.mkdir(parents=True, exist_ok=True)
     t1_img = nib.load(t1)
     t1_arr = np.asarray(t1_img.dataobj, dtype=np.float32)
