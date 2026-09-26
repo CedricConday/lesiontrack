@@ -34,11 +34,15 @@ class RegParams:
     affine_dof: int = 6
     affine_metric: str = "NMI"
     affine_iterations: str = "100x50x20"
-    deform_metric: str = "NCC 2x2x2"
+    # Backtest sweep 2026-09-26 (docs/BACKTEST_NOTES.md): greedy's stationary-velocity mode
+    # recovers as much injected expansion as ten times the iterations of the plain greedy
+    # update at a sixth of the time; a 3-voxel NCC window edged out 2 and 4.
+    deform_metric: str = "NCC 3x3x3"
     deform_step: float = 0.7
     deform_sigma_update: str = "2vox"
     deform_sigma_total: str = "0.5vox"
     deform_iterations: str = "100x60x30"
+    stationary_velocity: bool = True
     t1_weight: float = 1.0
     flair_weight: float = 1.0
     threads: int = 4

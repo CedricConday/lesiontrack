@@ -32,7 +32,9 @@ any untouched lesion):
 | s 1vox 0vox, 100x100x100 | 319 s | 10.7 | 110 (unusable noise) |
 | factor 2.0, default | 151 s | 21 of ≈ 78 analytic | 27.4 |
 
-Stationary-velocity mode matches ten times the iterations at a sixth of the time.
+Stationary-velocity mode matches ten times the iterations at a sixth of the time. A third
+sweep around it plateaued: `-sv` with 100x100x100 iterations 9.3 (497 s), with step 1.0
+9.7, with NCC 3x3x3 9.9 (170 s). Default set to `-sv`, NCC 3x3x3, 100x60x30, step 0.7.
 
 **Recovery is a fraction, and it depends on lesion size.** With `-sv`: recovery fraction
 0.28 overall (robust slope of measured vs analytic true); median 0.56 for lesions ≥ 500

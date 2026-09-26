@@ -154,10 +154,11 @@ def register_pair(baseline: Timepoint, follow: Timepoint, out_dir: Path,
     # 3. Deformable, T1 and FLAIR jointly, baseline fixed, follow-up moving.
     warp = out_dir / f"{tag}_warp.nii.gz"
     mask_arg = f"-gm {bl_brain} " if bl_brain is not None else ""
+    sv_arg = "-sv " if params.stationary_velocity else ""
     run_greedy(
         f"-d 3 -threads {thr} -m {params.deform_metric} -n {params.deform_iterations} "
         f"-e {params.deform_step} -s {params.deform_sigma_update} {params.deform_sigma_total} "
-        f"{mask_arg}"
+        f"{sv_arg}{mask_arg}"
         f"-w {params.t1_weight} -i {bl['T1w']} {fu['T1w']} "
         f"-w {params.flair_weight} -i {bl['FLAIR']} {fu['FLAIR']} -o {warp}",
         log,
