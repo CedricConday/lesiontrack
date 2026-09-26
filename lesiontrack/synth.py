@@ -185,28 +185,78 @@ def score(truth: dict, baseline_lesion_labels: np.ndarray, expansion_pct_per_yea
     mean of the analytic Jacobian of the injected deformation inside that
     lesion (which is below the nominal factor wherever the lesion extends past
     the radial window), divided by ``dt``.
+
+    Gate metrics:
+
+    * ``recovery_fraction``: robust through-origin slope of measured against
+      true rate over the expanded lesions (1.0 = the pipeline measures what
+      was injected; 0.3 = it reports a third of it);
+    * ``noise_peak_p95_pct_per_year``: 95th percentile of the per-voxel
+      expansion inside untouched lesions, the level a seed threshold has to
+      clear to keep false positives down;
+    * sensitivity and false positive rate at the configured SEL thresholds,
+      overall and by lesion size stratum.
     """
+    from .scores import huber_fit
+
     rows = []
+    untouched_voxels = []
     for les in truth["lesions"]:
         k = les["lesion_id"]
         sel = baseline_lesion_labels == k
+        if not sel.any():
+            continue
         true_rate = les["true_mean_expansion_pct"] / dt_years
-        measured = float(expansion_pct_per_year[sel].mean())
+        vals = expansion_pct_per_year[sel]
+        measured = float(vals.mean())
         detected = bool((candidate_labels[sel] > 0).any())
+        expanded = les["volume_factor"] > 1.0
+        if not expanded:
+            untouched_voxels.append(vals)
         rows.append({
-            "lesion_id": k, "n_voxels": les["n_voxels"], "true_pct_per_year": true_rate,
-            "measured_mean_pct_per_year": measured, "detected": detected,
-            "expanded": les["volume_factor"] > 1.0,
+            "lesion_id": k, "n_voxels": les["n_voxels"],
+            "size_stratum": _stratum(les["n_voxels"]),
+            "nominal_pct_per_year": (les["volume_factor"] - 1.0) * 100.0 / dt_years,
+            "true_pct_per_year": true_rate,
+            "measured_mean_pct_per_year": measured,
+            "measured_peak_pct_per_year": float(vals.max()),
+            "recovery": measured / true_rate if expanded and true_rate else float("nan"),
+            "detected": detected, "expanded": expanded,
         })
     table = pd.DataFrame(rows)
     exp = table[table["expanded"]]
     unexp = table[~table["expanded"]]
+    if len(exp) >= 2:
+        slope, _ = huber_fit(exp["true_pct_per_year"].to_numpy(), exp["measured_mean_pct_per_year"].to_numpy(), through_origin=True)
+    else:
+        slope = float("nan")
+    un_vox = np.concatenate(untouched_voxels) if untouched_voxels else np.array([np.nan])
     metrics = {
         "n_expanded": len(exp), "n_unexpanded": len(unexp),
         "sensitivity": float(exp["detected"].mean()) if len(exp) else float("nan"),
         "false_positive_rate": float(unexp["detected"].mean()) if len(unexp) else float("nan"),
-        "rate_error_mean_pct": float((exp["measured_mean_pct_per_year"] - exp["true_pct_per_year"]).mean()) if len(exp) else float("nan"),
-        "rate_error_abs_mean_pct": float((exp["measured_mean_pct_per_year"] - exp["true_pct_per_year"]).abs().mean()) if len(exp) else float("nan"),
-        "unexpanded_measured_mean_pct": float(unexp["measured_mean_pct_per_year"].mean()) if len(unexp) else float("nan"),
+        "recovery_fraction": float(slope),
+        "recovery_median": float(exp["recovery"].median()) if len(exp) else float("nan"),
+        "noise_mean_pct_per_year": float(np.nanmean(un_vox)),
+        "noise_peak_p95_pct_per_year": float(np.nanpercentile(un_vox, 95)),
+        "noise_peak_max_pct_per_year": float(np.nanmax(un_vox)),
+        "by_stratum": {
+            s: {
+                "n_expanded": int((g["expanded"]).sum()),
+                "sensitivity": float(g[g["expanded"]]["detected"].mean()) if g["expanded"].any() else float("nan"),
+                "n_unexpanded": int((~g["expanded"]).sum()),
+                "false_positive_rate": float(g[~g["expanded"]]["detected"].mean()) if (~g["expanded"]).any() else float("nan"),
+                "recovery_median": float(g[g["expanded"]]["recovery"].median()) if g["expanded"].any() else float("nan"),
+            }
+            for s, g in table.groupby("size_stratum")
+        },
     }
     return table, metrics
+
+
+def _stratum(n_voxels: int) -> str:
+    if n_voxels < 100:
+        return "small_lt100"
+    if n_voxels < 500:
+        return "medium_100_500"
+    return "large_ge500"

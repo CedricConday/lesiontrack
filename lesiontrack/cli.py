@@ -92,45 +92,88 @@ def cmd_synth(a: argparse.Namespace) -> int:
 
 
 def cmd_backtest(a: argparse.Namespace) -> int:
-    """Generate a synthetic follow-up, run the pipeline on it, score recovery."""
+    """Generate synthetic follow-ups, run the pipeline on each, score recovery, aggregate."""
     from .pipeline import run_subject
+    from .registration import run_greedy
     from .synth import make_followup, score
 
     out = Path(a.out)
-    synth_dir = out / "synthetic"
-    rec = make_followup(Path(a.t1), Path(a.flair), Path(a.mask), synth_dir,
-                        n_expand=a.n_expand, seed=a.seed)
+    out.mkdir(parents=True, exist_ok=True)
     t1_img = nib.load(a.t1)
-    bm = synth_dir / "baseline_brainmask.nii.gz"
+    bm = out / "baseline_brainmask.nii.gz"
     nib.save(nib.Nifti1Image((np.asarray(t1_img.dataobj) > 0).astype(np.uint8), t1_img.affine), bm)
-    tps = [
-        Timepoint("baseline", Path(a.t1), Path(a.flair), Path(a.mask), 0.0, bm),
-        Timepoint("synthetic", synth_dir / "synth_T1w.nii.gz", synth_dir / "synth_FLAIR.nii.gz",
-                  synth_dir / "synth_mask.nii.gz", a.dt_years),
-    ]
+    factors = tuple(float(x) for x in a.factors.split(","))
+    seeds = [int(x) for x in a.seeds.split(",")]
     params = Params(reg=RegParams(threads=a.threads))
-    res = run_subject("backtest", tps, out / "run", params)
-    pair = res.pairs[0]
-    labels = np.asarray(nib.load(out / "run" / "baseline_lesion_labels.nii.gz").dataobj)
-    # lesion ids in the run are those of the halfway-resampled baseline mask; map back to
-    # the truth's ids through the un-resampled labels resampled the same way.
-    truth_labels = np.asarray(nib.load(synth_dir / "baseline_lesion_labels.nii.gz").dataobj)
-    from .registration import run_greedy
-    resampled = out / "run" / "truth_lesion_labels_halfway.nii.gz"
-    run_greedy(f"-d 3 -rf {pair.baseline_t1} -ri NN -rt int "
-               f"-rm {synth_dir / 'baseline_lesion_labels.nii.gz'} {resampled} -r {pair.halfway_matrix},-1")
-    truth_labels = np.asarray(nib.load(resampled).dataobj).astype(np.int32)
-    exp = np.asarray(nib.load(out / "run" / f"expansion_{pair.follow_up}_pct_per_year.nii.gz").dataobj)
-    cand = np.asarray(nib.load(out / "run" / "sel_candidates.nii.gz").dataobj)
-    table, metrics = score(rec, truth_labels, exp, cand, a.dt_years)
-    table.to_csv(out / "backtest_lesions.tsv", sep="\t", index=False, float_format="%.5g")
-    metrics["seed"] = a.seed
-    metrics["dt_years"] = a.dt_years
-    metrics["n_baseline_lesions_in_run"] = int(labels.max())
+    tables, all_metrics = [], []
+    for seed in seeds:
+        sdir = out / f"seed{seed}"
+        synth_dir = sdir / "synthetic"
+        rec = make_followup(Path(a.t1), Path(a.flair), Path(a.mask), synth_dir,
+                            n_expand=a.n_expand, volume_factors=factors, seed=seed)
+        tps = [
+            Timepoint("baseline", Path(a.t1), Path(a.flair), Path(a.mask), 0.0, bm),
+            Timepoint("synthetic", synth_dir / "synth_T1w.nii.gz", synth_dir / "synth_FLAIR.nii.gz",
+                      synth_dir / "synth_mask.nii.gz", a.dt_years),
+        ]
+        res = run_subject("backtest", tps, sdir / "run", params)
+        pair = res.pairs[0]
+        resampled = sdir / "run" / "truth_lesion_labels_halfway.nii.gz"
+        run_greedy(f"-d 3 -rf {pair.baseline_t1} -ri NN -rt int "
+                   f"-rm {synth_dir / 'baseline_lesion_labels.nii.gz'} {resampled} -r {pair.halfway_matrix},-1")
+        truth_labels = np.asarray(nib.load(resampled).dataobj).astype(np.int32)
+        exp = np.asarray(nib.load(sdir / "run" / f"expansion_{pair.follow_up}_pct_per_year.nii.gz").dataobj)
+        cand = np.asarray(nib.load(sdir / "run" / "sel_candidates.nii.gz").dataobj)
+        table, metrics = score(rec, truth_labels, exp, cand, a.dt_years)
+        table.insert(0, "seed", seed)
+        table.to_csv(sdir / "backtest_lesions.tsv", sep="\t", index=False, float_format="%.5g")
+        metrics["seed"] = seed
+        with open(sdir / "backtest_metrics.json", "w") as fh:
+            json.dump(metrics, fh, indent=2)
+        tables.append(table)
+        all_metrics.append(metrics)
+        print(f"seed {seed}: sensitivity {metrics['sensitivity']:.2f}  FPR {metrics['false_positive_rate']:.2f}  "
+              f"recovery {metrics['recovery_fraction']:.2f}  noise p95 {metrics['noise_peak_p95_pct_per_year']:.1f} %/yr")
+
+    combined = pd.concat(tables, ignore_index=True)
+    combined.to_csv(out / "backtest_lesions.tsv", sep="\t", index=False, float_format="%.5g")
+    _, agg = score_aggregate(combined)
+    agg.update({"seeds": seeds, "dt_years": a.dt_years, "factors": list(factors), "n_expand": a.n_expand,
+                "per_seed": all_metrics, "registration": params.reg.__dict__, "sel": params.sel.__dict__})
     with open(out / "backtest_metrics.json", "w") as fh:
-        json.dump(metrics, fh, indent=2)
-    print(json.dumps(metrics, indent=2))
+        json.dump(agg, fh, indent=2)
+    print(json.dumps({k: v for k, v in agg.items() if k not in ("per_seed", "registration", "sel")}, indent=2))
     return 0
+
+
+def score_aggregate(table: pd.DataFrame) -> tuple[pd.DataFrame, dict]:
+    """Pool per-lesion rows from several seeds into one set of gate metrics."""
+    from .scores import huber_fit
+
+    exp = table[table["expanded"]]
+    unexp = table[~table["expanded"]]
+    slope = float("nan")
+    if len(exp) >= 2:
+        slope, _ = huber_fit(exp["true_pct_per_year"].to_numpy(), exp["measured_mean_pct_per_year"].to_numpy(), through_origin=True)
+    agg = {
+        "n_expanded": len(exp), "n_unexpanded": len(unexp),
+        "sensitivity": float(exp["detected"].mean()) if len(exp) else float("nan"),
+        "false_positive_rate": float(unexp["detected"].mean()) if len(unexp) else float("nan"),
+        "recovery_fraction": slope,
+        "recovery_median": float(exp["recovery"].median()) if len(exp) else float("nan"),
+        "untouched_peak_median_pct_per_year": float(unexp["measured_peak_pct_per_year"].median()) if len(unexp) else float("nan"),
+        "by_stratum": {
+            s: {
+                "n_expanded": int(g["expanded"].sum()),
+                "sensitivity": float(g[g["expanded"]]["detected"].mean()) if g["expanded"].any() else float("nan"),
+                "n_unexpanded": int((~g["expanded"]).sum()),
+                "false_positive_rate": float(g[~g["expanded"]]["detected"].mean()) if (~g["expanded"]).any() else float("nan"),
+                "recovery_median": float(g[g["expanded"]]["recovery"].median()) if g["expanded"].any() else float("nan"),
+            }
+            for s, g in table.groupby("size_stratum")
+        },
+    }
+    return table, agg
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -165,7 +208,8 @@ def main(argv: list[str] | None = None) -> int:
     b.add_argument("--out", required=True)
     b.add_argument("--n-expand", type=int, default=8)
     b.add_argument("--dt-years", type=float, default=1.0)
-    b.add_argument("--seed", type=int, default=0)
+    b.add_argument("--seeds", default="0,1,2", help="comma-separated seeds, one synthetic follow-up each")
+    b.add_argument("--factors", default="1.15,1.25,1.40", help="comma-separated volume factors to inject")
     b.add_argument("--threads", type=int, default=4)
     b.set_defaults(func=cmd_backtest)
 
