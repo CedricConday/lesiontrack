@@ -95,6 +95,7 @@ def cmd_backtest(a: argparse.Namespace) -> int:
     """Generate synthetic follow-ups, run the pipeline on each, score recovery, aggregate."""
     from .pipeline import run_subject
     from .registration import run_greedy
+    from .scores import cohort_score
     from .synth import make_followup, score
 
     out = Path(a.out)
@@ -106,25 +107,32 @@ def cmd_backtest(a: argparse.Namespace) -> int:
     seeds = [int(x) for x in a.seeds.split(",")]
     params = Params(reg=RegParams(threads=a.threads))
     tables, all_metrics = [], []
+    fractions = [float(x) for x in a.timepoints.split(",")]
+    if fractions[-1] != 1.0:
+        raise SystemExit("--timepoints must end with 1.0 (the last follow-up carries the full expansion)")
     for seed in seeds:
         sdir = out / f"seed{seed}"
-        synth_dir = sdir / "synthetic"
-        rec = make_followup(Path(a.t1), Path(a.flair), Path(a.mask), synth_dir,
-                            n_expand=a.n_expand, volume_factors=factors, seed=seed)
-        tps = [
-            Timepoint("baseline", Path(a.t1), Path(a.flair), Path(a.mask), 0.0, bm),
-            Timepoint("synthetic", synth_dir / "synth_T1w.nii.gz", synth_dir / "synth_FLAIR.nii.gz",
-                      synth_dir / "synth_mask.nii.gz", a.dt_years),
-        ]
+        tps = [Timepoint("baseline", Path(a.t1), Path(a.flair), Path(a.mask), 0.0, bm)]
+        for frac in fractions:
+            synth_dir = sdir / f"synthetic_{frac:g}"
+            rec = make_followup(Path(a.t1), Path(a.flair), Path(a.mask), synth_dir, n_expand=a.n_expand,
+                                volume_factors=factors, seed=seed, time_fraction=frac)
+            tps.append(Timepoint(f"synthetic_{frac:g}", synth_dir / "synth_T1w.nii.gz",
+                                 synth_dir / "synth_FLAIR.nii.gz", synth_dir / "synth_mask.nii.gz",
+                                 frac * a.dt_years))
         res = run_subject("backtest", tps, sdir / "run", params)
-        pair = res.pairs[0]
+        pair = res.pairs[-1]
         resampled = sdir / "run" / "truth_lesion_labels_halfway.nii.gz"
         run_greedy(f"-d 3 -rf {pair.baseline_t1} -ri NN -rt int "
                    f"-rm {synth_dir / 'baseline_lesion_labels.nii.gz'} {resampled} -r {pair.halfway_matrix},-1")
         truth_labels = np.asarray(nib.load(resampled).dataobj).astype(np.int32)
         exp = np.asarray(nib.load(sdir / "run" / f"expansion_{pair.follow_up}_pct_per_year.nii.gz").dataobj)
         cand = np.asarray(nib.load(sdir / "run" / "sel_candidates.nii.gz").dataobj)
-        table, metrics = score(rec, truth_labels, exp, cand, a.dt_years)
+        # Definite SELs: Elliott's cohort z-scoring applied to this run's candidates.
+        scored = cohort_score(res.candidates) if len(res.candidates) else res.candidates
+        definite_ids = set(scored.loc[scored.get("definite_sel", pd.Series(dtype=bool)) == True, "candidate_id"]) if len(scored) else set()
+        definite = np.isin(cand, list(definite_ids)) if definite_ids else np.zeros_like(cand, dtype=bool)
+        table, metrics = score(rec, truth_labels, exp, cand, a.dt_years, definite_labels=definite)
         table.insert(0, "seed", seed)
         table.to_csv(sdir / "backtest_lesions.tsv", sep="\t", index=False, float_format="%.5g")
         metrics["seed"] = seed
@@ -132,7 +140,8 @@ def cmd_backtest(a: argparse.Namespace) -> int:
             json.dump(metrics, fh, indent=2)
         tables.append(table)
         all_metrics.append(metrics)
-        print(f"seed {seed}: sensitivity {metrics['sensitivity']:.2f}  FPR {metrics['false_positive_rate']:.2f}  "
+        print(f"seed {seed}: candidates sens {metrics['sensitivity']:.2f} FPR {metrics['false_positive_rate']:.2f} | "
+              f"definite sens {metrics['sensitivity_definite']:.2f} FPR {metrics['false_positive_rate_definite']:.2f} | "
               f"recovery {metrics['recovery_fraction']:.2f}  noise p95 {metrics['noise_peak_p95_pct_per_year']:.1f} %/yr")
 
     combined = pd.concat(tables, ignore_index=True)
@@ -159,6 +168,8 @@ def score_aggregate(table: pd.DataFrame) -> tuple[pd.DataFrame, dict]:
         "n_expanded": len(exp), "n_unexpanded": len(unexp),
         "sensitivity": float(exp["detected"].mean()) if len(exp) else float("nan"),
         "false_positive_rate": float(unexp["detected"].mean()) if len(unexp) else float("nan"),
+        "sensitivity_definite": float(exp["detected_definite"].mean()) if len(exp) else float("nan"),
+        "false_positive_rate_definite": float(unexp["detected_definite"].mean()) if len(unexp) else float("nan"),
         "recovery_fraction": slope,
         "recovery_median": float(exp["recovery"].median()) if len(exp) else float("nan"),
         "untouched_peak_median_pct_per_year": float(unexp["measured_peak_pct_per_year"].median()) if len(unexp) else float("nan"),
@@ -208,7 +219,9 @@ def main(argv: list[str] | None = None) -> int:
     b.add_argument("--out", required=True)
     b.add_argument("--n-expand", type=int, default=8)
     b.add_argument("--dt-years", type=float, default=1.0)
-    b.add_argument("--seeds", default="0,1,2", help="comma-separated seeds, one synthetic follow-up each")
+    b.add_argument("--seeds", default="0,1,2", help="comma-separated seeds, one synthetic series each")
+    b.add_argument("--timepoints", default="0.5,1.0",
+                   help="comma-separated fractions of --dt-years at which synthetic follow-ups are made; must end in 1.0")
     b.add_argument("--factors", default="1.15,1.25,1.40", help="comma-separated volume factors to inject")
     b.add_argument("--threads", type=int, default=4)
     b.set_defaults(func=cmd_backtest)

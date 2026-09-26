@@ -86,9 +86,18 @@ def make_followup(t1: Path, flair: Path, mask: Path, out_dir: Path, *,
                   min_voxels: int = 30, margin_vox: float = 2.0, falloff_vox: float = 6.0,
                   rigid_rot_deg: float = 1.0, rigid_trans_vox: float = 1.0,
                   intensity_scale: tuple = (0.9, 1.1), noise_frac: float = 0.02,
-                  seed: int = 0) -> dict:
-    """Write a synthetic follow-up and its ground truth. Returns the truth record."""
+                  seed: int = 0, time_fraction: float = 1.0) -> dict:
+    """Write a synthetic follow-up and its ground truth. Returns the truth record.
+
+    ``time_fraction`` scales the injected expansion to an intermediate
+    timepoint: a lesion with volume factor ``f`` at fraction 1 has
+    ``f ** time_fraction`` here, so expansion is linear in log-volume over
+    time, while lesion choice and factors stay those of ``seed``. Rigid
+    perturbation, intensity scale and noise are drawn independently per
+    timepoint.
+    """
     rng = np.random.default_rng(seed)
+    rng_tp = np.random.default_rng([seed, int(round(time_fraction * 1000))])
     out_dir.mkdir(parents=True, exist_ok=True)
     t1_img = nib.load(t1)
     t1_arr = np.asarray(t1_img.dataobj, dtype=np.float32)
@@ -110,8 +119,9 @@ def make_followup(t1: Path, flair: Path, mask: Path, out_dir: Path, *,
         c = np.array(centroids[k], dtype=np.float32)
         # equivalent-sphere radius plus a margin so the whole lesion scales
         radius = (3 * sizes[k] / (4 * np.pi)) ** (1 / 3) + margin_vox
-        disp += _radial_displacement(t1_arr.shape, c, radius, f, falloff_vox)
-        truth.append(SynthLesion(int(k), int(sizes[k]), f, *map(float, c)))
+        f_here = f ** time_fraction
+        disp += _radial_displacement(t1_arr.shape, c, radius, f_here, falloff_vox)
+        truth.append(SynthLesion(int(k), int(sizes[k]), f_here, *map(float, c)))
     for k in range(1, sizes.size):
         if k not in chosen:
             c = centroids[k]
@@ -122,8 +132,8 @@ def make_followup(t1: Path, flair: Path, mask: Path, out_dir: Path, *,
     # its reciprocal. Computed before the rigid part, which has unit determinant.
     truth_expansion = (1.0 / _jacobian_det(disp) - 1.0) * 100.0
 
-    rot = rng.uniform(-rigid_rot_deg, rigid_rot_deg, size=3)
-    trans = rng.uniform(-rigid_trans_vox, rigid_trans_vox, size=3)
+    rot = rng_tp.uniform(-rigid_rot_deg, rigid_rot_deg, size=3)
+    trans = rng_tp.uniform(-rigid_trans_vox, rigid_trans_vox, size=3)
     disp_total = disp + _rigid_field(t1_arr.shape, rot, trans)
 
     def synth(arr: np.ndarray, order: int, cval: float = 0.0) -> np.ndarray:
@@ -138,10 +148,10 @@ def make_followup(t1: Path, flair: Path, mask: Path, out_dir: Path, *,
     brain = t1_arr > 0
     brain_fu = synth(brain.astype(np.float32), 1) >= 0.5
     for arr in (t1_fu, fl_fu):
-        scale = rng.uniform(*intensity_scale)
+        scale = rng_tp.uniform(*intensity_scale)
         sigma = noise_frac * arr[brain_fu].mean()
         arr *= scale
-        arr += rng.normal(0.0, sigma, size=arr.shape).astype(np.float32)
+        arr += rng_tp.normal(0.0, sigma, size=arr.shape).astype(np.float32)
         arr[~brain_fu] = 0.0
 
     aff = t1_img.affine
@@ -166,6 +176,7 @@ def make_followup(t1: Path, flair: Path, mask: Path, out_dir: Path, *,
     record = {
         "source": {"t1": str(t1), "flair": str(flair), "mask": str(mask)},
         "seed": seed,
+        "time_fraction": time_fraction,
         "rigid_rotation_deg": rot.tolist(),
         "rigid_translation_vox": trans.tolist(),
         "lesions": [asdict(x) for x in truth],
@@ -177,7 +188,8 @@ def make_followup(t1: Path, flair: Path, mask: Path, out_dir: Path, *,
 
 
 def score(truth: dict, baseline_lesion_labels: np.ndarray, expansion_pct_per_year: np.ndarray,
-          candidate_labels: np.ndarray, dt_years: float) -> tuple[pd.DataFrame, dict]:
+          candidate_labels: np.ndarray, dt_years: float,
+          definite_labels: np.ndarray | None = None) -> tuple[pd.DataFrame, dict]:
     """Per-lesion recovery of known expansion, and cohort-level gate metrics.
 
     A lesion counts as detected when any SEL candidate overlaps it. The
@@ -210,6 +222,7 @@ def score(truth: dict, baseline_lesion_labels: np.ndarray, expansion_pct_per_yea
         vals = expansion_pct_per_year[sel]
         measured = float(vals.mean())
         detected = bool((candidate_labels[sel] > 0).any())
+        definite = bool((definite_labels[sel] > 0).any()) if definite_labels is not None else detected
         expanded = les["volume_factor"] > 1.0
         if not expanded:
             untouched_voxels.append(vals)
@@ -221,7 +234,7 @@ def score(truth: dict, baseline_lesion_labels: np.ndarray, expansion_pct_per_yea
             "measured_mean_pct_per_year": measured,
             "measured_peak_pct_per_year": float(vals.max()),
             "recovery": measured / true_rate if expanded and true_rate else float("nan"),
-            "detected": detected, "expanded": expanded,
+            "detected": detected, "detected_definite": definite, "expanded": expanded,
         })
     table = pd.DataFrame(rows)
     exp = table[table["expanded"]]
@@ -235,6 +248,8 @@ def score(truth: dict, baseline_lesion_labels: np.ndarray, expansion_pct_per_yea
         "n_expanded": len(exp), "n_unexpanded": len(unexp),
         "sensitivity": float(exp["detected"].mean()) if len(exp) else float("nan"),
         "false_positive_rate": float(unexp["detected"].mean()) if len(unexp) else float("nan"),
+        "sensitivity_definite": float(exp["detected_definite"].mean()) if len(exp) else float("nan"),
+        "false_positive_rate_definite": float(unexp["detected_definite"].mean()) if len(unexp) else float("nan"),
         "recovery_fraction": float(slope),
         "recovery_median": float(exp["recovery"].median()) if len(exp) else float("nan"),
         "noise_mean_pct_per_year": float(np.nanmean(un_vox)),
