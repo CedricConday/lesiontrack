@@ -117,8 +117,8 @@ def cmd_backtest(a: argparse.Namespace) -> int:
     truth_labels = np.asarray(nib.load(synth_dir / "baseline_lesion_labels.nii.gz").dataobj)
     from .registration import run_greedy
     resampled = out / "run" / "truth_lesion_labels_halfway.nii.gz"
-    run_greedy(f"-d 3 -rf {pair.baseline_t1} -rm {synth_dir / 'baseline_lesion_labels.nii.gz'} {resampled} "
-               f"-ri NN -r {pair.halfway_matrix},-1")
+    run_greedy(f"-d 3 -rf {pair.baseline_t1} -ri NN -rt int "
+               f"-rm {synth_dir / 'baseline_lesion_labels.nii.gz'} {resampled} -r {pair.halfway_matrix},-1")
     truth_labels = np.asarray(nib.load(resampled).dataobj).astype(np.int32)
     exp = np.asarray(nib.load(out / "run" / f"expansion_{pair.follow_up}_pct_per_year.nii.gz").dataobj)
     cand = np.asarray(nib.load(out / "run" / "sel_candidates.nii.gz").dataobj)

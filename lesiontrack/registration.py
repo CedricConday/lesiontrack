@@ -103,8 +103,10 @@ def _check_paths(*paths: Path | None) -> None:
 
 def _reslice(ref: Path, moving: Path, out: Path, transform: str, interp: str, threads: int,
              log: Path | None) -> None:
+    # greedy applies -ri (and -rt) to the *next* -rm pair, so they must precede it.
+    dtype = "-rt uchar " if interp == "NN" else ""
     run_greedy(
-        f"-d 3 -threads {threads} -rf {ref} -rm {moving} {out} -ri {interp} -r {transform}", log
+        f"-d 3 -threads {threads} -rf {ref} -ri {interp} {dtype}-rm {moving} {out} -r {transform}", log
     )
 
 

@@ -133,3 +133,23 @@ def test_paths_with_spaces_are_refused(tmp_path):
     tp = Timepoint("a", d / "t1.nii.gz", d / "fl.nii.gz", d / "m.nii.gz", 0.0)
     with pytest.raises(ValueError, match="spaces"):
         register_pair(tp, tp, tmp_path / "out")
+
+
+def test_reslice_keeps_masks_binary(tmp_path):
+    """Regression: greedy's -ri applies to the next -rm pair; a mask must not be interpolated."""
+    import nibabel as nib
+
+    from lesiontrack.registration import _reslice, write_matrix
+
+    shape = (24, 24, 24)
+    m = ball(shape, (12, 12, 12), 6).astype(np.uint8)
+    aff = np.eye(4)
+    nib.save(nib.Nifti1Image(m, aff), tmp_path / "mask.nii.gz")
+    mat = np.eye(4)
+    mat[:3, 3] = [0.4, -0.3, 0.2]  # sub-voxel shift forces interpolation if it were linear
+    write_matrix(tmp_path / "shift.mat", mat)
+    _reslice(tmp_path / "mask.nii.gz", tmp_path / "mask.nii.gz", tmp_path / "out.nii.gz",
+             str(tmp_path / "shift.mat"), "NN", 1, None)
+    out = np.asarray(nib.load(tmp_path / "out.nii.gz").dataobj)
+    assert set(np.unique(out).tolist()) <= {0, 1}
+    assert abs(int((out > 0).sum()) - int(m.sum())) <= 0.1 * m.sum()
