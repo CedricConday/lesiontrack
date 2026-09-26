@@ -9,6 +9,8 @@ with a **synthetic backtest gate** that has to pass before a real number is repo
 > software. It is not a medical device, it has not been validated against histology or
 > clinical outcome, and it makes no diagnostic claim.
 
+![MSLesSeg patient P20, baseline to last follow-up: baseline lesions (cyan), new voxels on the warped follow-up (yellow), Jacobian expansion inside lesions with SEL candidate outlines (lime)](results/overview_P20.png)
+
 ## Why this exists
 
 Every MS clinic that pays for follow-up MRI analysis gets lesion-level change and, in
