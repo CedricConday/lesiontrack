@@ -129,6 +129,37 @@ def _existing_pair(baseline: Timepoint, follow: Timepoint, out_dir: Path, tag: s
     )
 
 
+class RegistrationError(RuntimeError):
+    """An input or a transform failed a sanity check; results would be meaningless."""
+
+
+def check_image_content(path: Path, min_nonzero_fraction: float = 0.02) -> float:
+    """Refuse an image that is (nearly) empty; returns its nonzero fraction."""
+    img = nib.load(path)
+    data = np.asarray(img.dataobj)
+    frac = float(np.count_nonzero(data) / data.size)
+    if not np.isfinite(data).all():
+        raise RegistrationError(f"{path}: contains NaN or inf")
+    if frac < min_nonzero_fraction:
+        raise RegistrationError(
+            f"{path}: only {frac:.1%} of voxels are nonzero; the image is empty or broken"
+        )
+    return frac
+
+
+def rigid_qc(mat: np.ndarray, max_rotation_deg: float = 20.0, max_translation_mm: float = 40.0) -> dict:
+    """Rotation angle and translation of a rigid 4x4; raise if implausible for one subject."""
+    rot = mat[:3, :3]
+    angle = float(np.degrees(np.arccos(np.clip((np.trace(rot) - 1.0) / 2.0, -1.0, 1.0))))
+    trans = float(np.linalg.norm(mat[:3, 3]))
+    if angle > max_rotation_deg or trans > max_translation_mm:
+        raise RegistrationError(
+            f"rigid registration implausible for a same-subject pair: rotation {angle:.1f} deg, "
+            f"translation {trans:.1f} mm (limits {max_rotation_deg} deg, {max_translation_mm} mm)"
+        )
+    return {"rotation_deg": angle, "translation_mm": trans}
+
+
 def _params_record(params: RegParams, frame: Path | None) -> dict:
     return {"reg": dict(params.__dict__), "frame": str(frame) if frame else None}
 
@@ -163,6 +194,8 @@ def register_pair(baseline: Timepoint, follow: Timepoint, out_dir: Path,
     thr = params.threads
     full = out_dir / f"{tag}_to_baseline_rigid.mat"
     half = out_dir / f"{tag}_halfway.mat"
+    for p in (baseline.t1, baseline.flair, follow.t1, follow.flair):
+        check_image_content(p)
 
     # 1. Rigid follow-up -> baseline on T1, then the square root of that transform.
     run_greedy(
@@ -172,6 +205,7 @@ def register_pair(baseline: Timepoint, follow: Timepoint, out_dir: Path,
         log,
     )
     rigid = read_matrix(full)
+    qc = rigid_qc(rigid)
     write_matrix(half, half_transform(rigid))
 
     # 2. Both timepoints into the common frame on the baseline grid.
@@ -221,7 +255,7 @@ def register_pair(baseline: Timepoint, follow: Timepoint, out_dir: Path,
     run_greedy(
         f"-d 3 -threads {thr} -rf {bl['T1w']} -rm {fu['T1w']} {warped} -r {warp} -rj {jac}", log
     )
-    record.write_text(json.dumps(_params_record(params, frame), indent=2))
+    record.write_text(json.dumps({**_params_record(params, frame), "rigid_qc": qc}, indent=2))
 
     return PairResult(
         follow_up=tag,

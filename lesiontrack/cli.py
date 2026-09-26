@@ -51,13 +51,23 @@ def cmd_run(a: argparse.Namespace) -> int:
             raise SystemExit("no matching subject in manifest")
     params = Params(reg=RegParams(threads=a.threads))
     out = Path(a.out)
+    from .registration import RegistrationError
+
+    failed = 0
     for name, tps in subjects.items():
-        res = run_subject(name, tps, out / name, params)
+        try:
+            res = run_subject(name, tps, out / name, params)
+        except RegistrationError as e:
+            failed += 1
+            (out / name).mkdir(parents=True, exist_ok=True)
+            (out / name / "FAILED.txt").write_text(str(e) + "\n")
+            print(f"{name}: FAILED: {e}", file=sys.stderr)
+            continue
         for p in res.pairs:
             overview(out / name, p.follow_up)
         print(f"{name}: {len(res.candidates)} SEL candidates, "
               f"{len(res.tracking)} lesion groups over {len(res.pairs)} follow-up(s) -> {out / name}")
-    return 0
+    return 1 if failed else 0
 
 
 def cmd_cohort(a: argparse.Namespace) -> int:

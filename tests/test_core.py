@@ -215,3 +215,34 @@ def test_synthetic_composition_keeps_window_on_lesion():
     expected = (y - c[:, None, None, None]) * (1 / lam - 1)
     assert np.allclose(d_at_y[:, inside], expected[:, inside], atol=1e-4)
     assert abs(1 / _jacobian_det(_radial_displacement(shape, c, 6, 1.4, 6))[45, 45, 45] - 1.4) < 1e-3
+
+
+def test_empty_image_is_refused(tmp_path):
+    import nibabel as nib
+
+    from lesiontrack.registration import RegistrationError, check_image_content
+
+    a = np.zeros((20, 20, 20), np.float32)
+    a[10, 10, 10] = 5.0
+    nib.save(nib.Nifti1Image(a, np.eye(4)), tmp_path / "empty.nii.gz")
+    with pytest.raises(RegistrationError, match="nonzero"):
+        check_image_content(tmp_path / "empty.nii.gz")
+    a[5:15, 5:15, 5:15] = 100.0
+    nib.save(nib.Nifti1Image(a, np.eye(4)), tmp_path / "ok.nii.gz")
+    assert check_image_content(tmp_path / "ok.nii.gz") > 0.1
+
+
+def test_rigid_qc_rejects_implausible_transform():
+    from scipy.spatial.transform import Rotation
+
+    from lesiontrack.registration import RegistrationError, rigid_qc
+
+    m = np.eye(4)
+    m[:3, :3] = Rotation.from_euler("xyz", [2, 1, -3], degrees=True).as_matrix()
+    m[:3, 3] = [3, -2, 5]
+    qc = rigid_qc(m)
+    assert 3.0 < qc["rotation_deg"] < 4.5 and abs(qc["translation_mm"] - np.sqrt(38)) < 1e-6
+    bad = np.eye(4)
+    bad[:3, :3] = Rotation.from_euler("xyz", [50, 0, 0], degrees=True).as_matrix()
+    with pytest.raises(RegistrationError, match="implausible"):
+        rigid_qc(bad)
