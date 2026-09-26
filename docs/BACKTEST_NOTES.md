@@ -94,3 +94,12 @@ lesion voxels 1.7 / 2.0 / 1.1. On this registration a user who wants no false po
 pays half the sensitivity; the injected rates (15–40 % nominal, 11–25 % analytic over one
 year) are at the low end of what SEL studies report, so real SELs over two years would sit
 higher on the curve.
+
+## 2026-09-26 — re-run after the review fixes (one frame per subject, composed synthetic motion)
+
+Same design, `work/backtest_P1_v4`. Recovery 0.29 (0.57 / 0.27 / 0.29 by size stratum),
+candidate sensitivity 0.88, false positive rate 0.47, definite 0.42 / 0.30, mean-rate AUC
+0.96 / 0.91 / 0.91. Trade-off (mean over seeds): min mean 8 %/yr gives 0.67 / 0.10, 10 %/yr
+0.38 / 0.00. The composed motion tightened the 8 %/yr operating point (false positives 0.23
+before, 0.10 now); everything else moved within seed noise. These are the numbers in the
+README.

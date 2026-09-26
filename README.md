@@ -127,13 +127,13 @@ Default registration (greedy stationary-velocity, NCC 3x3x3, halfway space).
 
 | quantity | value |
 |---|---|
-| recovery fraction (measured / true, robust slope) | **0.30** |
-| recovery by lesion size: >= 500 / 100-500 / < 100 voxels | 0.55 / 0.27 / 0.33 |
+| recovery fraction (measured / true, robust slope) | **0.29** |
+| recovery by lesion size: >= 500 / 100-500 / < 100 voxels | 0.57 / 0.27 / 0.29 |
 | candidate sensitivity, Elliott thresholds | 0.88 |
 | candidate false positive rate, Elliott thresholds | 0.47 (1.00 on untouched lesions >= 500 voxels) |
-| definite SEL (S >= 0, z-scored within the run, so about half by construction): sensitivity / FPR | 0.29 / 0.27 |
+| definite SEL (S >= 0, z-scored within the run, so about half by construction): sensitivity / FPR | 0.42 / 0.30 |
 | noise floor: 95th percentile of per-voxel expansion in untouched lesions | 5 to 10 %/yr |
-| candidate mean expansion as a classifier, AUC | 0.85 to 0.96 |
+| candidate mean expansion as a classifier, AUC | 0.91 to 0.96 |
 
 Three conclusions the tool would not have earned without the gate:
 
@@ -150,8 +150,8 @@ Three conclusions the tool would not have earned without the gate:
 | min mean (%/yr) | sensitivity | false positive rate |
 |---|---|---|
 | 0 (Elliott) | 0.88 | 0.47 |
-| 8 | 0.67 | 0.23 |
-| 10 | 0.50 | 0.00 |
+| 8 | 0.67 | 0.10 |
+| 10 | 0.38 | 0.00 |
 
 Full record with the registration sweep: `docs/BACKTEST_NOTES.md`.
 
