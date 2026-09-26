@@ -1,0 +1,45 @@
+cff-version: 1.2.0
+message: "If you use lesiontrack, please cite it and the method papers it implements."
+title: "lesiontrack: longitudinal MS lesion tracking and slowly expanding lesion detection with a synthetic backtest gate"
+type: software
+authors:
+  - family-names: Conday
+    given-names: Cedric
+version: 0.1.0
+date-released: "2026-09-26"
+license: MIT
+repository-code: "https://github.com/CedricConday/lesiontrack"
+references:
+  - type: article
+    title: "Slowly expanding/evolving lesions as a magnetic resonance imaging marker of chronic active multiple sclerosis lesions"
+    authors:
+      - family-names: Elliott
+        given-names: Colm
+    journal: "Multiple Sclerosis Journal"
+    year: 2019
+    volume: 25
+    issue: 14
+    doi: "10.1177/1352458518814117"
+  - type: article
+    title: "Do slowly expanding lesions correspond to chronic active multiple sclerosis lesions? An integrated imaging analysis study"
+    authors:
+      - family-names: Vanden Bulcke
+        given-names: Colin
+    journal: "medRxiv"
+    year: 2025
+    doi: "10.64898/2025.12.03.25341192"
+  - type: article
+    title: "MSLesSeg: baseline and benchmarking of a new Multiple Sclerosis Lesion Segmentation dataset"
+    authors:
+      - family-names: Guarnera
+        given-names: Francesco
+    journal: "Scientific Data"
+    year: 2025
+    volume: 12
+    doi: "10.1038/s41597-025-05250-y"
+  - type: software
+    title: "greedy: fast deformable registration"
+    authors:
+      - family-names: Yushkevich
+        given-names: Paul A.
+    url: "https://github.com/pyushkevich/greedy"
