@@ -64,10 +64,10 @@ def _rigid_field(shape: tuple, rot_deg: np.ndarray, trans_vox: np.ndarray) -> np
     return xr - x + trans_vox[:, None, None, None].astype(np.float32)
 
 
-def _warp(image: np.ndarray, displacement: np.ndarray, order: int) -> np.ndarray:
+def _warp(image: np.ndarray, displacement: np.ndarray, order: int, cval: float = 0.0) -> np.ndarray:
     grids = np.meshgrid(*[np.arange(n, dtype=np.float32) for n in image.shape], indexing="ij")
     coords = np.stack(grids) + displacement
-    return ndi.map_coordinates(image, coords, order=order, mode="constant", cval=0.0)
+    return ndi.map_coordinates(image, coords, order=order, mode="constant", cval=cval)
 
 
 def make_followup(t1: Path, flair: Path, mask: Path, out_dir: Path, *,
@@ -110,12 +110,15 @@ def make_followup(t1: Path, flair: Path, mask: Path, out_dir: Path, *,
     trans = rng.uniform(-rigid_trans_vox, rigid_trans_vox, size=3)
     disp_total = disp + _rigid_field(t1_arr.shape, rot, trans)
 
-    def synth(arr: np.ndarray, order: int) -> np.ndarray:
-        return _warp(arr, disp_total, order)
+    def synth(arr: np.ndarray, order: int, cval: float = 0.0) -> np.ndarray:
+        return _warp(arr, disp_total, order, cval)
 
     t1_fu = synth(t1_arr, 1)
     fl_fu = synth(fl_arr, 1)
-    mask_fu = synth(mk_arr.astype(np.float32), 1) >= 0.5
+    # Warp a signed distance function rather than the binary mask so that
+    # sub-voxel boundary shifts of small lesions survive resampling.
+    sdf = ndi.distance_transform_edt(~mk_arr) - ndi.distance_transform_edt(mk_arr)
+    mask_fu = synth(sdf.astype(np.float32), 1, cval=1e6) <= 0.0  # outside the FOV is background
     brain = t1_arr > 0
     brain_fu = synth(brain.astype(np.float32), 1) >= 0.5
     for arr in (t1_fu, fl_fu):
