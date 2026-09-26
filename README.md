@@ -74,8 +74,7 @@ data before trusting a count. The numbers for MSLesSeg are in the section below.
 ## Install
 
 ```bash
-pip install lesiontrack            # once released; until then:
-pip install git+https://github.com/CedricConday/lesiontrack
+pip install lesiontrack
 ```
 
 Python 3.10+. Wheels for greedy exist for Linux x86-64 and arm64 and macOS.
