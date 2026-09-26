@@ -29,8 +29,8 @@ for (pat, tp), r in clin.groupby(["Patient", "Timepoint"]):
         nib.save(nib.Nifti1Image((np.asarray(img.dataobj) > 0).astype(np.uint8), img.affine), bm)
     rows.append({
         "subject": pat, "session": tp, "time_years": float(r["Age"].iloc[0]),
-        "t1": t1.resolve(), "flair": (d / f"{pat}_{tp}_FLAIR.nii.gz").resolve(),
-        "mask": (d / f"{pat}_{tp}_MASK.nii.gz").resolve(), "brainmask": bm.resolve(),
+        "t1": t1.absolute(), "flair": (d / f"{pat}_{tp}_FLAIR.nii.gz").absolute(),
+        "mask": (d / f"{pat}_{tp}_MASK.nii.gz").absolute(), "brainmask": bm.absolute(),
     })
 m = pd.DataFrame(rows)
 counts = m.groupby("subject")["session"].count()
