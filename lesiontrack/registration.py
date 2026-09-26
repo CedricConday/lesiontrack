@@ -110,14 +110,37 @@ def _reslice(ref: Path, moving: Path, out: Path, transform: str, interp: str, th
     )
 
 
+def _existing_pair(baseline: Timepoint, follow: Timepoint, out_dir: Path, tag: str) -> PairResult:
+    def name(tp: str, what: str) -> Path:
+        return out_dir / f"{tag}_{tp}_{what}_halfway.nii.gz"
+
+    bl_brain = name("baseline", "brainmask") if baseline.brainmask is not None else None
+    return PairResult(
+        follow_up=tag,
+        dt_years=follow.time_years - baseline.time_years,
+        baseline_t1=name("baseline", "T1w"), baseline_flair=name("baseline", "FLAIR"),
+        baseline_mask=name("baseline", "mask"), baseline_brainmask=bl_brain,
+        followup_t1=name("followup", "T1w"), followup_flair=name("followup", "FLAIR"),
+        followup_mask=name("followup", "mask"),
+        followup_t1_warped=out_dir / f"{tag}_followup_T1w_warped.nii.gz",
+        warp=out_dir / f"{tag}_warp.nii.gz", jacobian=out_dir / f"{tag}_jacobian.nii.gz",
+        halfway_matrix=out_dir / f"{tag}_halfway.mat",
+    )
+
+
 def register_pair(baseline: Timepoint, follow: Timepoint, out_dir: Path,
-                  params: RegParams | None = None, log: Path | None = None) -> PairResult:
+                  params: RegParams | None = None, log: Path | None = None,
+                  force: bool = False) -> PairResult:
     """Align a follow-up to the baseline in halfway space and compute the Jacobian map."""
     params = params or RegParams()
     _check_paths(out_dir, baseline.t1, baseline.flair, baseline.mask, baseline.brainmask,
                  follow.t1, follow.flair, follow.mask)
     out_dir.mkdir(parents=True, exist_ok=True)
     tag = follow.name
+    done = out_dir / f"{tag}_jacobian.nii.gz"
+    if done.exists() and not force:
+        # Registration is the expensive step; reuse it so candidate rules can be re-scored.
+        return _existing_pair(baseline, follow, out_dir, tag)
     thr = params.threads
     full = out_dir / f"{tag}_to_baseline_rigid.mat"
     half = out_dir / f"{tag}_halfway.mat"
