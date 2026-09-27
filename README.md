@@ -1,5 +1,7 @@
 # lesiontrack
 
+[![tests](https://github.com/CedricConday/lesiontrack/actions/workflows/tests.yml/badge.svg)](https://github.com/CedricConday/lesiontrack/actions/workflows/tests.yml)
+
 Longitudinal multiple sclerosis lesion evolution from two or more MRI timepoints:
 which lesions are new, enlarging, shrinking, stable or resolved, and which are
 **slowly expanding lesions (SELs)** by the Jacobian definition of Elliott et al. 2019,
