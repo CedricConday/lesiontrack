@@ -143,39 +143,43 @@ Three synthetic series (seeds 0, 1, 2), each with scans at 0, 0.5 and 1 year, ei
 eighteen lesions expanded by nominal factors 1.15 / 1.25 / 1.40 (analytic mean inside the
 lesion 11 to 25 % because elongated lesions extend past the radial window), rigid
 perturbation about 1 degree and 1 voxel per scan, intensity rescale 0.9 to 1.1, 2 % noise.
-Default registration (greedy stationary-velocity, NCC 3x3x3, halfway space).
+Default registration (greedy stationary-velocity, NCC 3x3x3, halfway space). Numbers
+re-measured 2026-09-27 with the corrected Jacobian on the same registrations (the
+2026-09-26 values, computed through greedy's `-rj`, are kept in `docs/BACKTEST_NOTES.md`).
 
 | quantity | value |
 |---|---|
-| recovery fraction (measured / true, robust slope) | **0.29** |
-| recovery by lesion size: >= 500 / 100-500 / < 100 voxels | 0.57 / 0.27 / 0.29 |
-| candidate sensitivity, Elliott thresholds | 0.88 |
-| candidate false positive rate, Elliott thresholds | 0.47 (1.00 on untouched lesions >= 500 voxels) |
-| definite SEL (S >= 0, z-scored within the run, so about half by construction): sensitivity / FPR | 0.42 / 0.30 |
-| noise floor: 95th percentile of per-voxel expansion in untouched lesions | 5 to 10 %/yr |
-| candidate mean expansion as a classifier, AUC | 0.91 to 0.96 |
+| recovery fraction (measured / true, robust slope) | **1.16** |
+| recovery by lesion size: >= 500 / 100-500 / < 100 voxels (median) | 1.00 / 1.22 / 1.21 |
+| candidate sensitivity, Elliott thresholds | 1.00 |
+| candidate false positive rate, Elliott thresholds | 0.47 (1.00 on untouched lesions >= 500 voxels, 0.07 under 100) |
+| definite SEL (S >= 0, z-scored within the run): sensitivity / FPR | 0.67 / 0.37 |
+| noise floor: median peak per-voxel expansion in untouched lesions | 10.8 %/yr |
+| candidate mean expansion as a classifier, AUC | 0.99 to 1.00 |
 
 Three conclusions the tool would not have earned without the gate:
 
-1. **The Jacobian under-reports by about 3x** on sub-voxel boundary shifts at 1 mm, and
-   more so for small lesions. SEL rates from any pipeline of this kind are lower bounds.
+1. **The Jacobian recovers the injected expansion in full**, slightly over on small
+   lesions (the radial window's falloff is counted in the mean). The earlier "under-reports
+   by 3x" was greedy's `-rj` on LAS images, see "The Jacobian is ours" below.
 2. **Elliott's candidate rule is noise-limited on confluent lesions.** A one-voxel peak
-   over 12.5 %/yr, grown by hysteresis to 4 %/yr, makes a 10-voxel candidate; large
-   lesions contain enough voxels to produce one by chance. Concentricity and constancy,
-   the published filters, were at chance here (AUC 0.54 and 0.40).
-3. **The candidate's mean rate is the filter that works** (AUC 0.90). It is exposed as
+   over 12.5 %/yr, grown by hysteresis to 4 %/yr, makes a 10-voxel candidate; every
+   untouched lesion over 500 voxels produced one. Concentricity and constancy, the
+   published filters, were at chance on the 2026-09-26 run and are not re-evaluated here.
+3. **The candidate's mean rate is the filter that works** (AUC 0.99). It is exposed as
    `min_mean_pct_per_year`, off by default. Trade-off on this registration (mean over
    the three seeds):
 
 | min mean (%/yr) | sensitivity | false positive rate |
 |---|---|---|
-| 0 (Elliott) | 0.88 | 0.47 |
-| 8 | 0.67 | 0.10 |
-| 10 | 0.38 | 0.00 |
+| 0 (Elliott) | 1.00 | 0.47 |
+| 8 | 1.00 | 0.20 |
+| 10 | 1.00 | 0.07 |
+| 12.5 | 0.92 | 0.00 |
 
 Full record with the registration sweep: `docs/BACKTEST_NOTES.md`.
 
-### MSLesSeg cohort (24 patients, 2026-09-26)
+### MSLesSeg cohort (24 patients, 2026-09-26, Jacobian re-measured 2026-09-27)
 
 All longitudinal MSLesSeg patients, baseline against their last scan (median interval
 1.5 years, range 0.16 to 6.0), default settings. One patient (P49) was refused by the
@@ -188,24 +192,22 @@ at baseline to 1.49 at follow-up and only 6 % were already lesion-bright; resolv
 go from 1.45 to 0.87. But masks are segmented per timepoint in MSLesSeg, so "new" and
 "resolved" also carry every difference between two segmentations.
 
-**SEL candidates.** 530 candidates in 24 subjects, median 15 per subject (12.5 with mean
->= 8 %/yr); the literature reports about 2 to 4 SELs per patient over two years. On this
-registration the Elliott rule is noise-dominated on real data as it was on the backtest.
+**SEL candidates.** 484 candidates in 24 subjects, median 16 per subject (12.5 with mean
+>= 8 %/yr), 97 definite; the literature reports about 2 to 4 SELs per patient over two
+years. On this registration the Elliott rule is noise-dominated on real data as it was on
+the backtest, and `min_mean_pct_per_year` around 10 is where the backtest puts the floor.
 
-**The Jacobian does not see what the masks see.** Per subject, mask-based total lesion
-volume change and the Jacobian integrated over baseline lesions correlate at Spearman 0.10
-(median magnitudes 21 % and 6 %). Per 1:1 matched lesion (n = 276) the correlation is 0.09;
-0.18 for lesions over 100 voxels. The largest mask growers (+100 to +680 %) have Jacobian
-means near zero. A candidate is no more likely on a mask-enlarging lesion (42 %) than on a
-shrinking one (45 %).
+**The Jacobian and the masks agree in rank, not in size.** Per subject, mask-based total
+lesion volume change and the Jacobian integrated over baseline lesions correlate at
+Spearman 0.41 (medians +12.5 % by mask, -6.3 % by Jacobian, brain-wide mean -1.5 %). Per
+1:1 matched lesion (n = 276) the correlation is 0.22; 0.25 for lesions over 100 voxels.
+Masks are segmented per timepoint in MSLesSeg, so their change carries every difference
+between two segmentations; the Jacobian sees only displacement of the surrounding tissue,
+and its median inside persisting lesions is negative.
 
-Read together with the backtest, the picture is consistent: a 1 mm deformable registration
-recovers a fraction of true tissue displacement, and lesion growth that arrives as a change
-of intensity at the boundary rather than as displacement is largely invisible to it. Whether
-a stronger registration (ANTs SyN as in the original studies, or multi-resolution around
-lesions) changes this is exactly the question the backtest lets anyone answer for their own
-pipeline: inject, run, report recovery fraction and noise floor. We would like to see those
-numbers for the pipelines behind published SEL counts.
+Whether ANTs SyN (`--engine ants`) changes any of this is exactly the question the backtest
+lets anyone answer for their own pipeline: inject, run, report recovery fraction and noise
+floor. We would like to see those numbers for the pipelines behind published SEL counts.
 
 Cohort tables: `derivatives/mslesseg/cohort_summary.tsv`, `sel_cohort.tsv`,
 `check_volume_change_by_lesion.tsv`, `check_flair_consistency.tsv`

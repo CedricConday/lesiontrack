@@ -115,3 +115,46 @@ because unscorable candidates are never definite).
 
 Failure found and gated: P49's follow-up T1 (0.1 % nonzero) produced a 52-degree, 190 mm
 rigid transform that the pipeline accepted. Inputs and rigid transforms are now checked.
+
+## 2026-09-27 — greedy's `-rj` Jacobian ignores the direction matrix; recovery re-measured
+
+Found while adding ANTs SyN as a second engine: on a 56^3 phantom with an identity affine
+and one lesion expanded by 1.6, greedy read det 0.80 inside the lesion for every setting
+tried (NCC 3x3x3 / 5x5x5, SSD, T1 only, FLAIR only, with and without `-gm`), ANTs read
+1.48, the masks said 1.59. A sphere growing from radius 8 to 10 (ratio 1.95) under three
+affines settled it: `-rj` gives 0.675 (RAS), 1.183 (LAS), 2.034 (LPS-aligned); `-jac`
+gives 2.033 for all. `RunReslice` calls `field_jacobian_det` on the physical-space warp;
+`RunJacobian` converts it to voxel units first. For a radial stretch 1+k the LAS value is
+(1-k)(1+k)^2 against the true (1+k)^3.
+
+MSLesSeg is LAS. Every Jacobian in the cohort results and in the backtests above was
+computed this way. The "Jacobian under-reports by about 3x" conclusion of 2026-09-26 was
+this bug, not a property of 1 mm registration. lesiontrack 0.2.0 computes the determinant
+itself (`registration.jacobian_determinant`), for both engines; cached registrations get
+their Jacobian recomputed from the stored warp without re-registering.
+
+Re-measured numbers (same warps as `work/backtest_P1_v4`, only the Jacobian recomputed):
+
+| quantity | 2026-09-26 (`-rj`) | 2026-09-27 (voxel-frame) |
+|---|---|---|
+| recovery fraction (robust slope) | 0.29 | 1.16 |
+| recovery median, >= 500 / 100-500 / < 100 voxels | 0.57 / 0.27 / 0.29 | 1.00 / 1.22 / 1.21 |
+| candidate sensitivity / FPR | 0.88 / 0.47 | 1.00 / 0.47 |
+| definite sensitivity / FPR | 0.42 / 0.30 | 0.67 / 0.37 |
+| candidate mean AUC per seed | 0.91 to 0.96 | 0.99, 1.00, 1.00 |
+| min mean 8 / 10 / 12.5: sensitivity, FPR | 0.67, 0.10 / 0.38, 0.00 / - | 1.00, 0.20 / 1.00, 0.07 / 0.92, 0.00 |
+| untouched peak median | 10.9 %/yr | 10.8 %/yr |
+
+The noise floor is unchanged (it is set by registration error, which the bug scaled by
+about the same factor as the signal), so the candidate false-positive picture stands; the
+recovery story is gone. Small-lesion recovery above 1 is the radial window's falloff
+region being counted in the lesion mean, not a bias in the Jacobian.
+
+Cohort, same warps: Spearman(mask change, Jacobian change) per subject 0.10 -> 0.41,
+per matched lesion 0.09 -> 0.22 (>= 100 voxels 0.18 -> 0.25); candidates 530 -> 484,
+definite 97; median Jacobian change inside baseline lesions -6.3 % per subject against
++12.5 % by mask.
+
+Second engine: ANTs SyN (antspyx, CC radius 4, identity initialisation on the halfway
+images) is in as `--engine ants`; on the test phantom both engines recover the injected
+sign (greedy 1.72, ANTs 1.48 for a true 1.6). No cohort or backtest run with it yet.

@@ -1,55 +1,55 @@
 seed	lesion_id	n_voxels	size_stratum	nominal_pct_per_year	true_pct_per_year	measured_mean_pct_per_year	measured_peak_pct_per_year	recovery	detected	detected_definite	expanded
-0	1	1354	large_ge500	40	21.497	12.195	33.387	0.56727	True	True	True
-0	2	94	small_lt100	25	21.447	2.1468	14.475	0.1001	True	False	True
-0	4	51	small_lt100	15	12.395	10.075	15.762	0.81289	True	True	True
-0	5	49	small_lt100	15	10.788	2.6253	9.725	0.24336	False	False	True
-0	7	45	small_lt100	15	11.292	2.6586	15.5	0.23544	True	False	True
-0	8	203	medium_100_500	25	24.596	5.5696	19.938	0.22645	True	False	True
-0	9	374	medium_100_500	40	21.391	15.205	33.675	0.71078	True	True	True
-0	17	58	small_lt100	25	25	7.453	20.45	0.29812	True	False	True
-0	3	39	small_lt100	0	0	2.7513	16.55		True	False	False
-0	6	39	small_lt100	0	-0.38023	2.4183	10.512		False	False	False
-0	10	175	medium_100_500	0	0	2.8444	16.025		True	False	False
-0	11	1063	large_ge500	0	-1.1674	-0.35422	21.55		True	True	False
-0	12	15632	large_ge500	0	0	0.34573	16.025		True	True	False
-0	13	72	small_lt100	0	0	0.74983	10.75		False	False	False
-0	14	1194	large_ge500	0	0	0.55386	16.025		True	True	False
-0	15	123	medium_100_500	0	0	-2.0996	5		False	False	False
-0	16	93	small_lt100	0	0	1.4137	10.512		False	False	False
-0	18	16	small_lt100	0	0	-1.2344	5		False	False	False
-1	1	1354	large_ge500	15	7.9386	5.294	21.275	0.66687	True	True	True
-1	3	39	small_lt100	15	14.755	5.1891	10.25	0.35169	False	False	True
-1	5	49	small_lt100	25	25	9.9597	20.175	0.39839	True	True	True
-1	6	39	small_lt100	25	25	9.8936	20.175	0.39574	True	False	True
-1	10	175	medium_100_500	40	39.843	6.6704	25.637	0.16742	True	True	True
-1	13	72	small_lt100	15	14.97	4.2578	14.95	0.28442	True	False	True
-1	14	1194	large_ge500	40	34.783	10.623	34.475	0.30541	True	False	True
-1	17	58	small_lt100	25	25	7.4968	18.8	0.29987	True	False	True
-1	2	94	small_lt100	0	-2.721	-5.2089	10		False	False	False
-1	4	51	small_lt100	0	0	-3.4985	5.2125		False	False	False
-1	7	45	small_lt100	0	0	-3.4433	5		False	False	False
-1	8	203	medium_100_500	0	-0.32177	-0.80012	15.5		True	True	False
-1	9	374	medium_100_500	0	0	2.1351	20.25		True	False	False
-1	11	1063	large_ge500	0	0	-0.0010828	15.5		True	False	False
-1	12	15632	large_ge500	0	-0.0197	0.40168	21.275		True	True	False
-1	15	123	medium_100_500	0	0	0.095832	11.025		False	False	False
-1	16	93	small_lt100	0	0	-1.0112	10.512		False	False	False
-1	18	16	small_lt100	0	0	-7.6438	0		False	False	False
-2	2	94	small_lt100	25	24.923	5.7496	15.188	0.23069	True	False	True
-2	3	39	small_lt100	25	24.574	8.8503	14.95	0.36015	True	True	True
-2	4	51	small_lt100	25	25	1.8199	10.25	0.072794	False	False	True
-2	6	39	small_lt100	15	14.707	7	20.187	0.47598	True	False	True
-2	8	203	medium_100_500	15	14.515	3.9443	15.5	0.27174	True	True	True
-2	9	374	medium_100_500	40	21.391	14.07	33.1	0.65775	True	True	True
-2	13	72	small_lt100	40	39.911	8.8962	19.025	0.2229	True	True	True
-2	17	58	small_lt100	15	15	3.3341	15.5	0.22227	True	False	True
-2	1	1354	large_ge500	0	-0.035256	1.7053	16.025		True	True	False
-2	5	49	small_lt100	0	-3.5189	-3.7439	9.725		False	False	False
-2	7	45	small_lt100	0	-4.4677	-5.4836	5.2875		False	False	False
-2	10	175	medium_100_500	0	0	3.3856	15.5		True	False	False
-2	11	1063	large_ge500	0	-0.79974	-0.16274	21.55		True	True	False
-2	12	15632	large_ge500	0	-0.042707	0.28125	16.025		True	True	False
-2	14	1194	large_ge500	0	0	1.3042	16.025		True	True	False
-2	15	123	medium_100_500	0	0	-0.22337	10.5		False	False	False
-2	16	93	small_lt100	0	0	1.6723	10.5		False	False	False
-2	18	16	small_lt100	0	0	-4.1391	-0.012499		False	False	False
+0	1	1354	large_ge500	40	21.497	19.83	58.7	0.92243	True	True	True
+0	2	94	small_lt100	25	21.447	25.63	39.425	1.195	True	True	True
+0	4	51	small_lt100	15	12.395	15.15	21.275	1.2223	True	True	True
+0	5	49	small_lt100	15	10.788	19.262	27.325	1.7856	True	False	True
+0	7	45	small_lt100	15	11.292	15.13	27.05	1.3399	True	False	True
+0	8	203	medium_100_500	25	24.596	27.381	39.15	1.1132	True	False	True
+0	9	374	medium_100_500	40	21.391	27.517	59	1.2864	True	True	True
+0	17	58	small_lt100	25	25	31.047	45.763	1.2419	True	False	True
+0	3	39	small_lt100	0	0	0.83846	10.238		False	False	False
+0	6	39	small_lt100	0	-0.38023	3.2356	10.5		False	False	False
+0	10	175	medium_100_500	0	0	9.9928	21.825		True	True	False
+0	11	1063	large_ge500	0	-1.1674	-0.8645	26.775		True	True	False
+0	12	15632	large_ge500	0	0	0.69956	16.55		True	True	False
+0	13	72	small_lt100	0	0	6.9793	16.275		True	False	False
+0	14	1194	large_ge500	0	0	1.9742	16.55		True	False	False
+0	15	123	medium_100_500	0	0	3.8882	10.5		False	False	False
+0	16	93	small_lt100	0	0	0.5164	5		False	False	False
+0	18	16	small_lt100	0	0	0.60937	5		False	False	False
+1	1	1354	large_ge500	15	7.9386	8.2363	32.55	1.0375	True	True	True
+1	3	39	small_lt100	15	14.755	13.683	21.55	0.92735	True	True	True
+1	5	49	small_lt100	25	25	31.561	45.725	1.2624	True	True	True
+1	6	39	small_lt100	25	25	31.183	39.15	1.2473	True	False	True
+1	10	175	medium_100_500	40	39.843	47.204	65.9	1.1847	True	True	True
+1	13	72	small_lt100	15	14.97	22.881	33.1	1.5285	True	True	True
+1	14	1194	large_ge500	40	34.783	34.957	58.7	1.005	True	True	True
+1	17	58	small_lt100	25	25	29.512	45.2	1.1805	True	True	True
+1	2	94	small_lt100	0	-2.721	0.10253	10.775		False	False	False
+1	4	51	small_lt100	0	0	2.1456	10.763		False	False	False
+1	7	45	small_lt100	0	0	0.17667	10.775		False	False	False
+1	8	203	medium_100_500	0	-0.32177	0.93805	10.263		False	False	False
+1	9	374	medium_100_500	0	0	8.0601	27.05		True	True	False
+1	11	1063	large_ge500	0	0	0.85009	21.275		True	True	False
+1	12	15632	large_ge500	0	-0.0197	0.52184	21.8		True	True	False
+1	15	123	medium_100_500	0	0	4.1318	10.775		False	False	False
+1	16	93	small_lt100	0	0	-1.9082	10.25		False	False	False
+1	18	16	small_lt100	0	0	-1.2	10.512		False	False	False
+2	2	94	small_lt100	25	24.923	29.586	45.763	1.1871	True	True	True
+2	3	39	small_lt100	25	24.574	26.662	33.1	1.085	True	True	True
+2	4	51	small_lt100	25	25	24.513	39.425	0.98054	True	True	True
+2	6	39	small_lt100	15	14.707	25.077	33.375	1.7052	True	False	True
+2	8	203	medium_100_500	15	14.515	18.231	27.325	1.256	True	False	True
+2	9	374	medium_100_500	40	21.391	26.054	58.7	1.218	True	True	True
+2	13	72	small_lt100	40	39.911	44.68	65.6	1.1195	True	True	True
+2	17	58	small_lt100	15	15	12.476	27.05	0.83175	True	False	True
+2	1	1354	large_ge500	0	-0.035256	2.1086	15.775		True	True	False
+2	5	49	small_lt100	0	-3.5189	0.60102	10.275		False	False	False
+2	7	45	small_lt100	0	-4.4677	-4.1719	5.2625		False	False	False
+2	10	175	medium_100_500	0	0	6.7629	21.275		True	True	False
+2	11	1063	large_ge500	0	-0.79974	0.31937	21.275		True	True	False
+2	12	15632	large_ge500	0	-0.042707	0.43194	16.025		True	True	False
+2	14	1194	large_ge500	0	0	3.107	16.288		True	True	False
+2	15	123	medium_100_500	0	0	4.5689	16.025		True	False	False
+2	16	93	small_lt100	0	0	1.4782	10.5		False	False	False
+2	18	16	small_lt100	0	0	-5.8609	5		False	False	False
