@@ -55,6 +55,16 @@ class RegParams:
     t1_weight: float = 1.0
     flair_weight: float = 1.0
     threads: int = 4
+    # Second engine (2026-09-27): ANTs SyN through antspyx, on the same halfway-space images.
+    # The rigid step and the reslicing stay greedy; only the deformable step and the
+    # Jacobian change, so the two engines are compared on identical inputs.
+    engine: str = "greedy"  # "greedy" or "ants"
+    ants_transform: str = "SyNOnly"
+    ants_metric: str = "CC"  # cross-correlation, the SyN default in the ANTs papers
+    ants_iterations: tuple = (100, 60, 30)
+    ants_grad_step: float = 0.2
+    ants_flow_sigma: float = 3.0
+    ants_total_sigma: float = 0.0
 
 
 @dataclass(frozen=True)

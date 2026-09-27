@@ -10,10 +10,16 @@ wheel, so no FreeSurfer or ANTs installation is needed and the pipeline runs on
 x86-64 and arm64 CPUs.
 
 Convention: with the baseline as the fixed image and the follow-up as the
-moving image, greedy's warp maps baseline-space points to follow-up-space
+moving image, the deformable warp maps baseline-space points to follow-up-space
 points. Its Jacobian determinant is greater than 1 where a baseline structure
 occupies a larger region at follow-up, i.e. where tissue expanded. The
-synthetic backtest (:mod:`lesiontrack.synth`) checks this sign empirically.
+determinant is computed here, by :func:`jacobian_determinant`, from the warp
+file in the image's own voxel frame; it is not taken from the engine. greedy's
+``-rj`` differentiates the physical-space (LPS, mm) displacement along voxel
+index axes without the image direction matrix, so it is only right for images
+whose voxel axes are LPS-aligned at 1 mm (found 2026-09-27 on a phantom with an
+identity affine: det 0.68 reported for a true 1.95). The synthetic backtest
+(:mod:`lesiontrack.synth`) checks the sign empirically.
 """
 
 from __future__ import annotations
@@ -161,7 +167,27 @@ def rigid_qc(mat: np.ndarray, max_rotation_deg: float = 20.0, max_translation_mm
 
 
 def _params_record(params: RegParams, frame: Path | None) -> dict:
-    return {"reg": dict(params.__dict__), "frame": str(frame) if frame else None}
+    return {"reg": dict(params.__dict__), "frame": str(frame) if frame else None, "jacobian": JACOBIAN_VERSION}
+
+
+def _same_registration(previous: dict | None, current: dict) -> bool:
+    """The cached pair was produced by the same registration settings and frame.
+
+    Records written before the second engine carry no ``engine`` (they were greedy)
+    and no ``ants_*`` settings; those settings do not touch a greedy run, so they
+    are ignored whenever the engine is greedy.
+    """
+    if previous is None:
+        return False
+
+    def comparable(rec: dict) -> dict:
+        reg = dict(rec.get("reg", {}))
+        reg.setdefault("engine", "greedy")
+        if reg["engine"] == "greedy":
+            reg = {k: v for k, v in reg.items() if not k.startswith("ants_")}
+        return {"reg": reg, "frame": rec.get("frame")}
+
+    return comparable(previous) == comparable(current)
 
 
 def register_pair(baseline: Timepoint, follow: Timepoint, out_dir: Path,
@@ -185,11 +211,16 @@ def register_pair(baseline: Timepoint, follow: Timepoint, out_dir: Path,
         raise ValueError(f"{tag}: time_years {follow.time_years} is not after baseline {baseline.time_years}")
     done = out_dir / f"{tag}_jacobian.nii.gz"
     record = out_dir / f"{tag}_reg_params.json"
-    if done.exists() and not force:
+    if (out_dir / f"{tag}_warp.nii.gz").exists() and record.exists() and not force:
         # Registration is the expensive step; reuse it so candidate rules can be re-scored,
         # but only when it was produced with the same settings and frame.
         previous = json.loads(record.read_text()) if record.exists() else None
-        if previous == _params_record(params, frame):
+        current = _params_record(params, frame)
+        if _same_registration(previous, current):
+            if previous.get("jacobian") != JACOBIAN_VERSION:
+                # Same warp, older Jacobian (greedy's -rj, or an earlier version of ours): cheap to redo.
+                jacobian_determinant(out_dir / f"{tag}_warp.nii.gz", done)
+                record.write_text(json.dumps({**current, "rigid_qc": previous.get("rigid_qc")}, indent=2))
             return _existing_pair(baseline, follow, out_dir, tag)
     thr = params.threads
     full = out_dir / f"{tag}_to_baseline_rigid.mat"
@@ -237,24 +268,28 @@ def register_pair(baseline: Timepoint, follow: Timepoint, out_dir: Path,
         _reslice(ref, baseline.brainmask, bl_brain, f"{frame_mat},-1", "NN", thr, log)
 
     # 3. Deformable, T1 and FLAIR jointly, baseline fixed, follow-up moving.
+    # 4. Jacobian determinant of the warp on the baseline grid (ours, see jacobian_determinant),
+    #    plus a warped T1 for QC.
     warp = out_dir / f"{tag}_warp.nii.gz"
-    mask_arg = f"-gm {bl_brain} " if bl_brain is not None else ""
-    sv_arg = "-sv " if params.stationary_velocity else ""
-    run_greedy(
-        f"-d 3 -threads {thr} -m {params.deform_metric} -n {params.deform_iterations} "
-        f"-e {params.deform_step} -s {params.deform_sigma_update} {params.deform_sigma_total} "
-        f"{sv_arg}{mask_arg}"
-        f"-w {params.t1_weight} -i {bl['T1w']} {fu['T1w']} "
-        f"-w {params.flair_weight} -i {bl['FLAIR']} {fu['FLAIR']} -o {warp}",
-        log,
-    )
-
-    # 4. Jacobian determinant of the warp on the baseline grid, plus a warped T1 for QC.
     jac = out_dir / f"{tag}_jacobian.nii.gz"
     warped = out_dir / f"{tag}_followup_T1w_warped.nii.gz"
-    run_greedy(
-        f"-d 3 -threads {thr} -rf {bl['T1w']} -rm {fu['T1w']} {warped} -r {warp} -rj {jac}", log
-    )
+    if params.engine == "ants":
+        ants_deform(bl["T1w"], fu["T1w"], bl["FLAIR"], fu["FLAIR"], bl_brain, warp, jac, warped, params, log)
+    elif params.engine == "greedy":
+        mask_arg = f"-gm {bl_brain} " if bl_brain is not None else ""
+        sv_arg = "-sv " if params.stationary_velocity else ""
+        run_greedy(
+            f"-d 3 -threads {thr} -m {params.deform_metric} -n {params.deform_iterations} "
+            f"-e {params.deform_step} -s {params.deform_sigma_update} {params.deform_sigma_total} "
+            f"{sv_arg}{mask_arg}"
+            f"-w {params.t1_weight} -i {bl['T1w']} {fu['T1w']} "
+            f"-w {params.flair_weight} -i {bl['FLAIR']} {fu['FLAIR']} -o {warp}",
+            log,
+        )
+        run_greedy(f"-d 3 -threads {thr} -rf {bl['T1w']} -rm {fu['T1w']} {warped} -r {warp}", log)
+        jacobian_determinant(warp, jac)
+    else:
+        raise ValueError(f"unknown registration engine {params.engine!r}; use 'greedy' or 'ants'")
     record.write_text(json.dumps({**_params_record(params, frame), "rigid_qc": qc}, indent=2))
 
     return PairResult(
@@ -265,6 +300,79 @@ def register_pair(baseline: Timepoint, follow: Timepoint, out_dir: Path,
         followup_t1=fu["T1w"], followup_flair=fu["FLAIR"], followup_mask=fu["mask"],
         followup_t1_warped=warped, warp=warp, jacobian=jac, halfway_matrix=half,
     )
+
+
+def ants_deform(bl_t1: Path, fu_t1: Path, bl_flair: Path, fu_flair: Path, bl_brain: Path | None,
+                warp: Path, jac: Path, warped: Path, params: RegParams, log: Path | None = None) -> None:
+    """Deformable step with ANTs SyN (antspyx): baseline fixed, follow-up moving, T1 and FLAIR jointly.
+
+    Writes the displacement field, its Jacobian determinant on the baseline grid, and the
+    warped follow-up T1, with the same names greedy's path produces, so everything
+    downstream is engine-blind. The field is the map from baseline to follow-up space
+    and the determinant is computed by :func:`jacobian_determinant`, exactly as for
+    greedy: det > 1 where the follow-up is larger than the baseline.
+    """
+    import os
+    import shutil
+
+    try:
+        import ants
+    except ImportError as e:  # pragma: no cover
+        raise RuntimeError("engine 'ants' needs antspyx: pip install 'lesiontrack[ants]'") from e
+    os.environ.setdefault("ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS", str(params.threads))
+    fixed, moving = ants.image_read(str(bl_t1)), ants.image_read(str(fu_t1))
+    extras = [(params.ants_metric, ants.image_read(str(bl_flair)), ants.image_read(str(fu_flair)),
+               float(params.flair_weight), 4)]
+    kwargs = dict(
+        type_of_transform=params.ants_transform, syn_metric=params.ants_metric,
+        reg_iterations=tuple(int(i) for i in params.ants_iterations),
+        grad_step=params.ants_grad_step, flow_sigma=params.ants_flow_sigma, total_sigma=params.ants_total_sigma,
+        multivariate_extras=extras, outprefix=str(warp.with_suffix("").with_suffix("")) + "_ants_",
+        verbose=False,
+    )
+    if bl_brain is not None:
+        kwargs["mask"] = ants.image_read(str(bl_brain))
+    result = ants.registration(fixed, moving, **kwargs)
+    field = next((t for t in result["fwdtransforms"] if t.endswith(".nii.gz")), None)
+    if field is None:
+        raise RegistrationError("ANTs returned no displacement field; check the transform type")
+    shutil.copyfile(field, warp)
+    ants.image_write(result["warpedmovout"], str(warped))
+    jacobian_determinant(warp, jac)
+    if log is not None:
+        with open(log, "a") as fh:
+            fh.write(f"$ ants.registration({params.ants_transform}, metric {params.ants_metric}, iterations {params.ants_iterations})\n")
+
+
+JACOBIAN_VERSION = "voxel-frame-1"  # bump when the Jacobian computation changes; cached pairs are recomputed
+
+
+def jacobian_determinant(warp: Path, out: Path | None = None) -> nib.Nifti1Image:
+    """det J of x -> x + u(x) for an ITK displacement field, on the field's own grid.
+
+    ITK (greedy, ANTs) stores displacements in physical LPS millimetres. The
+    determinant is invariant to the frame only if displacement and derivative use
+    the same one, so the vectors are first taken to voxel units: LPS -> RAS, then
+    through the inverse of the affine's direction-and-spacing block. Central
+    differences along voxel axes then give det(I + grad u). The result equals the
+    ratio follow-up volume / baseline volume of the tissue at each baseline voxel.
+    """
+    img = nib.load(warp)
+    u = np.asarray(img.dataobj, dtype=np.float64)
+    u = u.reshape(u.shape[:3] + (-1,))
+    if u.ndim != 4 or u.shape[-1] != 3:
+        raise ValueError(f"{warp}: expected a 3-D displacement field with 3 components, got shape {u.shape}")
+    to_vox = np.linalg.inv(img.affine[:3, :3]) @ np.diag([-1.0, -1.0, 1.0])
+    uv = np.einsum("ij,xyzj->xyzi", to_vox, u)
+    grad = np.empty(u.shape[:3] + (3, 3))
+    for i in range(3):
+        for j in range(3):
+            grad[..., i, j] = np.gradient(uv[..., i], axis=j)
+    det = np.linalg.det(np.eye(3) + grad).astype(np.float32)
+    result = nib.Nifti1Image(det, img.affine)
+    if out is not None:
+        nib.save(result, out)
+    return result
 
 
 def jacobian_pct_per_year(jacobian: Path, dt_years: float) -> tuple[np.ndarray, nib.Nifti1Image]:

@@ -103,6 +103,23 @@ lesiontrack cohort --out derivatives                    # z-scores and S across 
 lesiontrack backtest --t1 T1.nii.gz --flair FLAIR.nii.gz --mask MASK.nii.gz --out backtest
 ```
 
+### Two deformable engines
+
+The rigid step, the halfway frame and the reslicing are greedy in both cases; `--engine`
+picks what runs on the halfway-space images. `greedy` (default) needs nothing extra.
+`ants` uses SyN through [antspyx](https://github.com/ANTsX/ANTsPy), cross-correlation on
+T1 and FLAIR jointly, and is how the original SEL studies registered:
+
+```bash
+pip install 'lesiontrack[ants]'
+lesiontrack run manifest.tsv --out derivatives_ants --engine ants
+lesiontrack backtest --t1 T1.nii.gz --flair FLAIR.nii.gz --mask MASK.nii.gz --out backtest_ants --engine ants
+```
+
+Both engines write the same files, so the backtest compares them on identical inputs. The
+Jacobian determinant is computed by lesiontrack from the warp, in the image's voxel frame,
+for either engine; see "The Jacobian is ours" below for why.
+
 Per subject you get, on the baseline grid in halfway space:
 
 | file | content |
@@ -201,6 +218,24 @@ Cohort tables: `derivatives/mslesseg/cohort_summary.tsv`, `sel_cohort.tsv`,
   `scripts/make_manifest_mslesseg.py` builds the manifest; intervals are age differences.
 * **Lesjak et al. 2016** longitudinal database (CC BY): 20 patients, 2 timepoints, expert
   masks of lesion change. Not yet used; it lacks baseline lesion masks.
+
+## The Jacobian is ours
+
+Until 0.2.0 the Jacobian came from greedy's `-rj` in the reslice command. That option
+differentiates the composed warp while it is still in physical (LPS, millimetre) units,
+along voxel index axes, without the image direction matrix, so it is only right for
+images whose voxel axes are LPS-aligned at 1 mm. On a phantom with an identity (RAS)
+affine, a sphere growing from radius 8 to 10 voxels (volume ratio 1.95) came back as det
+0.68; with a LAS affine, as used by the MSLesSeg scans, as 1.18. For a radial stretch
+1+k the reported value is (1-k)(1+k)^2 in place of (1+k)^3, roughly a third of the true
+volume change for small k. greedy's standalone `-jac` converts the warp first and is
+correct; the reslice path does not (found 2026-09-27, draft report in
+`docs/upstream/greedy_rj_direction.md`).
+
+lesiontrack now computes det(I + grad u) itself from the warp file, after taking the
+vectors LPS -> RAS -> voxel units through the inverse affine, and `tests/test_jacobian.py`
+checks it under four orientations and anisotropic spacing. Registrations cached under an
+older record are not redone; their Jacobian is recomputed from the stored warp.
 
 ## Limitations, stated plainly
 

@@ -49,7 +49,7 @@ def cmd_run(a: argparse.Namespace) -> int:
         subjects = {k: v for k, v in subjects.items() if k in set(a.subject)}
         if not subjects:
             raise SystemExit("no matching subject in manifest")
-    params = Params(reg=RegParams(threads=a.threads))
+    params = Params(reg=RegParams(threads=a.threads, engine=a.engine))
     out = Path(a.out)
     from .registration import RegistrationError
 
@@ -115,7 +115,7 @@ def cmd_backtest(a: argparse.Namespace) -> int:
     nib.save(nib.Nifti1Image((np.asarray(t1_img.dataobj) > 0).astype(np.uint8), t1_img.affine), bm)
     factors = tuple(float(x) for x in a.factors.split(","))
     seeds = [int(x) for x in a.seeds.split(",")]
-    params = Params(reg=RegParams(threads=a.threads), sel=SELParams(min_mean_pct_per_year=a.min_mean))
+    params = Params(reg=RegParams(threads=a.threads, engine=a.engine), sel=SELParams(min_mean_pct_per_year=a.min_mean))
     tables, all_metrics = [], []
     fractions = [float(x) for x in a.timepoints.split(",")]
     if fractions[-1] != 1.0:
@@ -219,6 +219,7 @@ def main(argv: list[str] | None = None) -> int:
     r.add_argument("--out", required=True)
     r.add_argument("--subject", action="append", help="restrict to these subjects (repeatable)")
     r.add_argument("--threads", type=int, default=4)
+    r.add_argument("--engine", choices=("greedy", "ants"), default="greedy", help="deformable registration engine (rigid and reslicing are always greedy)")
     r.set_defaults(func=cmd_run)
 
     c = sub.add_parser("cohort", help="z-score candidates across all subjects in an output tree")
@@ -246,6 +247,7 @@ def main(argv: list[str] | None = None) -> int:
                    help="comma-separated fractions of --dt-years at which synthetic follow-ups are made; must end in 1.0")
     b.add_argument("--factors", default="1.15,1.25,1.40", help="comma-separated volume factors to inject")
     b.add_argument("--threads", type=int, default=4)
+    b.add_argument("--engine", choices=("greedy", "ants"), default="greedy", help="deformable registration engine")
     b.add_argument("--min-mean", type=float, default=0.0,
                    help="drop candidates whose mean expansion is below this (%%/yr); 0 = Elliott's rule")
     b.set_defaults(func=cmd_backtest)
