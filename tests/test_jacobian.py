@@ -52,3 +52,21 @@ def test_rejects_a_non_field(tmp_path):
     nib.save(nib.Nifti1Image(np.zeros((8, 8, 8), np.float32), np.eye(4)), p)
     with pytest.raises(ValueError):
         jacobian_determinant(p)
+
+
+def test_rotated_sheared_anisotropic_affine(tmp_path):
+    """The whole point: a general direction matrix with anisotropic spacing."""
+    from scipy.spatial.transform import Rotation
+
+    shape = (40, 40, 24)
+    k = 0.2
+    u_vox, r = _radial_field(shape, (20, 20, 12), 6, k)
+    aff = np.eye(4)
+    aff[:3, :3] = Rotation.from_euler("xyz", [12, -7, 25], degrees=True).as_matrix() @ np.diag([0.8, 1.0, 2.5]) @ np.diag([-1, 1, 1])
+    aff[:3, 3] = [10, -20, 5]
+    u_lps = np.einsum("ij,xyzj->xyzi", aff[:3, :3], u_vox) * np.array([-1.0, -1.0, 1.0])
+    warp = tmp_path / "warp.nii.gz"
+    nib.save(nib.Nifti1Image(u_lps[:, :, :, None, :].astype(np.float32), aff), warp)
+    det = np.asarray(jacobian_determinant(warp).dataobj)
+    assert det[r < 4] == pytest.approx((1 + k) ** 3, rel=1e-3)
+    assert np.median(det[r > 16]) == pytest.approx(1.0, abs=1e-6)

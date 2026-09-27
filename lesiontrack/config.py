@@ -61,6 +61,7 @@ class RegParams:
     engine: str = "greedy"  # "greedy" or "ants"
     ants_transform: str = "SyNOnly"
     ants_metric: str = "CC"  # cross-correlation, the SyN default in the ANTs papers
+    ants_radius: int = 4  # CC neighbourhood radius (for a histogram metric: bins), both terms
     ants_iterations: tuple = (100, 60, 30)
     ants_grad_step: float = 0.2
     ants_flow_sigma: float = 3.0

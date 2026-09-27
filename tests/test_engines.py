@@ -92,3 +92,11 @@ def test_old_record_reuses_the_warp_and_recomputes_only_the_jacobian(tmp_path, m
     assert again.jacobian.exists()
     assert json.loads(record.read_text())["jacobian"] == R.JACOBIAN_VERSION
     assert np.allclose(np.asarray(nib.load(again.jacobian).dataobj), np.asarray(nib.load(res.jacobian).dataobj))
+
+
+def test_cache_comparison_survives_the_json_round_trip():
+    from lesiontrack.registration import _params_record, _same_registration
+
+    for engine in ("greedy", "ants"):
+        cur = _params_record(RegParams(engine=engine), None)
+        assert _same_registration(json.loads(json.dumps(cur)), cur), engine

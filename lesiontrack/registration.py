@@ -181,6 +181,7 @@ def _same_registration(previous: dict | None, current: dict) -> bool:
         return False
 
     def comparable(rec: dict) -> dict:
+        rec = json.loads(json.dumps(rec))  # tuples become lists, as they do in the stored record
         reg = dict(rec.get("reg", {}))
         reg.setdefault("engine", "greedy")
         if reg["engine"] == "greedy":
@@ -217,7 +218,7 @@ def register_pair(baseline: Timepoint, follow: Timepoint, out_dir: Path,
         previous = json.loads(record.read_text()) if record.exists() else None
         current = _params_record(params, frame)
         if _same_registration(previous, current):
-            if previous.get("jacobian") != JACOBIAN_VERSION:
+            if previous.get("jacobian") != JACOBIAN_VERSION or not done.exists():
                 # Same warp, older Jacobian (greedy's -rj, or an earlier version of ours): cheap to redo.
                 jacobian_determinant(out_dir / f"{tag}_warp.nii.gz", done)
                 record.write_text(json.dumps({**current, "rigid_qc": previous.get("rigid_qc")}, indent=2))
@@ -271,7 +272,7 @@ def register_pair(baseline: Timepoint, follow: Timepoint, out_dir: Path,
     # 4. Jacobian determinant of the warp on the baseline grid (ours, see jacobian_determinant),
     #    plus a warped T1 for QC.
     warp = out_dir / f"{tag}_warp.nii.gz"
-    jac = out_dir / f"{tag}_jacobian.nii.gz"
+    jac = done
     warped = out_dir / f"{tag}_followup_T1w_warped.nii.gz"
     if params.engine == "ants":
         ants_deform(bl["T1w"], fu["T1w"], bl["FLAIR"], fu["FLAIR"], bl_brain, warp, jac, warped, params, log)
@@ -321,10 +322,16 @@ def ants_deform(bl_t1: Path, fu_t1: Path, bl_flair: Path, fu_flair: Path, bl_bra
         raise RuntimeError("engine 'ants' needs antspyx: pip install 'lesiontrack[ants]'") from e
     os.environ.setdefault("ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS", str(params.threads))
     fixed, moving = ants.image_read(str(bl_t1)), ants.image_read(str(fu_t1))
+    # The last metric parameter is the CC neighbourhood radius (antspyx's default of 32 is a
+    # 65-voxel window and about twenty times slower); the same value goes to both terms.
     extras = [(params.ants_metric, ants.image_read(str(bl_flair)), ants.image_read(str(fu_flair)),
-               float(params.flair_weight), 4)]
+               float(params.flair_weight), int(params.ants_radius))]
     kwargs = dict(
         type_of_transform=params.ants_transform, syn_metric=params.ants_metric,
+        syn_sampling=int(params.ants_radius),
+        # The images are already rigidly aligned in the halfway frame: no centre-of-mass
+        # initialisation, so the stored field is the whole baseline -> follow-up map.
+        initial_transform="identity",
         reg_iterations=tuple(int(i) for i in params.ants_iterations),
         grad_step=params.ants_grad_step, flow_sigma=params.ants_flow_sigma, total_sigma=params.ants_total_sigma,
         multivariate_extras=extras, outprefix=str(warp.with_suffix("").with_suffix("")) + "_ants_",
@@ -336,6 +343,15 @@ def ants_deform(bl_t1: Path, fu_t1: Path, bl_flair: Path, fu_flair: Path, bl_bra
     field = next((t for t in result["fwdtransforms"] if t.endswith(".nii.gz")), None)
     if field is None:
         raise RegistrationError("ANTs returned no displacement field; check the transform type")
+    for t in result["fwdtransforms"]:
+        if t.endswith(".mat"):
+            # antsRegistration writes the initial transform as a stage; with the identity
+            # initialisation it must be the identity, or the Jacobian would miss an affine.
+            mat = ants.read_transform(t)
+            if not np.allclose(mat.parameters, [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0], atol=1e-6):
+                raise RegistrationError(
+                    f"ANTs transform {params.ants_transform!r} produced an affine stage ({t}); only the "
+                    "displacement field reaches the Jacobian, so use a deformable-only transform such as SyNOnly")
     shutil.copyfile(field, warp)
     ants.image_write(result["warpedmovout"], str(warped))
     jacobian_determinant(warp, jac)

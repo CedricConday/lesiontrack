@@ -227,8 +227,9 @@ along voxel index axes, without the image direction matrix, so it is only right 
 images whose voxel axes are LPS-aligned at 1 mm. On a phantom with an identity (RAS)
 affine, a sphere growing from radius 8 to 10 voxels (volume ratio 1.95) came back as det
 0.68; with a LAS affine, as used by the MSLesSeg scans, as 1.18. For a radial stretch
-1+k the reported value is (1-k)(1+k)^2 in place of (1+k)^3, roughly a third of the true
-volume change for small k. greedy's standalone `-jac` converts the warp first and is
+1+k the true determinant is (1+k)^3; each flipped axis turns one factor into (1-k), so
+RAS (two flips) reports (1-k)^2 (1+k), which is below 1 for any expansion, and LAS (one
+flip) reports (1-k)(1+k)^2, roughly a third of the true volume change for small k. greedy's standalone `-jac` converts the warp first and is
 correct; the reslice path does not (found 2026-09-27, draft report in
 `docs/upstream/greedy_rj_direction.md`).
 
