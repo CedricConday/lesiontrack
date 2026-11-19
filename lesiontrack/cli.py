@@ -106,7 +106,7 @@ def cmd_backtest(a: argparse.Namespace) -> int:
     from .pipeline import run_subject
     from .registration import run_greedy
     from .scores import cohort_score
-    from .synth import candidate_truth, feature_auc, make_followup, score
+    from .synth import candidate_truth, feature_auc, make_followup, score, thicken_slices
 
     out = Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
@@ -120,13 +120,22 @@ def cmd_backtest(a: argparse.Namespace) -> int:
     fractions = [float(x) for x in a.timepoints.split(",")]
     if fractions[-1] != 1.0:
         raise SystemExit("--timepoints must end with 1.0 (the last follow-up carries the full expansion)")
+    baseline_flair = Path(a.flair)
+    if a.flair_slices > 1:
+        # The baseline is acquired in thick slices too; the anatomy the follow-ups are
+        # synthesized from stays the 1 mm one.
+        fl_img = nib.load(a.flair)
+        baseline_flair = out / f"baseline_FLAIR_thick{a.flair_slices}.nii.gz"
+        thick = thicken_slices(np.asarray(fl_img.dataobj, dtype=np.float32), a.flair_slices)
+        nib.save(nib.Nifti1Image(thick, fl_img.affine), baseline_flair)
     for seed in seeds:
         sdir = out / f"seed{seed}"
-        tps = [Timepoint("baseline", Path(a.t1), Path(a.flair), Path(a.mask), 0.0, bm)]
+        tps = [Timepoint("baseline", Path(a.t1), baseline_flair, Path(a.mask), 0.0, bm)]
         for frac in fractions:
             synth_dir = sdir / f"synthetic_{frac:g}"
             rec = make_followup(Path(a.t1), Path(a.flair), Path(a.mask), synth_dir, n_expand=a.n_expand,
-                                volume_factors=factors, seed=seed, time_fraction=frac)
+                                volume_factors=factors, seed=seed, time_fraction=frac,
+                                scanner_scale_pct=a.scanner_scale_pct, flair_slice_factor=a.flair_slices)
             tps.append(Timepoint(f"synthetic_{frac:g}", synth_dir / "synth_T1w.nii.gz",
                                  synth_dir / "synth_FLAIR.nii.gz", synth_dir / "synth_mask.nii.gz",
                                  frac * a.dt_years))
@@ -191,6 +200,7 @@ def cmd_backtest(a: argparse.Namespace) -> int:
         agg["feature_auc"] = feature_auc(all_cands)
         print("feature AUC, injected vs spurious candidates: " + ", ".join(
             f"{k} {v['auc']:.2f}" for k, v in agg["feature_auc"].items()))
+    agg["conditions"] = {"scanner_scale_pct": a.scanner_scale_pct, "flair_slices": a.flair_slices}
     agg.update({"seeds": seeds, "dt_years": a.dt_years, "factors": list(factors), "n_expand": a.n_expand,
                 "per_seed": all_metrics, "registration": params.reg.__dict__, "sel": params.sel.__dict__})
     with open(out / "backtest_metrics.json", "w") as fh:
@@ -272,6 +282,11 @@ def main(argv: list[str] | None = None) -> int:
     b.add_argument("--engine", choices=("greedy", "ants"), default="greedy", help="deformable registration engine")
     b.add_argument("--min-mean", type=float, default=0.0,
                    help="drop candidates whose mean expansion is below this (%%/yr); 0 = Elliott's rule")
+    b.add_argument("--scanner-scale-pct", type=float, default=0.0,
+                   help="enlarge every follow-up linearly by this percentage, as a scanner change would "
+                        "(a nuisance the truth does not include)")
+    b.add_argument("--flair-slices", type=int, default=1,
+                   help="acquire FLAIR in slices this many voxels thick at every timepoint (3 = clinical 2D FLAIR)")
     b.set_defaults(func=cmd_backtest)
 
     a = ap.parse_args(argv)

@@ -1,3 +1,4 @@
+import nibabel as nib
 import numpy as np
 import pandas as pd
 import pytest
@@ -265,3 +266,52 @@ def test_feature_auc_orients_each_feature_as_the_published_rule_reads_it():
     assert auc["constancy_residual"]["auc"] == 1.0 and auc["constancy_residual"]["direction"] == "low"
     assert auc["constancy_residual"]["n_scored"] == 5 and auc["constancy_residual"]["n_injected"] == 2
     assert feature_auc(cands.iloc[:0]) == {}
+
+
+def _toy_subject(tmp_path, shape=(48, 48, 48)):
+    rng = np.random.default_rng(0)
+    grid = np.stack(np.meshgrid(*[np.arange(n) for n in shape], indexing="ij"))
+    brain = ((grid - 23.5) ** 2).sum(axis=0) < 20**2
+    mask = np.zeros(shape, bool)
+    for c in ((16, 24, 24), (32, 24, 24), (24, 14, 24), (24, 34, 24)):
+        mask |= ((grid - np.array(c)[:, None, None, None]) ** 2).sum(axis=0) < 3.2**2
+    t1 = np.where(brain, 100.0, 0.0) - 30.0 * mask + rng.normal(0, 1, shape) * brain
+    flair = np.where(brain, 80.0, 0.0) + 60.0 * mask + rng.normal(0, 1, shape) * brain
+    paths = {}
+    for name, arr in (("t1", t1), ("flair", flair), ("mask", mask.astype(np.uint8))):
+        paths[name] = tmp_path / f"{name}.nii.gz"
+        nib.save(nib.Nifti1Image(arr.astype(np.float32), np.eye(4)), paths[name])
+    return paths
+
+
+def test_scanner_scale_enlarges_the_followup_but_not_the_truth(tmp_path):
+    from lesiontrack.synth import make_followup
+
+    p = _toy_subject(tmp_path)
+    kw = {"n_expand": 2, "min_voxels": 30, "rigid_rot_deg": 0.0, "rigid_trans_vox": 0.0, "noise_frac": 0.0, "seed": 1}
+    plain = make_followup(p["t1"], p["flair"], p["mask"], tmp_path / "plain", **kw)
+    scaled = make_followup(p["t1"], p["flair"], p["mask"], tmp_path / "scaled", scanner_scale_pct=5.0, **kw)
+    vol = lambda rec: int(np.asarray(nib.load(rec["outputs"]["brainmask"]).dataobj).sum())
+    growth = vol(scaled) / vol(plain)
+    # 5 % linear is about 16 % in volume; a smaller step is lost in the binary mask's voxel count
+    assert abs(growth - 1.05**3) < 0.02
+    truth = lambda rec: np.asarray(nib.load(rec["outputs"]["truth_expansion_pct"]).dataobj)
+    assert np.array_equal(truth(plain), truth(scaled))   # the nuisance is not part of the truth
+    assert scaled["scanner_scale_pct"] == 5.0
+
+
+def test_thicken_slices_blurs_through_plane_only():
+    from lesiontrack.synth import thicken_slices
+
+    flat = np.full((6, 6, 12), 7.0, np.float32)
+    assert np.allclose(thicken_slices(flat, 3), 7.0)
+    assert thicken_slices(flat, 1) is flat
+    inplane = np.zeros((6, 6, 12), np.float32)
+    inplane[2] = 1.0                                  # varies in-plane, constant through-plane
+    assert np.allclose(thicken_slices(inplane, 3), inplane)
+    spike = np.zeros((6, 6, 12), np.float32)
+    spike[:, :, 4] = 3.0                              # one thin slice
+    out = thicken_slices(spike, 3)
+    assert out.shape == spike.shape
+    assert out[0, 0].max() < 1.01                     # averaged over the 3-slice slab
+    assert out[0, 0, 4] == 1.0 and out[0, 0, 0] == 0.0
