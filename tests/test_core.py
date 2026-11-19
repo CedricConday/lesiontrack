@@ -246,3 +246,22 @@ def test_rigid_qc_rejects_implausible_transform():
     bad[:3, :3] = Rotation.from_euler("xyz", [50, 0, 0], degrees=True).as_matrix()
     with pytest.raises(RegistrationError, match="implausible"):
         rigid_qc(bad)
+
+
+def test_feature_auc_orients_each_feature_as_the_published_rule_reads_it():
+    import pandas as pd
+
+    from lesiontrack.synth import feature_auc
+
+    cands = pd.DataFrame({
+        "injected": [True, True, True, False, False, False],
+        "mean_pct_per_year": [20.0, 18.0, 15.0, 6.0, 5.0, 7.0],       # separates perfectly
+        "concentricity": [1.0, 2.0, 3.0, 1.0, 2.0, 3.0],              # no information
+        "constancy_residual": [0.01, 0.02, float("nan"), 0.5, 0.4, 0.3],  # low = injected
+    })
+    auc = feature_auc(cands)
+    assert auc["mean_pct_per_year"]["auc"] == 1.0
+    assert auc["concentricity"]["auc"] == 0.5
+    assert auc["constancy_residual"]["auc"] == 1.0 and auc["constancy_residual"]["direction"] == "low"
+    assert auc["constancy_residual"]["n_scored"] == 5 and auc["constancy_residual"]["n_injected"] == 2
+    assert feature_auc(cands.iloc[:0]) == {}

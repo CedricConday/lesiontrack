@@ -106,7 +106,7 @@ def cmd_backtest(a: argparse.Namespace) -> int:
     from .pipeline import run_subject
     from .registration import run_greedy
     from .scores import cohort_score
-    from .synth import make_followup, score
+    from .synth import candidate_truth, feature_auc, make_followup, score
 
     out = Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
@@ -116,7 +116,7 @@ def cmd_backtest(a: argparse.Namespace) -> int:
     factors = tuple(float(x) for x in a.factors.split(","))
     seeds = [int(x) for x in a.seeds.split(",")]
     params = Params(reg=RegParams(threads=a.threads, engine=a.engine), sel=SELParams(min_mean_pct_per_year=a.min_mean))
-    tables, all_metrics = [], []
+    tables, all_metrics, cand_tables = [], [], []
     fractions = [float(x) for x in a.timepoints.split(",")]
     if fractions[-1] != 1.0:
         raise SystemExit("--timepoints must end with 1.0 (the last follow-up carries the full expansion)")
@@ -146,6 +146,18 @@ def cmd_backtest(a: argparse.Namespace) -> int:
         table.insert(0, "seed", seed)
         table.to_csv(sdir / "backtest_lesions.tsv", sep="\t", index=False, float_format="%.5g")
         metrics["seed"] = seed
+        # Every candidate with its features and whether its parent lesion was injected, so the
+        # published filters (concentricity, constancy, S) are scored as classifiers too.
+        if len(scored):
+            ct = candidate_truth(rec, truth_labels, exp, cand)[["candidate_id", "injected"]]
+            cands = scored.drop(columns=["subject"], errors="ignore").merge(ct, on="candidate_id", how="left")
+            cands["injected"] = cands["injected"].fillna(False).astype(bool)
+            cands.insert(0, "seed", seed)
+            cands.to_csv(sdir / "backtest_candidates.tsv", sep="\t", index=False, float_format="%.5g")
+            cand_tables.append(cands)
+            metrics["feature_auc"] = feature_auc(cands)
+        else:
+            metrics["feature_auc"] = {}
         with open(sdir / "backtest_metrics.json", "w") as fh:
             json.dump(metrics, fh, indent=2)
         tables.append(table)
@@ -169,6 +181,16 @@ def cmd_backtest(a: argparse.Namespace) -> int:
         }
         for thr in thrs
     }
+    if cand_tables:
+        # Pooled over seeds. z-scores and S are relative to each seed's own candidates, as
+        # Elliott's rule is relative to a cohort; raw features pool without that caveat.
+        all_cands = pd.concat(cand_tables, ignore_index=True)
+        all_cands.to_csv(out / "backtest_candidates.tsv", sep="\t", index=False, float_format="%.5g")
+        agg["n_candidates"] = len(all_cands)
+        agg["n_candidates_injected"] = int(all_cands["injected"].sum())
+        agg["feature_auc"] = feature_auc(all_cands)
+        print("feature AUC, injected vs spurious candidates: " + ", ".join(
+            f"{k} {v['auc']:.2f}" for k, v in agg["feature_auc"].items()))
     agg.update({"seeds": seeds, "dt_years": a.dt_years, "factors": list(factors), "n_expand": a.n_expand,
                 "per_seed": all_metrics, "registration": params.reg.__dict__, "sel": params.sel.__dict__})
     with open(out / "backtest_metrics.json", "w") as fh:

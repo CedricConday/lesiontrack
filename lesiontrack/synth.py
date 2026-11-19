@@ -303,6 +303,48 @@ def _candidate_rows(truth: dict, lesion_labels: np.ndarray, expansion: np.ndarra
     return pd.DataFrame(rows)
 
 
+# Candidate features scored as classifiers of injected against spurious candidates. The sign
+# is the direction in which the published rule reads the feature: Elliott 2019 favours high
+# concentricity and a LOW constancy residual, and S combines the two.
+CANDIDATE_FEATURES = {
+    "mean_pct_per_year": 1, "constancy_slope_pct_per_year": 1, "peak_pct_per_year": 1,
+    "concentricity": 1, "constancy_residual": -1, "score_S": 1, "seed_voxels": 1, "n_voxels": 1,
+}
+
+
+def candidate_truth(truth: dict, lesion_labels: np.ndarray, expansion: np.ndarray,
+                    candidate_labels: np.ndarray) -> pd.DataFrame:
+    """One row per candidate with ``injected``: whether its parent lesion was expanded."""
+    return _candidate_rows(truth, lesion_labels, expansion, candidate_labels)
+
+
+def feature_auc(candidates: pd.DataFrame) -> dict:
+    """Rank AUC of each candidate feature for injected against spurious candidates.
+
+    ``candidates`` needs a boolean ``injected`` column. 0.5 is chance; each feature is
+    oriented as in :data:`CANDIDATE_FEATURES`, so a value below 0.5 means the feature
+    ranks spurious candidates above injected ones. Candidates without a value for a
+    feature (no interior voxel, fewer than two follow-ups) are left out of that feature's
+    AUC and counted in ``n_scored``.
+    """
+    out = {}
+    if not len(candidates) or "injected" not in candidates:
+        return out
+    inj = candidates["injected"].to_numpy(dtype=bool)
+    for name, sign in CANDIDATE_FEATURES.items():
+        if name not in candidates:
+            continue
+        v = candidates[name].to_numpy(dtype=float)
+        ok = ~np.isnan(v)
+        out[name] = {
+            "auc": _auc(sign * v, inj), "direction": "high" if sign > 0 else "low",
+            "n_scored": int(ok.sum()), "n_injected": int((ok & inj).sum()),
+            "median_injected": float(np.median(v[ok & inj])) if (ok & inj).any() else float("nan"),
+            "median_spurious": float(np.median(v[ok & ~inj])) if (ok & ~inj).any() else float("nan"),
+        }
+    return out
+
+
 def _auc(values, positive) -> float:
     """Rank AUC of ``values`` for the ``positive`` class."""
     from scipy.stats import rankdata
