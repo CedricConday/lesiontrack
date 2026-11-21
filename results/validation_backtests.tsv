@@ -1,0 +1,14 @@
+backtest	dataset	subject	engine	sensitivity	false_positive_rate	sensitivity_definite	false_positive_rate_definite	recovery_fraction	recovery_median	untouched_peak_median_pct_per_year	n_expanded	n_unexpanded	n_candidates	n_candidates_injected
+P1_greedy	mslesseg	P1	greedy	1.000	0.467	0.708	0.400	1.159	1.191	10.775	24	30	154	25
+P12_greedy	mslesseg	P12	greedy	1.000	0.319	0.792	0.139	0.975	0.961	10.250	24	72	227	78
+P13_greedy	mslesseg	P13	greedy	1.000	0.711	0.667	0.422	1.202	1.336	18.781	24	90	188	24
+P19_greedy	mslesseg	P19	greedy	1.000	0.451	0.917	0.176	1.254	1.337	10.763	24	153	278	53
+P1_ants	mslesseg	P1	ants	1.000	0.200	0.583	0.100	1.055	1.092	9.958	24	30	33	26
+P22_greedy	mslesseg	P22	greedy	1.000	0.462	0.583	0.179	1.127	1.176	11.000	24	39	67	27
+P2_ants	mslesseg	P2	ants	1.000	0.238	0.500	0.048	1.044	1.052	9.738	24	21	29	24
+P2_greedy	mslesseg	P2	greedy	1.000	0.810	0.708	0.381	1.208	1.218	16.025	24	21	55	25
+P3_ants	mslesseg	P3	ants	1.000	0.030	0.542	0.000	1.021	1.007	6.505	24	99	27	24
+P3_greedy	mslesseg	P3	greedy	1.000	0.253	0.792	0.061	1.143	1.110	10.250	24	99	61	25
+lesjak_patient03_greedy	lesjak	lesjak_patient03	greedy	1.000	0.222	0.667	0.111	1.017	1.049	5.000	24	54	53	30
+lesjak_patient06_greedy	lesjak	lesjak_patient06	greedy	1.000	0.092	0.417	0.037	1.033	1.079	2.100	24	294	55	24
+lesjak_patient07_greedy	lesjak	lesjak_patient07	greedy	0.958	0.123	0.750	0.048	1.003	1.017	4.750	24	714	279	32

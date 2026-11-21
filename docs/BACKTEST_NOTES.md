@@ -158,3 +158,32 @@ definite 97; median Jacobian change inside baseline lesions -6.3 % per subject a
 Second engine: ANTs SyN (antspyx, CC radius 4, identity initialisation on the halfway
 images) is in as `--engine ants`; on the test phantom both engines recover the injected
 sign (greedy 1.72, ANTs 1.48 for a true 1.6). No cohort or backtest run with it yet.
+
+## 2026-11-20 — validation chain: six more patients, ANTs, Lesjak
+
+`scripts/run_validation.sh 4`, launched 2026-11-19 18:32, `all done` 2026-11-20 19:47, every
+step exit 0 (log `work/logs/validation.log`). lesiontrack 0.2.0 plus `5a17a11` (every candidate
+scored). Patients P2 P3 P12 P13 P19 P22 fixed before any result was seen.
+
+Per-backtest numbers: `results/validation_backtests.tsv`; candidate-feature AUCs:
+`results/validation_feature_auc.tsv` (both from `scripts/summarize_validation.py`). P1 greedy
+is `work/backtest_P1_v5`, the 2026-11-19 re-score.
+
+* Greedy, 7 MSLesSeg patients: candidate sensitivity 1.00 everywhere; FPR 0.25-0.81
+  (median 0.46); definite S>=0 0.58-0.92 / FPR 0.06-0.42; recovery 0.98-1.25; noise floor
+  10.3-18.8 %/yr.
+* Feature AUC (candidate level), median over the 7: mean rate 1.00, constancy residual 0.78,
+  S 0.64, concentricity 0.58. Gap (1) closed: the published filters stay near chance on the
+  corrected Jacobian. P12 (0.67) and P19 (0.74) are the mean-rate outliers: expanded lesions
+  split into many small candidates (78 and 53 injected candidates for 24 lesions).
+* ANTs vs greedy, P1/P2/P3: candidate FPR 0.47/0.81/0.25 -> 0.20/0.24/0.03; definite
+  sensitivity 0.71/0.71/0.79 -> 0.58/0.50/0.54; recovery 1.16/1.21/1.14 -> 1.06/1.04/1.02;
+  noise floor 10.8/16.0/10.3 -> 10.0/9.7/6.5. ANTs about 20,000 s per backtest at 4 cores
+  against about 730 s for greedy. Gap (2) closed.
+* Lesjak, 20 patients, LST-AI fast-mode masks, scored against expert change masks: change
+  Dice pooled 0.38 (median 0.33); expert components touched 453/846 (small ones 52/185);
+  tracked groups called changed sens 0.95 / spec 0.08 / PPV 0.22 (1,426 of 2,020 groups new or
+  resolved, 282 expert-confirmed); Jacobian per baseline lesion vs expert change AUC 0.58;
+  Spearman Jacobian vs mask rate 0.31 (594 groups). No SEL ground truth: tracking only.
+  Lesjak backtests 03/06/07 (greedy): sensitivity 1.00/1.00/0.96, FPR 0.22/0.09/0.12,
+  recovery 1.02/1.03/1.00, noise floor 5.0/2.1/4.8 %/yr. Gap (3) closed.
