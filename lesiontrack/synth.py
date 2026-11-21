@@ -85,12 +85,35 @@ def _warp(image: np.ndarray, displacement: np.ndarray, order: int, cval: float =
     return ndi.map_coordinates(image, coords, order=order, mode="constant", cval=cval)
 
 
+def thicken_slices(arr: np.ndarray, factor: int, axis: int = 2) -> np.ndarray:
+    """Simulate a 2D acquisition: average ``factor`` slices, then interpolate back to the grid.
+
+    This is the degradation Elliott 2019 and Vanden Bulcke 2025 used to turn a
+    1 mm isotropic FLAIR into a clinical 1x1x3 mm one resampled to 1 mm.
+    """
+    if factor <= 1:
+        return arr
+    n = arr.shape[axis]
+    m = n // factor
+    if m < 2:
+        raise ValueError(f"axis {axis} has {n} slices; too few to thicken by {factor}")
+    a = np.moveaxis(arr, axis, 0)
+    thick = a[: m * factor].reshape(m, factor, *a.shape[1:]).mean(axis=1)
+    centres = (np.arange(m) + 0.5) * factor - 0.5  # thick-slice centres on the thin grid
+    idx = (np.clip(np.arange(n), centres[0], centres[-1]) - centres[0]) / factor
+    lo = np.clip(np.floor(idx).astype(int), 0, m - 2)
+    w = (idx - lo).astype(np.float32)[:, None, None]
+    out = thick[lo] * (1.0 - w) + thick[lo + 1] * w
+    return np.moveaxis(out, 0, axis).astype(arr.dtype)
+
+
 def make_followup(t1: Path, flair: Path, mask: Path, out_dir: Path, *,
                   n_expand: int = 8, volume_factors: tuple = (1.15, 1.25, 1.40),
                   min_voxels: int = 30, margin_vox: float = 2.0, falloff_vox: float = 6.0,
                   rigid_rot_deg: float = 1.0, rigid_trans_vox: float = 1.0,
                   intensity_scale: tuple = (0.9, 1.1), noise_frac: float = 0.02,
-                  seed: int = 0, time_fraction: float = 1.0) -> dict:
+                  seed: int = 0, time_fraction: float = 1.0,
+                  scanner_scale_pct: float = 0.0, flair_slice_factor: int = 1) -> dict:
     """Write a synthetic follow-up and its ground truth. Returns the truth record.
 
     ``time_fraction`` scales the injected expansion to an intermediate
@@ -99,6 +122,12 @@ def make_followup(t1: Path, flair: Path, mask: Path, out_dir: Path, *,
     time, while lesion choice and factors stay those of ``seed``. Rigid
     perturbation, intensity scale and noise are drawn independently per
     timepoint.
+
+    ``scanner_scale_pct`` enlarges the whole follow-up linearly by that
+    percentage about the image centre, as a scanner whose gradients are
+    calibrated differently would; it is a nuisance, so the truth does not
+    include it. ``flair_slice_factor`` acquires the follow-up FLAIR in slices
+    that many voxels thick (see :func:`thicken_slices`).
     """
     rng = np.random.default_rng(seed)
     rng_tp = np.random.default_rng([seed, round(time_fraction * 1000)])
@@ -125,6 +154,11 @@ def make_followup(t1: Path, flair: Path, mask: Path, out_dir: Path, *,
     rigid_disp = _rigid_field(t1_arr.shape, rot, trans)
     grids = np.meshgrid(*[np.arange(n, dtype=np.float32) for n in t1_arr.shape], indexing="ij")
     y = np.stack(grids) + rigid_disp
+    if scanner_scale_pct:
+        # F(x) = B(c + (y - c) / s): the anatomy appears s times larger in the follow-up
+        centre = ((np.array(t1_arr.shape, dtype=np.float32) - 1) / 2)[:, None, None, None]
+        y = centre + (y - centre) / np.float32(1.0 + scanner_scale_pct / 100.0)
+        rigid_disp = y - np.stack(grids)
 
     disp = np.zeros((3, *t1_arr.shape), dtype=np.float32)       # radial field on the grid (truth)
     disp_at_y = np.zeros((3, *t1_arr.shape), dtype=np.float32)  # radial field at rigidly moved points
@@ -153,7 +187,7 @@ def make_followup(t1: Path, flair: Path, mask: Path, out_dir: Path, *,
         return _warp(arr, disp_total, order, cval)
 
     t1_fu = synth(t1_arr, 1)
-    fl_fu = synth(fl_arr, 1)
+    fl_fu = thicken_slices(synth(fl_arr, 1), flair_slice_factor)
     # Warp a signed distance function rather than the binary mask so that
     # sub-voxel boundary shifts of small lesions survive resampling.
     sdf = ndi.distance_transform_edt(~mk_arr) - ndi.distance_transform_edt(mk_arr)
@@ -190,6 +224,8 @@ def make_followup(t1: Path, flair: Path, mask: Path, out_dir: Path, *,
         "source": {"t1": str(t1), "flair": str(flair), "mask": str(mask)},
         "seed": seed,
         "time_fraction": time_fraction,
+        "scanner_scale_pct": scanner_scale_pct,
+        "flair_slice_factor": flair_slice_factor,
         "rigid_rotation_deg": rot.tolist(),
         "rigid_translation_vox": trans.tolist(),
         "lesions": [asdict(x) for x in truth],
