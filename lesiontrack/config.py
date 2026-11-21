@@ -15,11 +15,13 @@ class SELParams:
     je2_pct_per_year: float = 4.0  # hysteresis growth threshold, Elliott 2019
     min_voxels: int = 10  # reliability criterion, Elliott 2019
     connectivity: int = 2  # scipy structure rank: 2 = 18-connectivity in 3D
-    # Not in Elliott 2019. The backtest (docs/BACKTEST_NOTES.md) found that a candidate's
-    # mean expansion separates injected expansion from registration noise (AUC 0.90) where
-    # peak, concentricity and constancy do not. 0 disables it; the backtest reports the
-    # trade-off at several values so a user can choose one for their registration.
-    min_mean_pct_per_year: float = 0.0
+    # Not in Elliott 2019. A candidate's mean expansion separates injected expansion from
+    # registration noise where concentricity and constancy do not: median candidate AUC 1.00
+    # against 0.58 and 0.78 over seven MSLesSeg backtests (README, "Validation beyond P1").
+    # On by default since 0.3.0; 10 keeps every injected lesion on P1 and cuts the false
+    # positive rate from 0.47 to 0.07. 0 restores Elliott's rule. `lesiontrack backtest`
+    # reports the trade-off at several values for a user's own registration.
+    min_mean_pct_per_year: float = 10.0
 
     def __post_init__(self) -> None:
         if self.je1_pct_per_year < self.je2_pct_per_year:
@@ -40,7 +42,15 @@ class TrackParams:
 @dataclass(frozen=True)
 class RegParams:
     # Elliott 2019: "step size = 0.7; Gaussian sigma = 2", T1 and T2/FLAIR jointly.
-    affine_dof: int = 6
+    # 7 = rigid plus one isotropic scale (since 0.3.0; 0.2.0 used 6, rigid). A scanner or
+    # gradient calibration change between timepoints scales the whole image; a rigid step
+    # leaves that to the deformable registration, which puts it unevenly into textured
+    # tissue such as lesion edges. On the P1 backtest a simulated 1 % scale change raised
+    # the lesion-level false positive rate of the mean rate from 0.03 to 0.23 with dof 6;
+    # with dof 7 it was 0.00 (greedy measured +0.95 %; -0.03 % with no change). Side effect
+    # on real data: whole-brain atrophy is absorbed too, so lesion change is measured
+    # relative to the brain. 6 restores the rigid step.
+    affine_dof: int = 7
     affine_metric: str = "NMI"
     affine_iterations: str = "100x50x20"
     # Backtest sweep 2026-09-26 (docs/BACKTEST_NOTES.md): greedy's stationary-velocity mode

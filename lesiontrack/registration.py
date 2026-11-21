@@ -153,21 +153,39 @@ def check_image_content(path: Path, min_nonzero_fraction: float = 0.02) -> float
     return frac
 
 
-def rigid_qc(mat: np.ndarray, max_rotation_deg: float = 20.0, max_translation_mm: float = 40.0) -> dict:
-    """Rotation angle and translation of a rigid 4x4; raise if implausible for one subject."""
-    rot = mat[:3, :3]
+def rigid_qc(mat: np.ndarray, max_rotation_deg: float = 20.0, max_translation_mm: float = 40.0,
+             max_scale_change_pct: float = 5.0) -> dict:
+    """Rotation, translation and isotropic scale of a rigid or similarity 4x4.
+
+    Raises if implausible for one subject. A similarity's scale is divided out of the
+    rotation first; for a rigid matrix it is 1.
+    """
+    lin = mat[:3, :3]
+    scale = float(np.cbrt(abs(np.linalg.det(lin))))
+    rot = lin / scale
     angle = float(np.degrees(np.arccos(np.clip((np.trace(rot) - 1.0) / 2.0, -1.0, 1.0))))
     trans = float(np.linalg.norm(mat[:3, 3]))
-    if angle > max_rotation_deg or trans > max_translation_mm:
+    scale_pct = (scale - 1.0) * 100.0
+    if angle > max_rotation_deg or trans > max_translation_mm or abs(scale_pct) > max_scale_change_pct:
         raise RegistrationError(
-            f"rigid registration implausible for a same-subject pair: rotation {angle:.1f} deg, "
-            f"translation {trans:.1f} mm (limits {max_rotation_deg} deg, {max_translation_mm} mm)"
+            f"linear registration implausible for a same-subject pair: rotation {angle:.1f} deg, "
+            f"translation {trans:.1f} mm, scale {scale_pct:+.2f} % (limits {max_rotation_deg} deg, "
+            f"{max_translation_mm} mm, {max_scale_change_pct} %)"
         )
-    return {"rotation_deg": angle, "translation_mm": trans}
+    return {"rotation_deg": angle, "translation_mm": trans, "scale_pct": scale_pct}
+
+
+FRAME_VERSION = "rigid-Hinv-1"  # bump when the frame composition changes; cached pairs are re-registered
+
+
+def followup_to_frame(rigid: np.ndarray, frame: np.ndarray) -> np.ndarray:
+    """Reslicing matrix for a follow-up into another pair's halfway frame H: rigid @ H^-1."""
+    return rigid @ np.linalg.inv(frame)
 
 
 def _params_record(params: RegParams, frame: Path | None) -> dict:
-    return {"reg": dict(params.__dict__), "frame": str(frame) if frame else None, "jacobian": JACOBIAN_VERSION}
+    return {"reg": dict(params.__dict__), "frame": str(frame) if frame else None, "jacobian": JACOBIAN_VERSION,
+            "frame_version": FRAME_VERSION}
 
 
 def _same_registration(previous: dict | None, current: dict) -> bool:
@@ -186,7 +204,10 @@ def _same_registration(previous: dict | None, current: dict) -> bool:
         reg.setdefault("engine", "greedy")
         if reg["engine"] == "greedy":
             reg = {k: v for k, v in reg.items() if not k.startswith("ants_")}
-        return {"reg": reg, "frame": rec.get("frame")}
+        # Records without a frame_version predate the 0.3.0 composition fix; for a pair
+        # registered without a frame the composition was never used, so they still match.
+        fv = rec.get("frame_version") if rec.get("frame") else None
+        return {"reg": reg, "frame": rec.get("frame"), "frame_version": fv}
 
     return comparable(previous) == comparable(current)
 
@@ -198,7 +219,7 @@ def register_pair(baseline: Timepoint, follow: Timepoint, out_dir: Path,
 
     ``frame`` is an optional halfway matrix H from another pair of the same
     subject. When given, the baseline is resliced with that H^-1 and this
-    follow-up with H^-1 @ (its own rigid to baseline), so every pair of the
+    follow-up with (its own rigid to baseline) @ H^-1, so every pair of the
     subject lives on one common grid. The pipeline uses the last follow-up's
     halfway matrix as the frame, which keeps that pair unbiased and lets
     constancy and tracking compare voxels across follow-ups directly.
@@ -241,14 +262,18 @@ def register_pair(baseline: Timepoint, follow: Timepoint, out_dir: Path,
     write_matrix(half, half_transform(rigid))
 
     # 2. Both timepoints into the common frame on the baseline grid.
-    #    baseline -> frame is H^-1; follow-up -> frame is H^-1 @ rigid (== H for its own H).
+    #    baseline -> frame is H^-1; follow-up -> frame is rigid @ H^-1 (== H for its own H).
+    #    greedy reslices output(x) = moving(M x), M mapping fixed to moving, so a frame point x
+    #    is baseline point H^-1 x and follow-up point rigid (H^-1 x). Until 0.3.0 this was
+    #    H^-1 @ rigid, which equals the right matrix only when rigid and H commute: for the
+    #    last pair, not for earlier follow-ups (sub-millimetre misalignment on those).
     if frame is None:
         frame_mat = half
         fu_to_frame = half
     else:
         frame_mat = frame
         fu_to_frame = out_dir / f"{tag}_to_frame.mat"
-        write_matrix(fu_to_frame, np.linalg.inv(read_matrix(frame)) @ rigid)
+        write_matrix(fu_to_frame, followup_to_frame(rigid, read_matrix(frame)))
 
     def name(tp: str, what: str) -> Path:
         return out_dir / f"{tag}_{tp}_{what}_halfway.nii.gz"
@@ -398,3 +423,40 @@ def jacobian_pct_per_year(jacobian: Path, dt_years: float) -> tuple[np.ndarray, 
     img = nib.load(jacobian)
     jac = np.asarray(img.dataobj, dtype=np.float32)
     return (jac - 1.0) * 100.0 / dt_years, img
+
+
+def reference_mask(brain: np.ndarray, lesions: np.ndarray, lesion_margin_voxels: int = 3,
+                   brain_erosion_voxels: int = 2) -> np.ndarray:
+    """Brain tissue away from the brain edge and from every baseline lesion."""
+    from scipy import ndimage as ndi
+
+    brain = np.asarray(brain) > 0
+    lesions = np.asarray(lesions) > 0
+    if brain_erosion_voxels > 0:
+        brain = ndi.binary_erosion(brain, iterations=brain_erosion_voxels)
+    if lesion_margin_voxels > 0 and lesions.any():
+        lesions = ndi.binary_dilation(lesions, iterations=lesion_margin_voxels)
+    return brain & ~lesions
+
+
+def global_scale(jacobian: np.ndarray, reference: np.ndarray, min_voxels: int = 1000,
+                 trim: float = 0.10) -> float:
+    """Trimmed mean Jacobian determinant over the reference tissue: the residual global volume ratio.
+
+    Reported as a quality check, not divided out: dividing a single factor out of the map
+    does not undo a global scale change, because the deformable registration puts it
+    unevenly into the image (P1 backtest, 1 % scale: lesion-level false positive rate 0.23
+    rigid, 0.17 divided, 0.00 with the similarity step that ``RegParams.affine_dof = 7``
+    uses). Far from 1 means the linear step left global change behind. Trimmed (10 % off
+    each tail) so that local change and edge error do not move it. Not the median:
+    a smooth deformation leaves a large share of voxels at exactly det J = 1 (23 % of
+    the brain on the MSLesSeg backtests), and the median lands on that spike whatever
+    the global change.
+    """
+    vals = np.asarray(jacobian, dtype=np.float64)[np.asarray(reference, dtype=bool)]
+    vals = vals[np.isfinite(vals) & (vals > 0)]
+    if vals.size < min_voxels:
+        raise ValueError(f"reference region has {vals.size} usable voxels, need {min_voxels}")
+    vals.sort()
+    k = int(vals.size * trim)
+    return float(vals[k:vals.size - k].mean())

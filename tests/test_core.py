@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import nibabel as nib
 import numpy as np
 import pandas as pd
@@ -9,6 +11,9 @@ from lesiontrack.config import SELParams, TrackParams
 from lesiontrack.registration import half_transform
 from lesiontrack.scores import cohort_score, concentricity, constancy, huber_fit
 from lesiontrack.tracking import track_pair
+
+
+ELLIOTT = SELParams(min_mean_pct_per_year=0.0)  # Elliott 2019 as published, no mean-rate filter
 
 
 def ball(shape, centre, r):
@@ -23,16 +28,16 @@ def test_candidates_seed_grow_and_min_size():
     exp = np.zeros(shape, np.float32)
     exp[mask] = 5.0                      # whole lesion above JE2
     exp[ball(shape, (20, 20, 20), 3)] = 20.0  # core above JE1
-    lab = sel_candidates(exp, mask, SELParams())
+    lab = sel_candidates(exp, mask, ELLIOTT)
     assert lab.max() == 1
     assert (lab > 0).sum() == mask.sum()  # hysteresis grows to every JE2 voxel in the lesion
     # a lesion that expands only below JE1 never seeds a candidate
     exp2 = np.where(mask, 10.0, 0.0).astype(np.float32)
-    assert sel_candidates(exp2, mask).max() == 0
+    assert sel_candidates(exp2, mask, ELLIOTT).max() == 0
     # a seed of fewer than 10 voxels is discarded
     exp3 = np.zeros(shape, np.float32)
     exp3[20, 20, 20] = 50.0
-    assert sel_candidates(exp3, mask).max() == 0
+    assert sel_candidates(exp3, mask, ELLIOTT).max() == 0
 
 
 def test_two_seeds_stay_distinct_when_connected():
@@ -42,7 +47,7 @@ def test_two_seeds_stay_distinct_when_connected():
     exp = np.where(mask, 6.0, 0.0).astype(np.float32)
     exp[15:20, 12:18, 12:18] = 30.0
     exp[40:45, 12:18, 12:18] = 30.0
-    lab = sel_candidates(exp, mask)
+    lab = sel_candidates(exp, mask, ELLIOTT)
     assert lab.max() == 2
     t = candidate_table(lab, exp, mask.astype(int), 1.0)
     assert list(t["candidate_id"]) == [1, 2]
@@ -174,8 +179,9 @@ def test_min_mean_drops_weak_candidates():
     mask = ball(shape, (20, 20, 20), 8)
     exp = np.where(mask, 5.0, 0.0).astype(np.float32)
     exp[ball(shape, (20, 20, 20), 2)] = 13.0   # one small seed, candidate mean stays near 5
-    assert sel_candidates(exp, mask, SELParams()).max() == 1
+    assert sel_candidates(exp, mask, ELLIOTT).max() == 1
     assert sel_candidates(exp, mask, SELParams(min_mean_pct_per_year=8.0)).max() == 0
+    assert sel_candidates(exp, mask).max() == 0  # the default (10 %/yr) drops it too
 
 
 def test_zero_margin_does_not_flood_the_baseline():
@@ -315,3 +321,86 @@ def test_thicken_slices_blurs_through_plane_only():
     assert out.shape == spike.shape
     assert out[0, 0].max() < 1.01                     # averaged over the 3-slice slab
     assert out[0, 0, 4] == 1.0 and out[0, 0, 0] == 0.0
+
+
+def test_global_scale_reads_a_uniform_scale_change_away_from_lesions():
+    from lesiontrack.registration import global_scale, reference_mask
+
+    shape = (48, 48, 48)
+    brain = ball(shape, (24, 24, 24), 20)
+    lesion = ball(shape, (24, 24, 24), 4)
+    s3 = 1.01 ** 3
+    jac = np.where(brain, s3, 1.0).astype(np.float32)
+    jac[lesion] = s3 * 1.25
+    ref = reference_mask(brain, lesion)
+    assert not (ref & ndi.binary_dilation(lesion, iterations=3)).any()
+    assert global_scale(jac, ref) == pytest.approx(s3, rel=1e-6)
+
+
+def test_global_scale_resists_local_change_and_refuses_a_tiny_reference():
+    from lesiontrack.registration import global_scale
+
+    jac = np.full((20, 20, 20), 1.02, np.float32)
+    jac[:1] = 3.0                       # 5 % of the reference changes a lot locally
+    jac[1:2] = 0.5
+    jac[2:8] = 1.0                      # a spike at exactly 1 must not capture the estimate
+    est = global_scale(jac, np.ones_like(jac, bool))
+    assert 1.01 < est < 1.02
+    with pytest.raises(ValueError, match="reference region"):
+        global_scale(jac, np.zeros_like(jac, bool))
+
+
+def test_defaults_are_mean_rate_filter_and_similarity_step():
+    from lesiontrack.config import RegParams
+
+    assert SELParams().min_mean_pct_per_year == 10.0
+    assert RegParams().affine_dof == 7
+
+
+def test_qc_reads_scale_out_of_a_similarity_and_refuses_a_large_one():
+    from lesiontrack.registration import RegistrationError, rigid_qc
+
+    m = np.eye(4)
+    m[:3, :3] *= 1.01
+    q = rigid_qc(m)
+    assert q["scale_pct"] == pytest.approx(1.0, abs=1e-9)
+    assert q["rotation_deg"] == pytest.approx(0.0, abs=1e-6)
+    m[:3, :3] *= 1.05
+    with pytest.raises(RegistrationError, match="scale"):
+        rigid_qc(m)
+
+
+def _rot(axis, deg, t):
+    from scipy.spatial.transform import Rotation
+
+    m = np.eye(4)
+    m[:3, :3] = Rotation.from_euler(axis, deg, degrees=True).as_matrix()
+    m[:3, 3] = t
+    return m
+
+
+def test_earlier_followups_land_on_the_baseline_in_the_shared_frame():
+    from lesiontrack.registration import followup_to_frame
+
+    # greedy: output(x) = moving(M x). A pair's rigid A maps baseline points to follow-up
+    # points; the frame is the last pair's halfway H, and the baseline is resliced with H^-1.
+    a_last = _rot("z", 3.0, [8.0, -2.0, 1.0])
+    a_mid = _rot("x", 2.0, [-3.0, 5.0, 2.0])
+    h = half_transform(a_last)
+    x = np.array([40.0, -25.0, 30.0, 1.0])
+    baseline_point = np.linalg.inv(h) @ x
+    fu = followup_to_frame(a_mid, h)
+    assert np.allclose(fu @ x, a_mid @ baseline_point)
+    assert np.allclose(followup_to_frame(a_last, h), h)  # the last pair keeps its own halfway
+    assert not np.allclose(np.linalg.inv(h) @ a_mid, fu)  # the pre-0.3.0 order differs
+
+
+def test_cached_framed_pairs_from_before_the_fix_are_not_reused():
+    from lesiontrack.config import RegParams
+    from lesiontrack.registration import _params_record, _same_registration
+
+    cur = _params_record(RegParams(), Path("frame.mat"))
+    old = {k: v for k, v in cur.items() if k != "frame_version"}
+    assert not _same_registration(old, cur)
+    unframed = _params_record(RegParams(), None)
+    assert _same_registration({k: v for k, v in unframed.items() if k != "frame_version"}, unframed)

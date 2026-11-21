@@ -13,7 +13,8 @@ import pandas as pd
 from . import __version__
 from .candidates import candidate_table, sel_candidates
 from .config import Params
-from .registration import PairResult, Timepoint, jacobian_pct_per_year, register_pair
+from .registration import (PairResult, Timepoint, global_scale, read_matrix, jacobian_pct_per_year, reference_mask,
+                           register_pair)
 from .scores import concentricity, constancy
 from .tracking import label_lesions, summarize, track_pair
 
@@ -52,18 +53,26 @@ def run_subject(subject: str, timepoints: list[Timepoint], out_dir: Path,
     pairs = [register_pair(baseline, fu, out_dir / "reg", params.reg, log, frame=last.halfway_matrix)
              for fu in follows[:-1]] + [last]
 
-    # Expansion maps (percent per year) for every pair, on the halfway baseline grid.
+    # Expansion maps (percent per year) for every pair, on the halfway baseline grid, and the
+    # residual global volume ratio over lesion-free brain tissue as a quality check.
+    mask_bl = np.asarray(nib.load(last.baseline_mask).dataobj) > 0
+    if last.baseline_brainmask is not None:
+        brain = np.asarray(nib.load(last.baseline_brainmask).dataobj) > 0
+    else:  # skull-stripped input is required anyway; nonzero T1 is the brain
+        brain = np.asarray(nib.load(last.baseline_t1).dataobj) > 0
+    reference = reference_mask(brain, mask_bl)
+    scales = {}
     expansion = {}
     ref_img = None
     for p in pairs:
         exp, img = jacobian_pct_per_year(p.jacobian, p.dt_years)
+        scales[p.follow_up] = global_scale(exp / 100.0 * p.dt_years + 1.0, reference)
         expansion[p.follow_up] = exp
         ref_img = img
         nib.save(nib.Nifti1Image(exp, img.affine), out_dir / f"expansion_{p.follow_up}_pct_per_year.nii.gz")
     voxel_mm3 = _voxel_mm3(ref_img)
 
     # SEL candidates from baseline to the last follow-up (Elliott 2019).
-    mask_bl = np.asarray(nib.load(last.baseline_mask).dataobj) > 0
     lesion_labels = label_lesions(mask_bl, params.sel.connectivity)
     cand = sel_candidates(expansion[last.follow_up], mask_bl, params.sel)
     nib.save(nib.Nifti1Image(cand.astype(np.int32), ref_img.affine), out_dir / "sel_candidates.nii.gz")
@@ -105,6 +114,7 @@ def run_subject(subject: str, timepoints: list[Timepoint], out_dir: Path,
     tracking = pd.concat(track_tables, ignore_index=True)
     tracking.to_csv(out_dir / "lesion_tracking.tsv", sep="\t", index=False, float_format="%.5g")
 
+    halfway_det = float(abs(np.linalg.det(read_matrix(last.halfway_matrix)[:3, :3])))
     summary = {
         "lesiontrack_version": __version__,
         "subject": subject,
@@ -112,8 +122,19 @@ def run_subject(subject: str, timepoints: list[Timepoint], out_dir: Path,
         "follow_ups": [p.follow_up for p in pairs],
         "dt_years": [p.dt_years for p in pairs],
         "voxel_mm3": voxel_mm3,
+        # Residual det J over lesion-free brain tissue per follow-up (trimmed mean; 1.0 = no
+        # global change left after the linear step). A quality check, not a correction.
+        "residual_global_scale": scales,
+        "reference_voxels": int(reference.sum()),
         "baseline_lesion_count": int(lesion_labels.max()),
-        "baseline_lesion_volume_mm3": float(mask_bl.sum() * voxel_mm3),
+        # Volumes are counted on the halfway grid. With the similarity step that grid is scaled
+        # by the halfway matrix H: baseline content appears det(H) times larger, follow-up
+        # content det(H) times smaller. Change ratios and the Jacobian are unaffected; the
+        # baseline volume below is converted back to native space, the absolute mm3 in
+        # lesion_tracking.tsv and sel_candidates.tsv are halfway-space (multiply a baseline
+        # volume by 1/halfway_volume_factor, a follow-up volume by it, for native space).
+        "halfway_volume_factor": halfway_det,
+        "baseline_lesion_volume_mm3": float(mask_bl.sum() * voxel_mm3 / halfway_det),
         "sel_candidates": len(table),
         "sel_candidate_volume_mm3": float(table["volume_mm3"].sum()) if len(table) else 0.0,
         "tracking": {p.follow_up: summarize(tracking[tracking["follow_up"] == p.follow_up], voxel_mm3) for p in pairs},
