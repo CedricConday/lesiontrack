@@ -105,7 +105,8 @@ lesiontrack backtest --t1 T1.nii.gz --flair FLAIR.nii.gz --mask MASK.nii.gz --ou
 
 ### Two deformable engines
 
-The rigid step, the halfway frame and the reslicing are greedy in both cases; `--engine`
+The linear step (similarity since 0.3.0: rigid plus one global scale), the halfway frame
+and the reslicing are greedy in both cases; `--engine`
 picks what runs on the halfway-space images. `greedy` (default) needs nothing extra.
 `ants` uses SyN through [antspyx](https://github.com/ANTsX/ANTsPy), cross-correlation on
 T1 and FLAIR jointly, and is how the original SEL studies registered:
@@ -168,7 +169,8 @@ Three conclusions the tool would not have earned without the gate:
    published filters, stay weak on the corrected Jacobian and on six more patients; see
    "Validation beyond P1" below.
 3. **The candidate's mean rate is the filter that works** (AUC 0.99). It is exposed as
-   `min_mean_pct_per_year`, off by default. Trade-off on this registration (mean over
+   `min_mean_pct_per_year`; since 0.3.0 it is on by default at 10 (`--min-mean 0` gives
+   Elliott's rule). Trade-off on this registration (mean over
    the three seeds):
 
 | min mean (%/yr) | sensitivity | false positive rate |
@@ -284,6 +286,56 @@ Backtests on three Lesjak patients (03, 06, 07, greedy) at this resolution: cand
 sensitivity 1.00 / 1.00 / 0.96, FPR 0.22 / 0.09 / 0.12, recovery 1.02 / 1.03 / 1.00,
 noise floor 5.0 / 2.1 / 4.8 %/yr. Tables: `results/lesjak/`.
 
+### 0.3.0: similarity step, mean-rate filter on (2026-11-21)
+
+Three changes, and every greedy number above re-run with them (`scripts/run_v030.sh`,
+tables in `results/v030/`, cohorts in `derivatives/v030/`). ANTs and the LST-AI arm were
+not re-run; their numbers above are 0.2.0 with the rigid step.
+
+1. **The linear step fits one global scale** (`affine_dof = 7`, `--affine-dof 6` restores
+   rigid). A simulated scanner change, every follow-up rescaled by 1 %, used to make
+   untouched lesions look like they were expanding. The cost: whole-brain atrophy is
+   absorbed as well, so lesion change is measured relative to the brain.
+2. **`lesiontrack run` drops candidates under 10 %/yr mean rate** by default. `backtest`
+   still scores every candidate.
+3. **Earlier follow-ups land in the right frame.** For a third or later timepoint the
+   rigid and halfway matrices were composed in the wrong order (under a millimetre; it
+   moves constancy and tracking on intermediate timepoints). Cached registrations from
+   before the fix are redone.
+
+`summary.json` now reports the residual global scale away from lesions (QC only) and the
+halfway volume factor; tracking and candidate volumes are on the halfway grid, the
+baseline lesion volume is native.
+
+**P1 to P3, three seeds each, lesion level** (72 expanded, 150 untouched lesions per
+condition), sensitivity / false positive rate:
+
+| condition | mean rate >= 10, 0.2.0 | 0.3.0 | definite S >= 0, 0.2.0 | 0.3.0 |
+|---|---|---|---|---|
+| no scanner change | 0.99 / 0.03 | 0.97 / 0.03 | 0.74 / 0.17 | 0.62 / 0.18 |
+| 0.5 % scale change | 0.99 / 0.07 | 0.97 / 0.06 | 0.74 / 0.19 | 0.62 / 0.19 |
+| 1 % scale change | 1.00 / **0.18** | 0.99 / **0.00** | 0.79 / 0.29 | 0.56 / 0.18 |
+| FLAIR at 3 mm slices | 0.96 / 0.06 | 0.96 / 0.05 | 0.64 / 0.18 | 0.68 / 0.18 |
+| Lesjak 03, 06, 07 | 0.96 / 0.03 | 0.96 / 0.05 | 0.61 / 0.05 | 0.61 / 0.04 |
+
+The 1 % failure is gone; 0.5 % was never far above the unchanged run and still is not.
+Two things got worse and are not explained yet: definite-SEL sensitivity drops by about
+0.1, and the noise floor (median peak rate in untouched lesions) rises from 10.8 to 15.5
+%/yr over the seven patients, so peak-based rules are noisier than in 0.2.0 while the mean
+rate is not.
+
+**Seven MSLesSeg patients, greedy, 0.2.0 -> 0.3.0** (median, range): candidate FPR 0.46
+-> 0.49 (0.21 to 0.86); definite SEL 0.71 / 0.18 -> 0.67 / 0.24; recovery 1.16 -> 1.17;
+residual global scale 0.995 (0.993 to 0.996). Feature AUC: mean rate 1.00 -> 0.98,
+constancy residual 0.78 -> 0.75, S 0.64 -> 0.62, concentricity 0.58 -> 0.57.
+
+**Cohorts with the defaults.** MSLesSeg (24 patients): 246 candidates, median 6.5 per
+patient (two patients have none), 75 definite; 0.2.0 without the filter gave 484, 16 and
+97. Mask against Jacobian volume change per subject: Spearman 0.42 (0.41). The halfway
+volume factor spans 0.975 to 1.010, which is how much global scale the linear step took
+up. Lesjak (20 patients): 231 candidates, 40 definite (318, 62); tracking is unchanged,
+it depends on the masks alone.
+
 ## Data used
 
 * **MSLesSeg** (Guarnera et al. 2025, Sci Data 12:920, CC BY): 25 patients with 2 to 4
@@ -326,6 +378,9 @@ older record are not redone; their Jacobian is recomputed from the stored warp.
 * Masks are taken as given. A segmenter that hallucinates at follow-up will produce
   "new" lesions; the tool does not second-guess it. On Lesjak with LST-AI masks that is
   specificity 0.08 for "changed".
+* Since 0.3.0 the linear step absorbs a global scale, including real whole-brain atrophy:
+  lesion expansion is relative to the brain. The simulated scanner change is a pure linear
+  scale; a real scanner change also distorts non-linearly, and that is not tested.
 * Every SEL number here comes from synthetic expansion injected into real scans. No public
   dataset has SEL ground truth; the backtest measures the pipeline, not the biology.
 

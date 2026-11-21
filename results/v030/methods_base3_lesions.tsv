@@ -1,0 +1,223 @@
+backtest	seed	lesion_id	n_voxels	size_stratum	nominal_pct_per_year	true_pct_per_year	def_mean_rate	measured_peak_pct_per_year	recovery	def_candidate	def_definite	expanded	def_mean_flag	seg_truth_seen	seg_truth_rate	seg_truth_flag
+P1_greedy	0	1	1354	large_ge500	40	21.497	20.044	58.7	0.93238	True	True	True	True	True	15.288	True
+P1_greedy	0	2	94	small_lt100	25	21.447	26.064	45.475	1.2153	True	True	True	True	True	11.702	True
+P1_greedy	0	4	51	small_lt100	15	12.395	15.372	27.05	1.2402	True	True	True	True	True	-9.8039	False
+P1_greedy	0	5	49	small_lt100	15	10.788	20.221	27.6	1.8744	True	False	True	True	True	-6.1224	False
+P1_greedy	0	7	45	small_lt100	15	11.292	16.553	27.05	1.4659	True	False	True	True	True	-11.111	False
+P1_greedy	0	8	203	medium_100_500	25	24.596	27.043	39.425	1.0995	True	False	True	True	True	25.616	True
+P1_greedy	0	9	374	medium_100_500	40	21.391	27.789	58.7	1.2991	True	True	True	True	True	16.043	True
+P1_greedy	0	17	58	small_lt100	25	25	31.047	45.763	1.2419	True	False	True	True	True	13.793	True
+P1_greedy	0	3	39	small_lt100	0	0	1.3651	10.512		False	False	False	False	True	-15.385	False
+P1_greedy	0	6	39	small_lt100	0	-0.38023	3.5038	15.762		True	False	False	False	True	-25.641	False
+P1_greedy	0	10	175	medium_100_500	0	0	9.6966	27.05		True	True	False	True	True	-5.7143	False
+P1_greedy	0	11	1063	large_ge500	0	-1.1674	-0.62874	27.05		True	True	False	False	True	-7.9022	False
+P1_greedy	0	12	15632	large_ge500	0	0	0.84334	16.288		True	True	False	False	True	-1.0365	False
+P1_greedy	0	13	72	small_lt100	0	0	7.3047	16.025		True	False	False	False	True	-12.5	False
+P1_greedy	0	14	1194	large_ge500	0	0	2.4274	16.3		True	True	False	False	True	-4.3551	False
+P1_greedy	0	15	123	medium_100_500	0	0	4.0935	10.5		False	False	False	False	True	-7.3171	False
+P1_greedy	0	16	93	small_lt100	0	0	0.68279	5		False	False	False	False	True	-11.828	False
+P1_greedy	0	18	16	small_lt100	0	0	0.92187	5		False	False	False	False	True	-18.75	False
+P1_greedy	1	1	1354	large_ge500	15	7.9386	8.5269	27.05	1.0741	True	True	True	False	True	5.3954	False
+P1_greedy	1	3	39	small_lt100	15	14.755	14.363	21.55	0.97344	True	True	True	True	True	0	False
+P1_greedy	1	5	49	small_lt100	25	25	32.162	45.475	1.2865	True	True	True	True	True	12.245	True
+P1_greedy	1	6	39	small_lt100	25	25	31.585	45.2	1.2634	True	False	True	True	True	7.6923	False
+P1_greedy	1	10	175	medium_100_500	40	39.843	47.835	72.8	1.2006	True	True	True	True	True	30.286	True
+P1_greedy	1	13	72	small_lt100	15	14.97	21.842	33.375	1.4591	True	True	True	True	True	6.9444	False
+P1_greedy	1	14	1194	large_ge500	40	34.783	35.652	58.7	1.025	True	False	True	True	True	31.933	True
+P1_greedy	1	17	58	small_lt100	25	25	31.34	45.75	1.2536	True	False	True	True	True	5.1724	False
+P1_greedy	1	2	94	small_lt100	0	-2.721	0.37008	10		False	False	False	False	True	-18.085	False
+P1_greedy	1	4	51	small_lt100	0	0	2.4919	10.512		False	False	False	False	True	-21.569	False
+P1_greedy	1	7	45	small_lt100	0	0	2.4506	15.25		True	False	False	False	True	-15.556	False
+P1_greedy	1	8	203	medium_100_500	0	-0.32177	2.2359	16.275		True	False	False	False	True	-2.9557	False
+P1_greedy	1	9	374	medium_100_500	0	0	8.821	21.275		True	True	False	False	True	-10.428	False
+P1_greedy	1	11	1063	large_ge500	0	0	0.97328	16.3		True	True	False	False	True	0.84986	False
+P1_greedy	1	12	15632	large_ge500	0	-0.0197	1.0734	27.05		True	True	False	False	True	-0.99156	False
+P1_greedy	1	15	123	medium_100_500	0	0	5.7442	15.775		True	True	False	False	True	-0.81301	False
+P1_greedy	1	16	93	small_lt100	0	0	-1.0699	5		False	False	False	False	True	-7.5269	False
+P1_greedy	1	18	16	small_lt100	0	0	-1.7594	5.25		False	False	False	False	True	-25	False
+P1_greedy	2	2	94	small_lt100	25	24.923	29.58	45.475	1.1869	True	True	True	True	True	7.4468	False
+P1_greedy	2	3	39	small_lt100	25	24.574	26.366	33.1	1.0729	True	True	True	True	True	-10.256	False
+P1_greedy	2	4	51	small_lt100	25	25	23.899	39.15	0.95597	True	True	True	True	True	35.294	True
+P1_greedy	2	6	39	small_lt100	15	14.707	24.849	33.375	1.6897	True	False	True	True	True	5.1282	False
+P1_greedy	2	8	203	medium_100_500	15	14.515	18.515	33.375	1.2756	True	False	True	True	True	10.837	True
+P1_greedy	2	9	374	medium_100_500	40	21.391	26.041	58.7	1.2173	True	True	True	True	True	18.717	True
+P1_greedy	2	13	72	small_lt100	40	39.911	45.134	59	1.1309	True	True	True	True	True	36.111	True
+P1_greedy	2	17	58	small_lt100	15	15	11.92	21.55	0.79466	True	False	True	True	True	0	False
+P1_greedy	2	1	1354	large_ge500	0	-0.035256	2.2421	16.3		True	True	False	False	True	-4.6529	False
+P1_greedy	2	5	49	small_lt100	0	-3.5189	1.448	15.5		True	False	False	False	True	-20.408	False
+P1_greedy	2	7	45	small_lt100	0	-4.4677	-4.5764	5.2625		False	False	False	False	True	-15.556	False
+P1_greedy	2	10	175	medium_100_500	0	0	6.4824	15.775		True	True	False	False	True	-2.2857	False
+P1_greedy	2	11	1063	large_ge500	0	-0.79974	0.42406	21.275		True	True	False	False	True	-5.5503	False
+P1_greedy	2	12	15632	large_ge500	0	-0.042707	0.76006	21.275		True	True	False	False	True	-0.58262	False
+P1_greedy	2	14	1194	large_ge500	0	0	3.3129	16.025		True	True	False	False	True	-4.6901	False
+P1_greedy	2	15	123	medium_100_500	0	0	4.0495	16.038		True	False	False	False	True	-1.626	False
+P1_greedy	2	16	93	small_lt100	0	0	0.036962	10.25		False	False	False	False	True	-4.3011	False
+P1_greedy	2	18	16	small_lt100	0	0	-3.7836	4.975		False	False	False	False	True	0	False
+P2_greedy	0	1	73	small_lt100	40	39.333	47.626	72.8	1.2108	True	True	True	True	True	35.616	True
+P2_greedy	0	2	109	medium_100_500	25	24.989	27.731	39.437	1.1098	True	False	True	True	True	1.8692	False
+P2_greedy	0	3	129	medium_100_500	15	14.959	30.353	52.375	2.0291	True	True	True	True	True	10.853	True
+P2_greedy	0	4	35	small_lt100	15	13.93	23.599	39.15	1.6942	True	True	True	True	True	2.8571	False
+P2_greedy	0	6	74	small_lt100	15	14.845	21.732	33.388	1.464	True	True	True	True	True	6.7568	False
+P2_greedy	0	7	201	medium_100_500	25	24.3	26.173	45.475	1.0771	True	False	True	True	True	25.373	True
+P2_greedy	0	10	151	medium_100_500	40	39.997	46.443	65.887	1.1612	True	True	True	True	True	47.02	True
+P2_greedy	0	15	76	small_lt100	25	25	29.456	45.475	1.1782	True	True	True	True	True	15.789	True
+P2_greedy	0	5	455	medium_100_500	0	-0.0013886	-0.96474	15.75		True	True	False	False	True	0.66225	False
+P2_greedy	0	8	144	medium_100_500	0	-6.3235	-0.8329	5		False	False	False	False	True	-17.361	False
+P2_greedy	0	9	48	small_lt100	0	0	0.81797	11		False	False	False	False	True	-18.75	False
+P2_greedy	0	11	250	medium_100_500	0	0	0.1327	15.5		True	False	False	False	True	-2	False
+P2_greedy	0	12	428	medium_100_500	0	0	3.9488	16.275		True	True	False	False	True	-4.2056	False
+P2_greedy	0	13	40	small_lt100	0	0	6.0075	15.5		True	False	False	False	True	-27.5	False
+P2_greedy	0	14	48	small_lt100	0	-0.51291	-2.3143	15.25		True	False	False	False	True	-20.833	False
+P2_greedy	1	1	73	small_lt100	15	14.403	22.34	33.1	1.551	True	True	True	True	True	27.397	True
+P2_greedy	1	2	109	medium_100_500	15	14.994	17.182	33.35	1.146	True	False	True	True	True	5.5046	False
+P2_greedy	1	4	35	small_lt100	25	24.465	43.79	58.4	1.7899	True	True	True	True	True	47.059	True
+P2_greedy	1	5	455	medium_100_500	25	24.961	28.15	39.437	1.1277	True	False	True	True	True	27.253	True
+P2_greedy	1	8	144	medium_100_500	40	40	49.452	65.6	1.2363	True	True	True	True	True	38.194	True
+P2_greedy	1	11	250	medium_100_500	15	14.998	17.659	33.1	1.1774	True	False	True	True	True	21.285	True
+P2_greedy	1	12	428	medium_100_500	40	34.508	33.346	58.987	0.96633	True	True	True	True	True	25.234	True
+P2_greedy	1	15	76	small_lt100	25	25	32.041	45.775	1.2816	True	True	True	True	True	6.5789	False
+P2_greedy	1	3	129	medium_100_500	0	0	11.733	21.288		True	False	False	True	True	-13.953	False
+P2_greedy	1	6	74	small_lt100	0	0	9.5883	27.625		True	True	False	True	True	0	False
+P2_greedy	1	7	201	medium_100_500	0	0	1.8282	16.025		True	False	False	False	True	0.49751	False
+P2_greedy	1	9	48	small_lt100	0	0	4.9479	21.325		True	True	False	False	True	0	False
+P2_greedy	1	10	151	medium_100_500	0	-4.2226	-3.6566	21.012		True	False	False	False	True	-9.9338	False
+P2_greedy	1	13	40	small_lt100	0	0	7.7744	15.762		True	False	False	False	True	-10	False
+P2_greedy	1	14	48	small_lt100	0	0	-6.4039	6.05		False	False	False	False	True	-14.583	False
+P2_greedy	2	2	109	medium_100_500	25	24.989	29.199	65.6	1.1685	True	False	True	True	True	0.91743	False
+P2_greedy	2	3	129	medium_100_500	25	24.928	41.481	65.6	1.664	True	True	True	True	True	22.481	True
+P2_greedy	2	4	35	small_lt100	25	25	38.154	58.125	1.5261	True	True	True	True	True	25.714	True
+P2_greedy	2	5	455	medium_100_500	15	14.977	19.322	39.15	1.2901	True	False	True	True	True	16.923	True
+P2_greedy	2	7	201	medium_100_500	15	13.679	18.813	38.575	1.3754	True	False	True	True	True	4.4776	False
+P2_greedy	2	11	250	medium_100_500	40	39.994	38.051	59	0.95143	True	False	True	True	True	41.6	True
+P2_greedy	2	14	48	small_lt100	40	39.764	47.553	65.788	1.1959	True	True	True	True	True	35.417	True
+P2_greedy	2	15	76	small_lt100	15	15	22.72	33.1	1.5146	True	False	True	True	True	5.2632	False
+P2_greedy	2	1	73	small_lt100	0	-0.43015	8.9998	21.8		True	True	False	False	True	-9.589	False
+P2_greedy	2	6	74	small_lt100	0	0	12.217	27.05		True	True	False	True	True	-16.216	False
+P2_greedy	2	8	144	medium_100_500	0	0	2.7703	16.3		True	True	False	False	True	0	False
+P2_greedy	2	9	48	small_lt100	0	0	11.803	32.825		True	False	False	True	True	-12.5	False
+P2_greedy	2	10	151	medium_100_500	0	-0.091771	-1.0287	16.025		True	False	False	False	True	0	False
+P2_greedy	2	12	428	medium_100_500	0	0	5.4581	21.55		True	True	False	False	True	-8.1776	False
+P2_greedy	2	13	40	small_lt100	0	0	5.1747	16.038		True	False	False	False	True	-5	False
+P3_greedy	0	3	100	medium_100_500	40	39.578	38.738	59	0.97876	True	True	True	True	True	36	True
+P3_greedy	0	5	67	small_lt100	25	25	24.25	39.15	0.96999	True	True	True	True	True	4.4776	False
+P3_greedy	0	6	30	small_lt100	15	15	13.155	21.275	0.87698	True	False	True	True	True	3.4483	False
+P3_greedy	0	12	108	medium_100_500	15	15	24.617	39.15	1.6411	True	True	True	True	True	8.3333	False
+P3_greedy	0	13	43	small_lt100	15	15	26.869	39.425	1.7913	True	True	True	True	True	-2.3256	False
+P3_greedy	0	17	62	small_lt100	25	24.977	30.671	39.15	1.228	True	True	True	True	True	9.6774	True
+P3_greedy	0	20	78	small_lt100	40	40	34.45	45.8	0.86125	True	True	True	True	True	17.949	True
+P3_greedy	0	23	52	small_lt100	25	25	33.623	45.475	1.3449	True	True	True	True	True	1.9231	False
+P3_greedy	0	1	6	small_lt100	0	0	-0.83333	0		False	False	False	False	True	-100	False
+P3_greedy	0	2	21	small_lt100	0	0	-8.1429	-4.75		False	False	False	False	True	-42.857	False
+P3_greedy	0	4	21	small_lt100	0	0	3.5696	5.25		False	False	False	False	True	-23.81	False
+P3_greedy	0	7	24	small_lt100	0	4.4831	1.999	10.25		False	False	False	False	True	-20.833	False
+P3_greedy	0	8	856	large_ge500	0	0	3.759	16.025		True	True	False	False	True	-7.7103	False
+P3_greedy	0	9	2	small_lt100	0	0	0	0		False	False	False	False	True	-100	False
+P3_greedy	0	10	64	small_lt100	0	-0.67607	3.4605	10.525		False	False	False	False	True	-39.062	False
+P3_greedy	0	11	78	small_lt100	0	0	1.4548	5.25		False	False	False	False	True	0	False
+P3_greedy	0	14	32	small_lt100	0	0	2.4457	5.25		False	False	False	False	True	0	False
+P3_greedy	0	15	77	small_lt100	0	0	-1.7305	10.5		False	False	False	False	True	-20.779	False
+P3_greedy	0	16	39	small_lt100	0	0	-1.25	5.25		False	False	False	False	True	-10.256	False
+P3_greedy	0	18	55	small_lt100	0	0	-0.19546	5		False	False	False	False	True	0	False
+P3_greedy	0	19	44	small_lt100	0	-1.5302	1.0142	10.25		False	False	False	False	True	-13.636	False
+P3_greedy	0	21	73	small_lt100	0	0	1.6255	10.75		False	False	False	False	True	0	False
+P3_greedy	0	22	45	small_lt100	0	0	1.6167	10.5		False	False	False	False	True	-4.4444	False
+P3_greedy	0	24	116	medium_100_500	0	0	3.8413	15.5		True	False	False	False	True	-9.4828	False
+P3_greedy	0	25	149	medium_100_500	0	0	4.695	16.025		True	False	False	False	True	-4.698	False
+P3_greedy	0	26	15	small_lt100	0	0	3.2833	5		False	False	False	False	True	-46.667	False
+P3_greedy	0	27	21	small_lt100	0	0	-5.844	0		False	False	False	False	True	-19.048	False
+P3_greedy	0	28	61	small_lt100	0	-1.3361	-2.6984	5		False	False	False	False	True	-16.393	False
+P3_greedy	0	29	117	medium_100_500	0	0	3.021	15.762		True	False	False	False	True	-18.803	False
+P3_greedy	0	30	2	small_lt100	0	0	2.3688	4.75		False	False	False	False	True	-100	False
+P3_greedy	0	31	28	small_lt100	0	0	0.29286	10.012		False	False	False	False	True	-14.286	False
+P3_greedy	0	32	45	small_lt100	0	0	4.0897	15.5		True	False	False	False	True	-17.778	False
+P3_greedy	0	33	47	small_lt100	0	0	-1.087	5		False	False	False	False	True	-6.5217	False
+P3_greedy	0	34	17	small_lt100	0	0	-0.057354	10.75		False	False	False	False	True	-100	False
+P3_greedy	0	35	72	small_lt100	0	0	1.3644	5		False	False	False	False	True	-20.833	False
+P3_greedy	0	36	18	small_lt100	0	0	3.2653	5		False	False	False	False	True	-27.778	False
+P3_greedy	0	37	14	small_lt100	0	0	-0.39286	5.25		False	False	False	False	True	-100	False
+P3_greedy	0	38	55	small_lt100	0	0	1.1818	5		False	False	False	False	True	-16.364	False
+P3_greedy	0	39	69	small_lt100	0	0	2.7201	16		True	False	False	False	True	-18.841	False
+P3_greedy	0	40	18	small_lt100	0	0	-1.6528	0		False	False	False	False	True	-16.667	False
+P3_greedy	0	41	138	medium_100_500	0	0	0.92971	10		False	False	False	False	True	-5.0725	False
+P3_greedy	1	3	100	medium_100_500	15	14.858	16.55	33.1	1.1139	True	False	True	True	True	19	True
+P3_greedy	1	8	856	large_ge500	15	9.7677	13.83	33.1	1.4159	True	True	True	True	True	8.1776	False
+P3_greedy	1	15	77	small_lt100	25	25	24.619	45.75	0.98475	True	True	True	True	True	11.688	True
+P3_greedy	1	17	62	small_lt100	25	24.977	30.075	39.15	1.2041	True	False	True	True	True	4.8387	False
+P3_greedy	1	23	52	small_lt100	40	40	50.386	58.7	1.2596	True	True	True	True	True	23.077	True
+P3_greedy	1	32	45	small_lt100	15	15	26.174	39.15	1.7449	True	False	True	True	True	11.111	True
+P3_greedy	1	39	69	small_lt100	40	40	48.37	65.6	1.2093	True	True	True	True	True	17.391	True
+P3_greedy	1	41	138	medium_100_500	25	24.997	22.722	39.15	0.90898	True	True	True	True	True	39.13	True
+P3_greedy	1	1	6	small_lt100	0	0	-3.3333	0		False	False	False	False	True	-16.667	False
+P3_greedy	1	2	21	small_lt100	0	0	-5.631	0		False	False	False	False	True	-9.5238	False
+P3_greedy	1	4	21	small_lt100	0	0	0.55952	5		False	False	False	False	True	-14.286	False
+P3_greedy	1	5	67	small_lt100	0	0	4.0634	10.5		False	False	False	False	True	0	False
+P3_greedy	1	6	30	small_lt100	0	0	0.024582	10.25		False	False	False	False	True	-16.667	False
+P3_greedy	1	7	24	small_lt100	0	0	1.6771	10.25		False	False	False	False	True	0	False
+P3_greedy	1	9	2	small_lt100	0	0	5	5		False	False	False	False	True	-100	False
+P3_greedy	1	10	64	small_lt100	0	0	4.7936	15.5		True	False	False	False	True	-25	False
+P3_greedy	1	11	78	small_lt100	0	0	-0.69231	5.25		False	False	False	False	True	-12.821	False
+P3_greedy	1	12	108	medium_100_500	0	0	3.0924	16.55		True	True	False	False	True	-7.4074	False
+P3_greedy	1	13	43	small_lt100	0	0	3.4166	15.212		True	False	False	False	True	-18.605	False
+P3_greedy	1	14	32	small_lt100	0	0	-3.0574	5.2625		False	False	False	False	True	-28.125	False
+P3_greedy	1	16	39	small_lt100	0	0	-0.2125	5.25		False	False	False	False	True	-25.641	False
+P3_greedy	1	18	55	small_lt100	0	0	-2.7323	4.75		False	False	False	False	True	-14.545	False
+P3_greedy	1	19	44	small_lt100	0	0	0.57415	5.25		False	False	False	False	True	-25	False
+P3_greedy	1	20	78	small_lt100	0	0	-1.3494	5		False	False	False	False	True	-7.6923	False
+P3_greedy	1	21	73	small_lt100	0	0	2.8668	10.25		False	False	False	False	True	-10.959	False
+P3_greedy	1	22	45	small_lt100	0	0	-0.82778	0.25001		False	False	False	False	True	-17.778	False
+P3_greedy	1	24	116	medium_100_500	0	-0.074873	2.8202	16.05		True	True	False	False	True	-4.3478	False
+P3_greedy	1	25	149	medium_100_500	0	0	8.4589	27.85		True	False	False	False	True	0	False
+P3_greedy	1	26	15	small_lt100	0	0	7.2308	10.5		False	False	False	False	True	-26.667	False
+P3_greedy	1	27	21	small_lt100	0	0	-8.3006	-0.25		False	False	False	False	True	-23.81	False
+P3_greedy	1	28	61	small_lt100	0	-1.9031	-1.5922	11.012		False	False	False	False	True	-6.5574	False
+P3_greedy	1	29	117	medium_100_500	0	0	1.9448	16.3		True	False	False	False	True	-5.9829	False
+P3_greedy	1	30	2	small_lt100	0	0	2.375	5		False	False	False	False	True	-100	False
+P3_greedy	1	31	28	small_lt100	0	0	3.3737	10.5		False	False	False	False	True	-7.1429	False
+P3_greedy	1	33	47	small_lt100	0	0	-2.0266	5		False	False	False	False	True	0	False
+P3_greedy	1	34	17	small_lt100	0	-0.50883	3.1007	10.25		False	False	False	False	True	-5.8824	False
+P3_greedy	1	35	72	small_lt100	0	0	3.4823	10.5		False	False	False	False	True	-6.9444	False
+P3_greedy	1	36	18	small_lt100	0	0	8.5847	15.775		False	False	False	False	True	-11.111	False
+P3_greedy	1	37	14	small_lt100	0	0	1.4464	5.25		False	False	False	False	True	-42.857	False
+P3_greedy	1	38	55	small_lt100	0	0	2.5352	10.512		False	False	False	False	True	-5.4545	False
+P3_greedy	1	40	18	small_lt100	0	0	-2.7632	5		False	False	False	False	True	-16.667	False
+P3_greedy	2	6	30	small_lt100	25	25	27.811	33.388	1.1125	True	True	True	True	True	10	True
+P3_greedy	2	11	78	small_lt100	25	24.055	24.54	38.575	1.0201	True	True	True	True	True	0	False
+P3_greedy	2	13	43	small_lt100	25	25	35.875	51.85	1.435	True	False	True	True	True	9.3023	True
+P3_greedy	2	16	39	small_lt100	15	12.531	12.113	33.1	0.96666	True	False	True	True	True	-5.1282	False
+P3_greedy	2	18	55	small_lt100	15	13.187	8.7232	27.05	0.66148	True	False	True	False	True	5.4545	False
+P3_greedy	2	23	52	small_lt100	40	40	47.2	58.7	1.18	True	True	True	True	True	28.846	True
+P3_greedy	2	29	117	medium_100_500	40	31.881	33.994	58.7	1.0663	True	True	True	True	True	9.4017	True
+P3_greedy	2	41	138	medium_100_500	15	14.998	13.499	21.275	0.90002	True	True	True	True	True	7.971	False
+P3_greedy	2	1	6	small_lt100	0	0	-1.6667	5		False	False	False	False	True	-100	False
+P3_greedy	2	2	21	small_lt100	0	0	-3.119	0		False	False	False	False	True	-19.048	False
+P3_greedy	2	3	100	medium_100_500	0	0	0.45987	15.75		True	False	False	False	True	-5	False
+P3_greedy	2	4	21	small_lt100	0	0	-0.1375	10.25		False	False	False	False	True	-14.286	False
+P3_greedy	2	5	67	small_lt100	0	0	3.0259	15.5		True	False	False	False	True	-14.925	False
+P3_greedy	2	7	24	small_lt100	0	0	3.8661	16.025		True	False	False	False	True	-20.833	False
+P3_greedy	2	8	856	large_ge500	0	0	3.4963	16.3		True	True	False	False	True	-3.271	False
+P3_greedy	2	9	2	small_lt100	0	0	7.375	10		False	False	False	False	True	-100	False
+P3_greedy	2	10	64	small_lt100	0	0	4.6402	15.762		True	False	False	False	True	-15.625	False
+P3_greedy	2	12	108	medium_100_500	0	0	3.8615	15.762		True	False	False	False	True	-12.037	False
+P3_greedy	2	14	32	small_lt100	0	2.6793	0.39102	10		False	False	False	False	True	-18.75	False
+P3_greedy	2	15	77	small_lt100	0	0	-0.65909	5		False	False	False	False	True	-1.2987	False
+P3_greedy	2	17	62	small_lt100	0	0	5.271	16.025		True	False	False	False	True	-1.6129	False
+P3_greedy	2	19	44	small_lt100	0	0	-2.017	5.25		False	False	False	False	True	-9.0909	False
+P3_greedy	2	20	78	small_lt100	0	0	-0.66907	5.2625		False	False	False	False	True	-8.9744	False
+P3_greedy	2	21	73	small_lt100	0	0	3.7329	10.5		False	False	False	False	True	0	False
+P3_greedy	2	22	45	small_lt100	0	0	0.21111	5		False	False	False	False	True	0	False
+P3_greedy	2	24	116	medium_100_500	0	-1.7396	0.63146	16.025		True	True	False	False	True	-10.345	False
+P3_greedy	2	25	149	medium_100_500	0	0	6.8508	16.288		True	True	False	False	True	-2.0134	False
+P3_greedy	2	26	15	small_lt100	0	0	6.4333	10.25		False	False	False	False	True	0	False
+P3_greedy	2	27	21	small_lt100	0	0	-3.025	0		False	False	False	False	True	0	False
+P3_greedy	2	28	61	small_lt100	0	-1.9031	-0.43197	10.5		False	False	False	False	True	-14.754	False
+P3_greedy	2	30	2	small_lt100	0	-8.8741	4.4687	9.45		False	False	False	False	True	-100	False
+P3_greedy	2	31	28	small_lt100	0	0	-2.7232	5		False	False	False	False	True	-14.286	False
+P3_greedy	2	32	45	small_lt100	0	0	2.7936	10.25		False	False	False	False	True	-17.778	False
+P3_greedy	2	33	47	small_lt100	0	0	-1.7032	5		False	False	False	False	True	-8.5106	False
+P3_greedy	2	34	17	small_lt100	0	0	-0.4	15.762		False	False	False	False	True	-23.529	False
+P3_greedy	2	35	72	small_lt100	0	0	0.079687	5		False	False	False	False	True	-4.1667	False
+P3_greedy	2	36	18	small_lt100	0	0	5.3472	10.5		False	False	False	False	True	-27.778	False
+P3_greedy	2	37	14	small_lt100	0	0	0.99911	5		False	False	False	False	True	-28.571	False
+P3_greedy	2	38	55	small_lt100	0	0	-0.79546	10.25		False	False	False	False	True	-16.364	False
+P3_greedy	2	39	69	small_lt100	0	0	0.42772	10.55		False	False	False	False	True	-2.8986	False
+P3_greedy	2	40	18	small_lt100	0	0	0	0		False	False	False	False	True	-55.556	False

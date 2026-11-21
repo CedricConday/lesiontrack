@@ -1,0 +1,2073 @@
+subject	group_id	class	n_voxels	pct_per_year	expert_changed	jacobian_mean_pct_per_year
+patient01	1	resolved	27	-179.92	False	-23.273
+patient01	2	shrinking	28	-104.95	False	66.338
+patient01	3	resolved	20	-179.92	False	9.8349
+patient01	4	resolved	20	-179.92	False	3.4185
+patient01	5	enlarging	10	719.68	False	-7.7141
+patient01	6	resolved	1	-179.92	False	-17.542
+patient01	7	shrinking	30	-130.29	False	-16.695
+patient01	8	resolved	2	-179.92	False	-8.3213
+patient01	9	resolved	3	-179.92	False	-6.2972
+patient01	10	resolved	1	-179.92	False	8.996
+patient01	11	resolved	1	-179.92	False	8.996
+patient01	12	resolved	9	-179.92	False	-15.851
+patient01	13	resolved	3	-179.92	False	-3.1486
+patient01	14	stable	5	0	False	74.525
+patient01	15	resolved	1	-179.92	False	-18.802
+patient01	16	resolved	3	-179.92	False	1.1395
+patient01	17	resolved	6	-179.92	False	7.4105
+patient01	18	resolved	1	-179.92	False	8.996
+patient01	19	new	3		False	
+patient01	20	new	5		False	
+patient01	21	new	5		False	
+patient01	22	new	1		False	
+patient01	23	new	4		False	
+patient01	24	new	14		False	
+patient01	25	adjacent_fragment	13		False	
+patient01	26	new	13		False	
+patient01	27	new	1		False	
+patient01	28	new	44		True	
+patient01	29	new	22		True	
+patient01	30	new	1		False	
+patient01	31	new	1		False	
+patient01	32	new	33		True	
+patient01	33	new	23		False	
+patient01	34	new	896		True	
+patient01	35	new	1		False	
+patient02	1	shrinking	68	-10.755	False	-23.687
+patient02	2	resolved	5	-129.07	False	4.7141
+patient02	3	resolved	2	-129.07	False	-18.876
+patient02	4	resolved	1	-129.07	False	4.84
+patient02	5	resolved	1	-129.07	False	12.552
+patient02	6	shrinking	6	-77.439	False	-19.06
+patient02	7	resolved	6	-129.07	True	-13.407
+patient02	8	enlarging	23	99.281	False	4.8362
+patient02	9	shrinking	200	-71.631	True	-45.357
+patient02	10	resolved	24	-129.07	False	-19.443
+patient02	11	resolved	81	-129.07	False	-48.764
+patient02	12	resolved	1	-129.07	False	-3.388
+patient02	13	resolved	2	-129.07	False	-8.841
+patient02	14	resolved	3	-129.07	False	-0.43022
+patient02	15	resolved	3	-129.07	False	18.193
+patient02	16	shrinking	13	-58.666	False	-12.946
+patient02	17	new	55		False	
+patient02	18	new	114		True	
+patient02	19	new	3		False	
+patient02	20	new	3		False	
+patient02	21	new	4		False	
+patient03	1	enlarging	23	10.887	False	-6.8301
+patient03	2	enlarging	1452	61.058	True	5.0494
+patient03	3	shrinking	47	-35.079	False	-0.38935
+patient03	4	resolved	1	-54.434	False	8.6958
+patient03	5	enlarging	25	10.368	True	-3.187
+patient03	6	enlarging	206	47.377	True	-9.1178
+patient03	7	trend_down	113	-5.3835	True	-3.8937
+patient03	8	resolved	3	-54.434	False	4.5361
+patient03	9	trend_up	10	7.7762	False	-3.6947
+patient03	10	trend_up	136	5.1352	False	-8.8813
+patient03	11	trend_up	17	8.3744	True	3.9878
+patient03	12	shrinking	31	-36.874	False	-3.5959
+patient03	13	stable	70	1.8452	True	-2.5726
+patient03	14	enlarging	23	19.441	True	2.6993
+patient03	15	stable	994	2.0565	True	-7.4728
+patient03	16	shrinking	88	-14.904	False	-7.4428
+patient03	17	enlarging	991	25.292	True	-12.101
+patient03	18	trend_up	28	8.165	False	5.4713
+patient03	19	enlarging	34	51.232	False	-3.0155
+patient03	20	enlarging	308	43.887	False	3.4832
+patient03	21	resolved	14	-54.434	False	1.545
+patient03	22	shrinking	17	-21.773	False	-8.4195
+patient03	23	resolved	1	-54.434	False	-3.5382
+patient03	24	new	21		True	
+patient03	25	new	1		True	
+patient03	26	new	3		False	
+patient03	27	new	43		True	
+patient03	28	new	1		False	
+patient03	29	new	13		True	
+patient03	30	new	8		False	
+patient03	31	new	4		False	
+patient03	32	new	18		True	
+patient03	33	new	7		False	
+patient03	34	new	28		False	
+patient03	35	new	1		False	
+patient03	36	new	4		False	
+patient03	37	new	1		False	
+patient03	38	new	1		True	
+patient03	39	new	18		False	
+patient03	40	new	3		False	
+patient03	41	new	9		False	
+patient03	42	new	21		True	
+patient03	43	new	60		True	
+patient03	44	new	28		True	
+patient03	45	new	63		False	
+patient03	46	new	165		True	
+patient03	47	new	6		False	
+patient03	48	new	2		False	
+patient03	49	new	5		False	
+patient03	50	new	13		False	
+patient03	51	new	18		False	
+patient03	52	new	3		False	
+patient03	53	new	1		False	
+patient03	54	new	7		False	
+patient03	55	new	25		False	
+patient03	56	new	8		True	
+patient03	57	new	1		False	
+patient03	58	new	44		True	
+patient03	59	new	1		False	
+patient03	60	new	4		False	
+patient03	61	new	1		False	
+patient03	62	new	31		False	
+patient03	63	new	1		False	
+patient03	64	new	9		False	
+patient03	65	new	4		False	
+patient03	66	new	5		False	
+patient04	1	resolved	23	-235.63	False	8.7886
+patient04	2	resolved	4	-235.63	False	14.233
+patient04	3	resolved	8	-235.63	False	11.619
+patient04	4	resolved	7	-235.63	False	9.8374
+patient04	5	enlarging	34	380.63	False	-4.7329
+patient04	6	resolved	1	-235.63	False	13.077
+patient04	7	resolved	50	-235.63	False	7.037
+patient04	8	resolved	3	-235.63	False	-20.146
+patient04	9	resolved	2	-235.63	False	34.946
+patient04	10	resolved	1	-235.63	False	-11.222
+patient04	11	resolved	10	-235.63	False	14.509
+patient04	12	resolved	1	-235.63	False	8.9243
+patient04	13	resolved	2	-235.63	False	23.563
+patient04	14	resolved	7	-235.63	False	16.351
+patient04	15	trend_up	6	117.81	False	-39.232
+patient04	16	resolved	1	-235.63	False	-24.741
+patient04	17	new	13		False	
+patient04	18	new	1		False	
+patient04	19	new	1		False	
+patient04	20	new	1		False	
+patient04	21	new	1		True	
+patient04	22	new	3		False	
+patient05	1	enlarging	30	13.731	False	22.478
+patient05	2	resolved	2	-96.117	False	-2.4029
+patient05	3	resolved	1	-96.117	False	4.5295
+patient05	4	enlarging	316	34.637	False	7.7988
+patient05	5	enlarging	225	113.42	False	3.9964
+patient05	6	trend_down	22	-6.0073	False	30.234
+patient05	7	resolved	10	-96.117	False	-13.522
+patient05	8	trend_up	15	17.476	False	0.024029
+patient05	9	shrinking	27	-48.058	True	-7.3164
+patient05	10	enlarging	427	25.612	True	23.619
+patient05	11	enlarging	1350	467.46	True	-7.3
+patient05	12	shrinking	928	-17.528	False	-0.95597
+patient05	13	enlarging	15	32.039	False	-2.7206
+patient05	14	resolved	2	-96.117	False	-1.3216
+patient05	15	resolved	4	-96.117	False	-25.276
+patient05	16	resolved	1	-96.117	False	-0.25231
+patient05	17	resolved	1	-96.117	False	-4.8058
+patient05	18	resolved	16	-96.117	False	-1.842
+patient05	19	enlarging	89	25.138	False	7.8535
+patient05	20	trend_up	2	96.117	False	4.8058
+patient05	21	stable	283	1.5257	False	0.6598
+patient05	22	resolved	8	-96.117	False	-3.7576
+patient05	23	shrinking	37	-9.9431	False	14.358
+patient05	24	shrinking	10	-48.058	False	3.1899
+patient05	25	enlarging	25	170.87	False	16.632
+patient05	26	trend_down	2	-48.058	False	1.9103
+patient05	27	enlarging	208	74.758	False	17.116
+patient05	28	enlarging	112	119.18	False	15.763
+patient05	29	trend_down	7	-16.019	False	3.0777
+patient05	30	resolved	4	-96.117	False	-0.060074
+patient05	31	resolved	5	-96.117	False	-3.8687
+patient05	32	resolved	5	-96.117	False	-1.9247
+patient05	33	resolved	1	-96.117	False	-4.3373
+patient05	34	resolved	1	-96.117	False	19.187
+patient05	35	new	1		False	
+patient05	36	new	1		False	
+patient05	37	new	5		False	
+patient05	38	new	1		False	
+patient05	39	new	2		False	
+patient05	40	new	3		False	
+patient05	41	new	6		False	
+patient05	42	new	2		False	
+patient05	43	new	1		False	
+patient05	44	new	21		False	
+patient05	45	new	2		False	
+patient05	46	new	4		False	
+patient05	47	new	4		False	
+patient05	48	new	5		False	
+patient05	49	new	1		False	
+patient05	50	new	21		False	
+patient05	51	new	61		False	
+patient05	52	new	3		True	
+patient05	53	new	26		False	
+patient05	54	new	4		False	
+patient05	55	new	4		False	
+patient05	56	new	1		False	
+patient05	57	new	105		False	
+patient05	58	new	1		False	
+patient05	59	new	17		False	
+patient05	60	new	3		False	
+patient05	61	new	10		False	
+patient05	62	new	14		False	
+patient05	63	new	5		False	
+patient05	64	new	20		False	
+patient06	1	resolved	5	-77.22	False	-2.7606
+patient06	2	resolved	3	-77.22	False	-7.3295
+patient06	3	resolved	1	-77.22	False	-7.3359
+patient06	4	resolved	4	-77.22	False	-3.2239
+patient06	5	shrinking	57	-50.125	True	-8.4945
+patient06	6	resolved	1	-77.22	False	-21.1
+patient06	7	resolved	1	-77.22	False	-0.7722
+patient06	8	shrinking	49	-24.385	False	1.2584
+patient06	9	resolved	5	-77.22	False	21.263
+patient06	10	shrinking	44	-10.161	False	5.1527
+patient06	11	resolved	1	-77.22	False	-7.529
+patient06	12	resolved	6	-77.22	False	-2.6367
+patient06	13	resolved	3	-77.22	False	7.973
+patient06	14	resolved	1	-77.22	False	-3.0695
+patient06	15	resolved	10	-77.22	True	-10.937
+patient06	16	shrinking	398	-24.131	True	-13.162
+patient06	17	resolved	16	-77.22	False	-6.0895
+patient06	18	resolved	3	-77.22	False	-18.771
+patient06	19	resolved	22	-77.22	False	-8.4639
+patient06	20	resolved	7	-77.22	False	-8.8665
+patient06	21	resolved	6	-77.22	False	-4.9566
+patient06	22	stable	210	-3.5709	True	-8.7415
+patient06	23	trend_up	221	8.7254	True	-3.4332
+patient06	24	resolved	9	-77.22	False	-1.1422
+patient06	25	enlarging	526	48.87	True	13.291
+patient06	26	shrinking	16	-67.568	False	-9.3147
+patient06	27	resolved	1	-77.22	False	6.0811
+patient06	28	resolved	2	-77.22	False	1.2452
+patient06	29	resolved	1	-77.22	False	3.668
+patient06	30	resolved	11	-77.22	False	2.185
+patient06	31	resolved	2	-77.22	False	6.2548
+patient06	32	resolved	13	-77.22	False	-9.6607
+patient06	33	resolved	1	-77.22	False	-3.8996
+patient06	34	shrinking	9	-42.9	False	16.306
+patient06	35	resolved	1	-77.22	False	11.988
+patient06	36	resolved	4	-77.22	False	7.6593
+patient06	37	resolved	1	-77.22	True	7.3166
+patient06	38	resolved	2	-77.22	False	11.583
+patient06	39	resolved	3	-77.22	True	-9.4788
+patient06	40	resolved	4	-77.22	False	-1.3755
+patient06	41	resolved	1	-77.22	True	7.5097
+patient06	42	resolved	3	-77.22	False	-7.5933
+patient06	43	resolved	2	-77.22	False	1.6409
+patient06	44	resolved	1	-77.22	False	-10.849
+patient06	45	resolved	7	-77.22	False	-12.477
+patient06	46	resolved	18	-77.22	False	-5.4279
+patient06	47	resolved	12	-77.22	False	-1.1237
+patient06	48	resolved	108	-77.22	True	7.0755
+patient06	49	shrinking	133	-72.504	True	-7.8458
+patient06	50	shrinking	82	-70.2	True	0.096399
+patient06	51	resolved	4	-77.22	False	-3.7669
+patient06	52	resolved	6	-77.22	False	24.229
+patient06	53	resolved	120	-77.22	True	-15.968
+patient06	54	resolved	4	-77.22	False	-2.3745
+patient06	55	shrinking	139	-66.665	True	-25.323
+patient06	56	enlarging	570	185.94	True	31.36
+patient06	57	resolved	4	-77.22	False	-1.8847
+patient06	58	resolved	1	-77.22	False	7.5097
+patient06	59	resolved	7	-77.22	False	-0.55157
+patient06	60	shrinking	18	-42.9	False	-6.0146
+patient06	61	shrinking	38	-36.465	False	-16.042
+patient06	62	resolved	10	-77.22	False	12.127
+patient06	63	resolved	3	-77.22	False	0
+patient06	64	shrinking	91	-43.492	False	-5.5891
+patient06	65	resolved	15	-77.22	False	5.0032
+patient06	66	resolved	5	-77.22	False	-3.1718
+patient06	67	resolved	1	-77.22	False	-11.573
+patient06	68	enlarging	206	41.061	True	-1.0989
+patient06	69	resolved	10	-77.22	False	-12.131
+patient06	70	resolved	7	-77.22	False	-7.7041
+patient06	71	resolved	9	-77.22	False	5.2488
+patient06	72	resolved	18	-77.22	False	-19.765
+patient06	73	resolved	17	-77.22	False	-5.0891
+patient06	74	resolved	4	-77.22	False	-17.628
+patient06	75	resolved	17	-77.22	False	-1.1617
+patient06	76	resolved	4	-77.22	False	-0.96525
+patient06	77	resolved	8	-77.22	False	20.279
+patient06	78	resolved	19	-77.22	True	-1.676
+patient06	79	resolved	2	-77.22	False	1.0859
+patient06	80	resolved	1	-77.22	False	-11.014
+patient06	81	resolved	7	-77.22	False	-10.456
+patient06	82	resolved	1	-77.22	False	-0.80116
+patient06	83	resolved	11	-77.22	False	-8.7891
+patient06	84	resolved	1	-77.22	False	-14.122
+patient06	85	resolved	1	-77.22	False	-14.498
+patient06	86	resolved	2	-77.22	False	-14.768
+patient06	87	resolved	4	-77.22	False	-0.22201
+patient06	88	resolved	7	-77.22	False	-6.0094
+patient06	89	resolved	7	-77.22	False	12.068
+patient06	90	resolved	8	-77.22	False	9.0287
+patient06	91	resolved	1	-77.22	False	-7.6834
+patient06	92	resolved	9	-77.22	False	-5.1523
+patient06	93	resolved	1	-77.22	False	-14.073
+patient06	94	resolved	3	-77.22	False	9.3147
+patient06	95	resolved	1	-77.22	False	-0.74324
+patient06	96	resolved	1	-77.22	False	-8.0695
+patient06	97	resolved	1	-77.22	False	-14.672
+patient06	98	resolved	37	-77.22	False	-17.161
+patient06	99	resolved	2	-77.22	False	12.066
+patient06	100	resolved	2	-77.22	False	10.956
+patient06	101	resolved	3	-77.22	False	22.307
+patient06	102	resolved	3	-77.22	False	-10.093
+patient06	103	new	4		False	
+patient06	104	new	2		False	
+patient06	105	new	3		False	
+patient06	106	adjacent_fragment	1		False	
+patient06	107	new	6		False	
+patient06	108	new	19		True	
+patient06	109	new	2		False	
+patient06	110	new	1		False	
+patient06	111	new	1		False	
+patient06	112	new	4		True	
+patient06	113	new	9		True	
+patient06	114	new	12		True	
+patient06	115	new	2		False	
+patient06	116	new	1		False	
+patient06	117	new	1		True	
+patient06	118	new	10		True	
+patient06	119	new	2		False	
+patient06	120	new	2		False	
+patient06	121	new	1		False	
+patient06	122	new	11		False	
+patient06	123	new	1		False	
+patient06	124	new	5		False	
+patient06	125	new	13		True	
+patient06	126	new	2		False	
+patient06	127	new	4		False	
+patient06	128	new	2		False	
+patient07	1	resolved	4	-115.22	False	0.94337
+patient07	2	resolved	9	-115.22	False	-12.417
+patient07	3	resolved	11	-115.22	False	-12.469
+patient07	4	shrinking	105	-18.125	True	-4.9239
+patient07	5	resolved	2	-115.22	False	-18.63
+patient07	6	resolved	15	-115.22	False	2.3611
+patient07	7	shrinking	28	-59.744	False	-9.4614
+patient07	8	shrinking	78	-13.966	False	7.9518
+patient07	9	shrinking	191	-29.144	False	-16.873
+patient07	10	enlarging	70	32.61	False	-3.1466
+patient07	11	trend_up	13	28.805	False	3.4224
+patient07	12	resolved	3	-115.22	False	22.295
+patient07	13	trend_up	13	28.805	False	3.237
+patient07	14	stable	4505	3.6528	True	-7.2182
+patient07	15	shrinking	33	-27.653	False	-5.3802
+patient07	16	enlarging	24	38.407	False	-15.755
+patient07	17	resolved	2	-115.22	False	11.63
+patient07	18	shrinking	31	-65.292	False	-14.822
+patient07	19	trend_down	32	-4.2674	False	2.3967
+patient07	20	shrinking	93	-40.589	False	-3.2861
+patient07	21	stable	39	-3.9731	False	2.5746
+patient07	22	trend_up	7	28.805	False	7.9934
+patient07	23	shrinking	5	-92.177	False	-6.1067
+patient07	24	resolved	4	-115.22	False	15.609
+patient07	25	trend_down	25	-10.973	False	2.8908
+patient07	26	shrinking	23	-52.373	False	-10.898
+patient07	27	enlarging	13	72.013	False	-14.973
+patient07	28	resolved	1	-115.22	False	0.28806
+patient07	29	resolved	2	-115.22	False	-0.72013
+patient07	30	shrinking	26	-26.187	False	0.016365
+patient07	31	shrinking	152	-73.741	True	-22.326
+patient07	32	shrinking	80	-51.546	False	-4.6003
+patient07	33	shrinking	7	-49.38	False	1.3847
+patient07	34	trend_down	6	-38.407	False	-13.236
+patient07	35	shrinking	20	-27.111	False	-4.2691
+patient07	36	shrinking	8	-49.38	False	14.968
+patient07	37	shrinking	24	-40.327	False	14.279
+patient07	38	resolved	1	-115.22	False	5.7898
+patient07	39	resolved	1	-115.22	False	-11.522
+patient07	40	shrinking	54	-83.591	False	-21.048
+patient07	41	shrinking	19	-51.209	False	2.3828
+patient07	42	stable	4	0	False	3.1542
+patient07	43	resolved	2	-115.22	False	8.7856
+patient07	44	resolved	17	-115.22	False	9.3024
+patient07	45	resolved	1	-115.22	False	-11.234
+patient07	46	shrinking	11	-80.654	False	-10.904
+patient07	47	enlarging	92	13.359	False	3.1828
+patient07	48	resolved	2	-115.22	False	-0.050409
+patient07	49	resolved	1	-115.22	False	0.84975
+patient07	50	resolved	2	-115.22	False	13.754
+patient07	51	resolved	7	-115.22	False	-4.22
+patient07	52	trend_down	27	-10.973	True	0.1694
+patient07	53	resolved	3	-115.22	False	24.868
+patient07	54	resolved	7	-115.22	False	3.2961
+patient07	55	resolved	2	-115.22	False	6.0491
+patient07	56	shrinking	15	-65.84	False	1.504
+patient07	57	resolved	4	-115.22	False	-34.293
+patient07	58	stable	48	-3.3888	True	-4.8524
+patient07	59	resolved	6	-115.22	False	7.8878
+patient07	60	shrinking	121	-32.061	False	-13.03
+patient07	61	resolved	2	-115.22	False	-10.773
+patient07	62	enlarging	13	82.3	False	9.6641
+patient07	63	resolved	2	-115.22	False	5.9123
+patient07	64	resolved	1	-115.22	False	6.0491
+patient07	65	resolved	2	-115.22	False	6.1139
+patient07	66	resolved	2	-115.22	False	-30.807
+patient07	67	resolved	45	-115.22	False	-7.9301
+patient07	68	shrinking	89	-18.267	False	-12.726
+patient07	69	resolved	3	-115.22	False	2.362
+patient07	70	trend_down	8	-16.46	False	-10.39
+patient07	71	shrinking	16	-46.088	False	-2.8027
+patient07	72	shrinking	10	-51.209	False	-8.1487
+patient07	73	resolved	14	-115.22	False	5.046
+patient07	74	shrinking	10	-57.61	False	11.09
+patient07	75	stable	24	0	False	1.1042
+patient07	76	shrinking	216	-13.412	True	-25.233
+patient07	77	trend_down	8	-32.92	False	-18.444
+patient07	78	shrinking	34	-28.805	False	13.326
+patient07	79	shrinking	7	-98.761	False	4.8886
+patient07	80	resolved	1	-115.22	False	0.25924
+patient07	81	shrinking	13	-34.566	False	-1.6549
+patient07	82	resolved	3	-115.22	False	-4.6328
+patient07	83	stable	15	0	False	-1.1404
+patient07	84	enlarging	90	47.323	False	-8.0297
+patient07	85	resolved	6	-115.22	False	-21.165
+patient07	86	resolved	1	-115.22	False	-8.4399
+patient07	87	trend_up	12	11.522	False	4.7327
+patient07	88	resolved	6	-115.22	False	-7.1965
+patient07	89	trend_down	13	-19.203	False	-12.264
+patient07	90	shrinking	38	-22.301	False	-10.198
+patient07	91	trend_down	5	-57.61	False	-6.546
+patient07	92	shrinking	16	-50.409	True	-41.114
+patient07	93	resolved	1	-115.22	True	-11.508
+patient07	94	resolved	1	-115.22	False	-28.215
+patient07	95	shrinking	15	-26.589	False	-6.5476
+patient07	96	resolved	85	-115.22	False	-3.3182
+patient07	97	stable	9	0	False	-0.32226
+patient07	98	shrinking	23	-93.274	False	0.28531
+patient07	99	resolved	12	-115.22	False	2.4844
+patient07	100	resolved	3	-115.22	False	1.6227
+patient07	101	resolved	2	-115.22	False	-0.28805
+patient07	102	resolved	7	-115.22	False	-40.556
+patient07	103	resolved	32	-115.22	True	-20.926
+patient07	104	resolved	22	-115.22	False	-9.7309
+patient07	105	resolved	14	-115.22	True	13.051
+patient07	106	trend_down	2950	-6.8887	True	-5.3352
+patient07	107	resolved	2	-115.22	False	-14.727
+patient07	108	resolved	8	-115.22	False	-13.816
+patient07	109	resolved	2	-115.22	False	-11.378
+patient07	110	resolved	1	-115.22	False	-0.28805
+patient07	111	resolved	4	-115.22	False	-4.6052
+patient07	112	resolved	26	-115.22	False	4.4016
+patient07	113	shrinking	14	-88.631	False	-2.2357
+patient07	114	shrinking	11	-92.177	False	10.544
+patient07	115	resolved	4	-115.22	False	-21.899
+patient07	116	trend_up	30	12.802	False	-7.1045
+patient07	117	resolved	2	-115.22	False	-8.3535
+patient07	118	resolved	3	-115.22	False	-2.0164
+patient07	119	trend_down	26	-10.475	False	-8.3319
+patient07	120	stable	12	0	False	4.7298
+patient07	121	trend_up	112	7.6814	False	-5.1216
+patient07	122	shrinking	24	-34.566	False	-27.538
+patient07	123	resolved	9	-115.22	True	-27.373
+patient07	124	shrinking	43	-82.3	True	-42.258
+patient07	125	shrinking	12	-28.805	False	-16.762
+patient07	126	shrinking	16	-38.407	False	0.27941
+patient07	127	resolved	15	-115.22	False	-14.242
+patient07	128	shrinking	919	-25.335	True	-10.695
+patient07	129	resolved	55	-115.22	False	3.2759
+patient07	130	trend_down	60	-4.903	False	-10.42
+patient07	131	trend_down	13	-20.949	False	3.8651
+patient07	132	resolved	1	-115.22	False	-16.707
+patient07	133	shrinking	68	-38.407	True	-1.3013
+patient07	134	shrinking	5	-92.177	False	-0.56746
+patient07	135	resolved	2	-115.22	False	-8.6416
+patient07	136	trend_down	928	-8.9223	True	-6.6946
+patient07	137	shrinking	12	-57.61	False	2.4456
+patient07	138	resolved	1	-115.22	False	-11.234
+patient07	139	shrinking	115	-29.628	False	-11.643
+patient07	140	trend_down	26	-6.0642	False	4.865
+patient07	141	resolved	6	-115.22	False	3.7903
+patient07	142	resolved	1	-115.22	False	11.205
+patient07	143	resolved	4	-115.22	False	2.29
+patient07	144	stable	74	3.7777	False	-1.5286
+patient07	145	shrinking	866	-13.879	True	-1.069
+patient07	146	shrinking	13	-73.322	False	17.643
+patient07	147	shrinking	12	-38.407	False	17.237
+patient07	148	resolved	1	-115.22	False	11.81
+patient07	149	enlarging	31	79.214	False	5.5162
+patient07	150	resolved	1	-115.22	False	5.761
+patient07	151	resolved	2	-115.22	False	2.434
+patient07	152	resolved	8	-115.22	False	-5.9681
+patient07	153	enlarging	15	131.68	False	-0.823
+patient07	154	enlarging	11	230.44	False	-2.7173
+patient07	155	resolved	1	-115.22	False	-12.372
+patient07	156	trend_down	12	-28.805	False	-3.9283
+patient07	157	shrinking	115	-20.653	False	-10.554
+patient07	158	resolved	4	-115.22	False	10.143
+patient07	159	resolved	1	-115.22	False	-12.098
+patient07	160	resolved	9	-115.22	False	-23.393
+patient07	161	shrinking	33	-20.575	False	-3.8095
+patient07	162	shrinking	34	-45.265	False	13.497
+patient07	163	resolved	10	-115.22	True	7.1855
+patient07	164	resolved	6	-115.22	False	-6.426
+patient07	165	resolved	7	-115.22	False	-0.40945
+patient07	166	resolved	3	-115.22	False	-0.33606
+patient07	167	resolved	1	-115.22	False	-22.77
+patient07	168	enlarging	41	22.301	False	-9.101
+patient07	169	resolved	19	-115.22	False	-13.049
+patient07	170	stable	11	0	False	-3.8527
+patient07	171	shrinking	11	-46.088	False	5.8705
+patient07	172	resolved	1	-115.22	False	-6.9709
+patient07	173	resolved	4	-115.22	False	-2.8805
+patient07	174	resolved	1	-115.22	False	4.8969
+patient07	175	shrinking	19	-38.407	False	-10.648
+patient07	176	resolved	3	-115.22	False	-15.084
+patient07	177	trend_down	12	-28.805	False	-8.1699
+patient07	178	shrinking	16	-28.805	False	0.72913
+patient07	179	resolved	4	-115.22	False	14.849
+patient07	180	enlarging	16	65.84	False	21.268
+patient07	181	shrinking	118	-36.385	True	-18.452
+patient07	182	shrinking	61	-14.15	False	0.83232
+patient07	183	shrinking	55	-68.279	True	-32.769
+patient07	184	shrinking	82	-14.814	True	-6.1188
+patient07	185	resolved	10	-115.22	False	-3.6741
+patient07	186	shrinking	16	-61.451	False	10.18
+patient07	187	trend_down	21	-12.802	False	-6.2379
+patient07	188	resolved	10	-115.22	True	-12.48
+patient07	189	shrinking	32	-44.316	False	-6.0147
+patient07	190	resolved	3	-115.22	False	-12.756
+patient07	191	stable	1	0	False	18.176
+patient07	192	resolved	3	-115.22	False	6.0491
+patient07	193	resolved	1	-115.22	False	4.9113
+patient07	194	resolved	6	-115.22	False	26.179
+patient07	195	resolved	4	-115.22	False	10.384
+patient07	196	resolved	2	-115.22	False	5.6098
+patient07	197	resolved	12	-115.22	True	-6.8496
+patient07	198	resolved	2	-115.22	False	-2.8805
+patient07	199	resolved	1	-115.22	False	5.1849
+patient07	200	enlarging	11	460.88	False	9.1024
+patient07	201	resolved	1	-115.22	False	-0.90737
+patient07	202	shrinking	27	-46.088	True	-7.6576
+patient07	203	trend_down	39	-7.4336	False	-13.108
+patient07	204	resolved	2	-115.22	False	0.28805
+patient07	205	resolved	6	-115.22	False	-15.14
+patient07	206	resolved	1	-115.22	False	5.473
+patient07	207	resolved	3	-115.22	False	3.9319
+patient07	208	resolved	1	-115.22	False	5.761
+patient07	209	shrinking	36	-26.885	False	-27.351
+patient07	210	shrinking	34	-36.006	False	-13.686
+patient07	211	resolved	5	-115.22	False	-0.23044
+patient07	212	resolved	3	-115.22	False	-14.983
+patient07	213	resolved	2	-115.22	True	13.488
+patient07	214	trend_down	3	-76.814	False	8.3199
+patient07	215	resolved	1	-115.22	False	-16.419
+patient07	216	resolved	1	-115.22	False	-0.86415
+patient07	217	resolved	1	-115.22	False	11.234
+patient07	218	resolved	1	-115.22	False	-6.3371
+patient07	219	resolved	2	-115.22	False	9.837
+patient07	220	shrinking	72	-21.604	False	1.5994
+patient07	221	resolved	3	-115.22	False	7.0957
+patient07	222	shrinking	147	-17.655	False	-2.4587
+patient07	223	resolved	2	-115.22	False	-3.2982
+patient07	224	stable	6	0	False	-6.6828
+patient07	225	resolved	1	-115.22	False	-6.3515
+patient07	226	trend_down	22	-7.6814	False	-1.9098
+patient07	227	shrinking	49	-17.283	False	-20.577
+patient07	228	shrinking	17	-79.214	False	-8.547
+patient07	229	shrinking	72	-23.044	False	-11.359
+patient07	230	shrinking	29	-39.884	False	-6.9304
+patient07	231	resolved	2	-115.22	False	5.329
+patient07	232	trend_up	3	57.61	False	-5.761
+patient07	233	new	6		False	
+patient07	234	new	2		False	
+patient07	235	new	52		True	
+patient07	236	new	1		False	
+patient07	237	new	3		True	
+patient07	238	new	4		False	
+patient07	239	new	1		False	
+patient07	240	adjacent_fragment	2		False	
+patient07	241	new	2		False	
+patient07	242	new	3		False	
+patient07	243	adjacent_fragment	2		False	
+patient07	244	new	15		False	
+patient07	245	new	1		False	
+patient07	246	new	1		True	
+patient07	247	new	1		False	
+patient07	248	new	1		False	
+patient07	249	new	1		False	
+patient07	250	new	10		True	
+patient07	251	adjacent_fragment	3		True	
+patient07	252	new	4		False	
+patient07	253	adjacent_fragment	2		False	
+patient07	254	new	2		False	
+patient07	255	new	4		False	
+patient07	256	adjacent_fragment	2		False	
+patient07	257	new	9		False	
+patient07	258	new	1		False	
+patient07	259	new	4		False	
+patient07	260	new	1		False	
+patient07	261	new	5		False	
+patient07	262	adjacent_fragment	14		False	
+patient07	263	new	1		False	
+patient07	264	new	4		False	
+patient07	265	new	2		False	
+patient07	266	new	3		False	
+patient07	267	new	1		False	
+patient07	268	adjacent_fragment	5		False	
+patient07	269	adjacent_fragment	1		False	
+patient07	270	new	87		True	
+patient07	271	new	53		False	
+patient07	272	new	1		False	
+patient07	273	new	1		False	
+patient07	274	new	1		False	
+patient07	275	new	4		False	
+patient07	276	new	3		False	
+patient07	277	new	2		False	
+patient07	278	new	3		False	
+patient07	279	adjacent_fragment	1		False	
+patient07	280	new	1		False	
+patient07	281	new	9		True	
+patient07	282	new	11		False	
+patient07	283	new	11		False	
+patient07	284	new	17		True	
+patient07	285	new	1		False	
+patient07	286	new	1		False	
+patient07	287	new	3		False	
+patient07	288	new	2		True	
+patient07	289	new	1		False	
+patient07	290	adjacent_fragment	1		False	
+patient07	291	new	17		True	
+patient07	292	new	58		False	
+patient07	293	new	4		False	
+patient07	294	new	2		False	
+patient07	295	new	1		False	
+patient07	296	new	21		True	
+patient07	297	new	2		False	
+patient07	298	new	3		False	
+patient07	299	new	2		False	
+patient07	300	new	1		False	
+patient07	301	new	6		False	
+patient07	302	new	4		False	
+patient08	1	resolved	1	-119.76	False	-5.988
+patient08	2	shrinking	78	-110.55	True	-60.722
+patient08	3	stable	11	0	False	6.1402
+patient08	4	resolved	1	-119.76	False	0
+patient08	5	resolved	34	-119.76	True	-12.25
+patient08	6	shrinking	49	-105.1	True	-34.401
+patient08	7	resolved	2	-119.76	False	-20.359
+patient08	8	resolved	1	-119.76	False	-11.377
+patient08	9	shrinking	633	-26.242	True	12.242
+patient08	10	resolved	23	-119.76	False	3.0487
+patient08	11	resolved	1	-119.76	False	-7.6647
+patient08	12	shrinking	557	-118.69	True	-55.253
+patient08	13	resolved	1	-119.76	False	-17.365
+patient08	14	shrinking	225	-102.25	False	-9.9792
+patient08	15	enlarging	48	49.556	False	-6.9802
+patient08	16	shrinking	203	-97.342	True	-65.085
+patient08	17	resolved	1	-119.76	False	-0.2994
+patient08	18	resolved	1	-119.76	False	-3.7126
+patient08	19	enlarging	37	62.732	False	-1.9896
+patient08	20	enlarging	103	1422.2	False	7.268
+patient08	21	resolved	258	-119.76	True	-3.1702
+patient08	22	resolved	1	-119.76	False	-18.832
+patient08	23	resolved	6	-119.76	False	-2.1457
+patient08	24	shrinking	143	-42.582	True	-25.109
+patient08	25	resolved	1	-119.76	False	-6.2725
+patient08	26	resolved	15	-119.76	True	-18.855
+patient08	27	resolved	13	-119.76	False	-8.7298
+patient08	28	trend_down	26	-5.988	False	-2.4738
+patient08	29	shrinking	12	-59.88	False	2.6437
+patient08	30	shrinking	39	-116.69	False	1.1957
+patient08	31	enlarging	15	136.87	False	-2.6968
+patient08	32	resolved	29	-119.76	True	20.208
+patient08	33	enlarging	7	119.76	False	-2.0958
+patient08	34	resolved	11	-119.76	False	-4.2569
+patient08	35	resolved	21	-119.76	False	3.1908
+patient08	36	resolved	2	-119.76	False	11.295
+patient08	37	resolved	28	-119.76	False	9.9129
+patient08	38	resolved	6	-119.76	False	-12.415
+patient08	39	resolved	3	-119.76	False	5.494
+patient08	40	shrinking	11	-97.986	False	2.6905
+patient08	41	resolved	1	-119.76	False	-0.8982
+patient08	42	resolved	90	-119.76	True	-3.7793
+patient08	43	shrinking	100	-81.05	True	-41.427
+patient08	44	resolved	1	-119.76	False	5.6886
+patient08	45	resolved	1	-119.76	False	-22.754
+patient08	46	resolved	2	-119.76	False	11.976
+patient08	47	shrinking	175	-73.225	True	-43.418
+patient08	48	resolved	1	-119.76	False	11.617
+patient08	49	shrinking	45	-111.78	True	-1.981
+patient08	50	resolved	3	-119.76	False	-3.488
+patient08	51	resolved	1	-119.76	False	-5.3892
+patient08	52	resolved	4	-119.76	False	8.9072
+patient08	53	resolved	2	-119.76	False	-41.4
+patient08	54	resolved	223	-119.76	False	9.5412
+patient08	55	resolved	37	-119.76	False	11.392
+patient08	56	shrinking	114	-68.284	True	-34.919
+patient08	57	enlarging	12	598.8	False	2.6946
+patient08	58	resolved	1	-119.76	False	-5.988
+patient08	59	shrinking	76	-80.387	True	-8.794
+patient08	60	shrinking	11	-71.856	False	0.059879
+patient08	61	shrinking	97	-36.947	True	-33.381
+patient08	62	resolved	2	-119.76	False	-5.7036
+patient08	63	shrinking	38	-113.46	True	-57.383
+patient08	64	enlarging	9	239.52	False	7.6647
+patient08	65	shrinking	3586	-30.767	True	-40.279
+patient08	66	resolved	23	-119.76	True	-18.416
+patient08	67	resolved	18	-119.76	False	-30.757
+patient08	68	enlarging	84	37.167	False	4.2476
+patient08	69	shrinking	10	-59.88	False	-19.045
+patient08	70	enlarging	66	2515	True	62.071
+patient08	71	shrinking	35	-99.23	True	-32.632
+patient08	72	shrinking	91	-90.807	True	-35.654
+patient08	73	resolved	2	-119.76	False	-5.741
+patient08	74	resolved	1	-119.76	False	-9.1168
+patient08	75	shrinking	25	-22.455	False	5.7841
+patient08	76	shrinking	536	-44.648	True	-32.695
+patient08	77	resolved	70	-119.76	False	-19.374
+patient08	78	resolved	8	-119.76	True	-24.281
+patient08	79	trend_down	2	-59.88	False	-11.669
+patient08	80	shrinking	58	-57.815	True	-38.267
+patient08	81	resolved	4	-119.76	False	0
+patient08	82	resolved	1	-119.76	False	-11.392
+patient08	83	resolved	10	-119.76	False	0.98503
+patient08	84	resolved	25	-119.76	True	-10.91
+patient08	85	resolved	13	-119.76	True	-12.22
+patient08	86	resolved	4	-119.76	False	-7.5599
+patient08	87	resolved	24	-119.76	False	3.1712
+patient08	88	resolved	2	-119.76	True	22.874
+patient08	89	resolved	17	-119.76	False	-6.394
+patient08	90	resolved	7	-119.76	True	26.92
+patient08	91	resolved	10	-119.76	False	6.2485
+patient08	92	enlarging	84	3193.6	True	-8.2136
+patient08	93	resolved	3	-119.76	False	-17.385
+patient08	94	resolved	9	-119.76	True	-19.4
+patient08	95	resolved	3	-119.76	False	1.7964
+patient08	96	resolved	1	-119.76	False	-11.961
+patient08	97	resolved	1	-119.76	False	5.988
+patient08	98	shrinking	36	-56.138	True	-23.951
+patient08	99	resolved	2	-119.76	False	9.1168
+patient08	100	resolved	1	-119.76	False	-5.6587
+patient08	101	resolved	2	-119.76	False	-6.2725
+patient08	102	new	1		False	
+patient08	103	new	1		False	
+patient08	104	new	1		False	
+patient08	105	new	1		False	
+patient08	106	new	2		False	
+patient08	107	new	17		False	
+patient08	108	new	11		False	
+patient08	109	adjacent_fragment	6		True	
+patient08	110	new	44		False	
+patient08	111	new	28		True	
+patient08	112	new	7		False	
+patient08	113	adjacent_fragment	6		False	
+patient08	114	adjacent_fragment	5		False	
+patient08	115	new	4		True	
+patient08	116	new	45		False	
+patient08	117	new	1		False	
+patient08	118	new	12		False	
+patient08	119	adjacent_fragment	7		True	
+patient08	120	new	11		False	
+patient08	121	new	3		False	
+patient08	122	new	2		True	
+patient08	123	new	2		False	
+patient09	1	resolved	5	-314.86	False	-4.8961
+patient09	2	resolved	494	-314.86	True	-125.59
+patient09	3	resolved	94	-314.86	False	-12.739
+patient09	4	resolved	151	-314.86	False	-16.79
+patient09	5	resolved	245	-314.86	False	69.033
+patient09	6	resolved	6	-314.86	False	-46.147
+patient09	7	resolved	83	-314.86	False	-57.429
+patient09	8	enlarging	45	65.144	False	-50.192
+patient09	9	resolved	2	-314.86	False	-37.567
+patient09	10	resolved	12	-314.86	False	-113.11
+patient09	11	resolved	3	-314.86	False	-99.522
+patient09	12	resolved	2	-314.86	False	47.544
+patient09	13	resolved	4	-314.86	False	-21.194
+patient09	14	resolved	8	-314.86	False	1.6825
+patient09	15	resolved	2	-314.86	False	-74.445
+patient09	16	shrinking	247	-286.7	False	6.8345
+patient09	17	resolved	12	-314.86	False	63.727
+patient09	18	resolved	36	-314.86	True	-85.548
+patient09	19	resolved	198	-314.86	True	-102.09
+patient09	20	resolved	36	-314.86	True	-82.654
+patient09	21	resolved	342	-314.86	True	-13.876
+patient09	22	resolved	24	-314.86	False	-40.611
+patient09	23	resolved	3	-314.86	False	-37.928
+patient09	24	resolved	36	-314.86	False	-35.983
+patient09	25	resolved	11	-314.86	False	-9.1525
+patient09	26	resolved	224	-314.86	True	466.61
+patient09	27	resolved	30	-314.86	False	-38.426
+patient09	28	new	9		False	
+patient09	29	new	1		False	
+patient09	30	new	9		False	
+patient09	31	new	8		False	
+patient09	32	new	10		False	
+patient09	33	new	4		False	
+patient09	34	new	3		False	
+patient09	35	new	11		False	
+patient09	36	new	2		False	
+patient09	37	new	4		False	
+patient09	38	new	4		False	
+patient09	39	new	2		False	
+patient09	40	new	4		False	
+patient09	41	new	1		False	
+patient09	42	new	1		False	
+patient09	43	new	2		False	
+patient09	44	new	1		False	
+patient09	45	new	7		True	
+patient09	46	new	3		False	
+patient09	47	new	15		True	
+patient09	48	new	16		False	
+patient10	1	resolved	6	-154.77	False	-6.5844
+patient10	2	shrinking	23	-30.955	False	-25.594
+patient10	3	resolved	1	-154.77	False	-7.7387
+patient10	4	enlarging	41	32.831	False	-1.8057
+patient10	5	enlarging	38	33.166	False	-29.666
+patient10	6	resolved	1	-154.77	False	-15.826
+patient10	7	shrinking	28	-26.917	False	-23.961
+patient10	8	resolved	2	-154.77	False	4.2563
+patient10	9	trend_down	3	-103.18	False	19.515
+patient10	10	resolved	2	-154.77	False	-7.8935
+patient10	11	resolved	4	-154.77	False	15.777
+patient10	12	resolved	13	-154.77	True	-9.9234
+patient10	13	resolved	12	-154.77	False	-6.5812
+patient10	14	resolved	2	-154.77	False	-16.019
+patient10	15	resolved	4	-154.77	False	3.6324
+patient10	16	resolved	6	-154.77	False	4.195
+patient10	17	resolved	2	-154.77	False	4.8367
+patient10	18	enlarging	13	66.332	False	-6.1634
+patient10	19	resolved	1	-154.77	False	-1.1221
+patient10	20	trend_down	52	-7.55	False	13.718
+patient10	21	shrinking	158	-94.04	False	-3.9913
+patient10	22	resolved	6	-154.77	True	-22.829
+patient10	23	resolved	5	-154.77	False	-1.7025
+patient10	24	shrinking	65	-57.148	False	-6.3446
+patient10	25	enlarging	79	27.46	False	3.5317
+patient10	26	resolved	1	-154.77	False	-7.7387
+patient10	27	enlarging	209	511.43	True	46.141
+patient10	28	shrinking	28	-33.647	False	1.6319
+patient10	29	resolved	6	-154.77	False	10.515
+patient10	30	resolved	3	-154.77	False	14.304
+patient10	31	resolved	5	-154.77	False	7.9786
+patient10	32	resolved	1	-154.77	False	-22.81
+patient10	33	shrinking	16	-125.75	False	-11.105
+patient10	34	shrinking	13	-142.87	False	7.8325
+patient10	35	resolved	2	-154.77	False	-0.19347
+patient10	36	stable	9	0	False	7.5093
+patient10	37	enlarging	21	309.55	False	-7.3629
+patient10	38	enlarging	6	309.55	False	-21.543
+patient10	39	new	9		False	
+patient10	40	new	10		True	
+patient10	41	new	5		False	
+patient10	42	new	3		True	
+patient10	43	new	2		False	
+patient10	44	new	1		False	
+patient10	45	new	11		False	
+patient10	46	new	39		True	
+patient10	47	new	1		False	
+patient10	48	new	3		False	
+patient10	49	new	11		True	
+patient10	50	new	1		False	
+patient10	51	new	9		False	
+patient10	52	new	6		False	
+patient10	53	new	1		False	
+patient10	54	new	6		True	
+patient10	55	new	2		False	
+patient11	1	resolved	46	-90.188	True	-23.062
+patient11	2	resolved	18	-90.188	True	-3.1647
+patient11	3	resolved	17	-90.188	True	-18.067
+patient11	4	resolved	2	-90.188	False	-8.8948
+patient11	5	resolved	31	-90.188	True	13.866
+patient11	6	shrinking	191	-72.717	True	-40.539
+patient11	7	resolved	60	-90.188	True	-24.483
+patient11	8	resolved	4	-90.188	True	-10.913
+patient11	9	resolved	26	-90.188	False	-0.026883
+patient11	10	resolved	13	-90.188	True	0.68508
+patient11	11	resolved	2	-90.188	True	-8.7933
+patient11	12	resolved	5	-90.188	True	-19.012
+patient11	13	resolved	19	-90.188	True	-18.121
+patient11	14	resolved	45	-90.188	True	-14.562
+patient11	15	enlarging	28	1172.4	False	4.0359
+patient11	16	shrinking	19	-85.441	True	-27.016
+patient11	17	resolved	4	-90.188	True	-19.373
+patient11	18	resolved	62	-90.188	True	-31.872
+patient11	19	resolved	26	-90.188	True	-16.668
+patient11	20	resolved	1	-90.188	False	25.331
+patient11	21	enlarging	82	115.24	True	23.453
+patient11	22	resolved	1	-90.188	False	4.5094
+patient11	23	resolved	14	-90.188	True	-25.463
+patient11	24	resolved	17	-90.188	True	7.9471
+patient11	25	resolved	6	-90.188	False	15.18
+patient11	26	resolved	1	-90.188	True	-13.066
+patient11	27	resolved	4	-90.188	False	-8.8046
+patient11	28	resolved	18	-90.188	True	-20.296
+patient11	29	resolved	67	-90.188	True	-36.081
+patient11	30	shrinking	69	-74.503	True	-33.493
+patient11	31	resolved	5	-90.188	False	-0.40133
+patient11	32	resolved	5	-90.188	True	-20.227
+patient11	33	shrinking	13	-62.438	False	-8.0649
+patient11	34	shrinking	250	-78.644	True	-27.958
+patient11	35	resolved	8	-90.188	False	22.193
+patient11	36	resolved	6	-90.188	False	9.3382
+patient11	37	resolved	107	-90.188	True	-51.461
+patient11	38	shrinking	109	-57.919	True	-28.581
+patient11	39	resolved	2	-90.188	True	-21.002
+patient11	40	resolved	13	-90.188	False	-4.4912
+patient11	41	resolved	1	-90.188	True	-0.47348
+patient11	42	resolved	74	-90.188	True	-24.857
+patient11	43	shrinking	111	-77.188	True	-32.618
+patient11	44	resolved	4	-90.188	False	-2.5788
+patient11	45	resolved	2	-90.188	False	-1.0372
+patient11	46	new	1		True	
+patient11	47	adjacent_fragment	14		True	
+patient11	48	new	1		False	
+patient11	49	new	12		False	
+patient11	50	new	8		False	
+patient11	51	new	4		False	
+patient11	52	new	1		False	
+patient11	53	new	13		False	
+patient11	54	new	26		True	
+patient11	55	adjacent_fragment	5		False	
+patient11	56	new	16		True	
+patient11	57	new	3		False	
+patient11	58	adjacent_fragment	1		False	
+patient12	1	resolved	17	-450.86	True	-41.641
+patient12	2	resolved	7	-450.86	False	-19.395
+patient12	3	trend_down	132	-4.2534	False	-5.5841
+patient12	4	shrinking	637	-314.25	True	-167.94
+patient12	5	resolved	1	-450.86	False	-26.826
+patient12	6	shrinking	19	-132.6	False	-1.1238
+patient12	7	shrinking	12	-122.96	False	26.524
+patient12	8	resolved	22	-450.86	False	-33.996
+patient12	9	shrinking	13	-300.57	False	-50.735
+patient12	10	shrinking	15	-208.09	False	-10.951
+patient12	11	shrinking	19	-94.917	False	27.111
+patient12	12	shrinking	1892	-243.51	True	-89.716
+patient12	13	shrinking	37	-206.11	True	-4.7517
+patient12	14	resolved	5	-450.86	False	-5.151
+patient12	15	resolved	2	-450.86	False	32.743
+patient12	16	shrinking	45	-78.9	False	50.251
+patient12	17	shrinking	15	-96.612	False	-27.12
+patient12	18	trend_up	22	56.357	False	46.628
+patient12	19	trend_up	17	75.143	False	-31.283
+patient12	20	resolved	3	-450.86	False	5.8987
+patient12	21	shrinking	54	-187.86	False	10.04
+patient12	22	resolved	7	-450.86	False	-40.319
+patient12	23	trend_down	12	-90.171	False	-21.737
+patient12	24	resolved	2	-450.86	False	-22.007
+patient12	25	enlarging	92	70.849	False	43.707
+patient12	26	resolved	3	-450.86	False	88.931
+patient12	27	resolved	4	-450.86	False	-30.94
+patient12	28	resolved	1	-450.86	False	-46.1
+patient12	29	shrinking	58	-112.71	False	-30.092
+patient12	30	resolved	4	-450.86	False	-80.083
+patient12	31	resolved	2	-450.86	False	21.923
+patient12	32	resolved	1	-450.86	False	0
+patient12	33	shrinking	60	-237.72	True	-14.547
+patient12	34	resolved	2	-450.86	False	33.194
+patient12	35	resolved	7	-450.86	False	-43.685
+patient12	36	resolved	8	-450.86	False	43.881
+patient12	37	shrinking	215	-269.2	True	-17.118
+patient12	38	resolved	1	-450.86	False	-65.374
+patient12	39	resolved	12	-450.86	False	-42.202
+patient12	40	shrinking	408	-178.95	True	18.867
+patient12	41	resolved	2	-450.86	False	-64.303
+patient12	42	resolved	6	-450.86	False	-3.635
+patient12	43	enlarging	136	214.94	True	-10.378
+patient12	44	shrinking	18	-225.43	False	8.2219
+patient12	45	resolved	2	-450.86	False	4.3395
+patient12	46	shrinking	54	-333.97	False	-57.981
+patient12	47	shrinking	322	-103.81	False	-4.2719
+patient12	48	resolved	5	-450.86	False	16.546
+patient12	49	trend_up	7	90.171	False	-18.699
+patient12	50	resolved	10	-450.86	False	2.7108
+patient12	51	shrinking	15	-390.74	False	-69.887
+patient12	52	resolved	2	-450.86	False	23.614
+patient12	53	resolved	1	-450.86	False	46.213
+patient12	54	shrinking	76	-409.33	False	-6.771
+patient12	55	enlarging	22	4508.6	False	10.68
+patient12	56	resolved	3	-450.86	False	139.45
+patient12	57	trend_up	19	32.204	False	-35.263
+patient12	58	enlarging	36	104.04	False	-40.12
+patient12	59	shrinking	13	-173.41	False	-51.021
+patient12	60	enlarging	20	450.86	False	-36.632
+patient12	61	trend_down	6	-112.71	False	47.1
+patient12	62	shrinking	49	-170.32	False	-73.971
+patient12	63	resolved	3	-450.86	False	-57.86
+patient12	64	trend_down	33	-32.204	False	-35.02
+patient12	65	resolved	3	-450.86	False	7.5143
+patient12	66	shrinking	18	-90.171	False	-33.206
+patient12	67	shrinking	162	-48.306	False	-34.941
+patient12	68	resolved	1	-450.86	False	3.3814
+patient12	69	shrinking	19	-265.21	False	12.415
+patient12	70	enlarging	591	11.962	True	43.776
+patient12	71	resolved	2	-450.86	False	-10.736
+patient12	72	shrinking	588	-26.944	True	-8.6714
+patient12	73	resolved	4	-450.86	False	-5.9175
+patient12	74	shrinking	40	-101.44	False	-14.685
+patient12	75	resolved	3	-450.86	False	117
+patient12	76	resolved	1	-450.86	False	-3.2687
+patient12	77	resolved	12	-450.86	True	4.3724
+patient12	78	resolved	2	-450.86	False	-66.501
+patient12	79	shrinking	58	-193.22	False	-13.06
+patient12	80	shrinking	567	-26.89	False	-21.281
+patient12	81	resolved	15	-450.86	False	4.719
+patient12	82	trend_down	21	-28.179	False	-32.881
+patient12	83	shrinking	141	-176.12	False	-63.754
+patient12	84	resolved	3	-450.86	False	-64.66
+patient12	85	resolved	4	-450.86	False	-5.0299
+patient12	86	resolved	2	-450.86	False	10.144
+patient12	87	shrinking	95	-121.58	False	-16.646
+patient12	88	shrinking	31	-135.26	False	-43.318
+patient12	89	resolved	9	-450.86	False	3.7196
+patient12	90	resolved	4	-450.86	False	-111.05
+patient12	91	enlarging	16	1239.9	False	5.9175
+patient12	92	enlarging	17	350.67	False	12.48
+patient12	93	stable	19	0	False	59.087
+patient12	94	enlarging	45	217.08	False	-61.964
+patient12	95	enlarging	20	772.9	False	-2.1174
+patient12	96	shrinking	20	-96.612	False	118.43
+patient12	97	shrinking	36	-42.268	True	-47.648
+patient12	98	resolved	1	-450.86	False	-49.594
+patient12	99	enlarging	12	322.04	False	-34.136
+patient12	100	enlarging	71	76.561	True	-23.3
+patient12	101	shrinking	12	-245.92	False	1.2706
+patient12	102	trend_up	6	90.171	False	-81.583
+patient12	103	enlarging	15	300.57	False	-14.709
+patient12	104	shrinking	361	-71.961	True	-20.122
+patient12	105	shrinking	24	-112.71	False	8.1295
+patient12	106	shrinking	46	-200.38	False	-53.335
+patient12	107	shrinking	50	-29.404	False	-8.2024
+patient12	108	resolved	2	-450.86	False	-23.67
+patient12	109	resolved	4	-450.86	False	75.49
+patient12	110	resolved	1	-450.86	False	-43.959
+patient12	111	trend_down	13	-100.19	False	-47.39
+patient12	112	shrinking	104	-49.006	False	-7.2241
+patient12	113	enlarging	38	77.734	False	-72.654
+patient12	114	shrinking	30	-131.5	True	45.236
+patient12	115	shrinking	34	-180.34	False	-73.405
+patient12	116	shrinking	19	-284.75	False	19.405
+patient12	117	shrinking	29	-217.08	False	-64.107
+patient12	118	shrinking	76	-47.104	False	11.275
+patient12	119	resolved	5	-450.86	False	-35.854
+patient12	120	enlarging	35	156.82	False	-4.8467
+patient12	121	shrinking	18	-100.19	False	-78.023
+patient12	122	shrinking	26	-252.48	False	-44.495
+patient12	123	resolved	5	-450.86	False	-73.163
+patient12	124	shrinking	29	-216.41	True	-46.652
+patient12	125	shrinking	30	-294.79	True	-50.268
+patient12	126	enlarging	75	658.94	True	-43.009
+patient12	127	resolved	5	-450.86	False	0.29306
+patient12	128	resolved	1	-450.86	False	-46.156
+patient12	129	resolved	1	-450.86	False	17.753
+patient12	130	enlarging	14	180.34	False	-27.547
+patient12	131	resolved	4	-450.86	False	-29.869
+patient12	132	resolved	1	-450.86	False	23.67
+patient12	133	resolved	3	-450.86	False	-36.106
+patient12	134	resolved	1	-450.86	False	24.797
+patient12	135	trend_down	8	-128.82	False	-34.764
+patient12	136	new	1		False	
+patient12	137	new	1		False	
+patient12	138	new	3		False	
+patient12	139	new	5		True	
+patient12	140	new	1		False	
+patient12	141	adjacent_fragment	2		False	
+patient12	142	new	1		False	
+patient12	143	adjacent_fragment	2		False	
+patient12	144	new	7		False	
+patient12	145	new	24		True	
+patient12	146	adjacent_fragment	8		False	
+patient12	147	new	8		False	
+patient12	148	new	5		False	
+patient12	149	new	16		True	
+patient12	150	new	2		False	
+patient12	151	new	31		True	
+patient12	152	adjacent_fragment	1		False	
+patient12	153	new	3		False	
+patient12	154	adjacent_fragment	2		False	
+patient12	155	new	1		True	
+patient12	156	new	33		True	
+patient12	157	new	18		True	
+patient12	158	adjacent_fragment	1		False	
+patient12	159	new	5		False	
+patient12	160	new	9		False	
+patient12	161	new	6		False	
+patient12	162	new	14		False	
+patient12	163	new	1		False	
+patient12	164	new	3		False	
+patient12	165	new	16		False	
+patient13	1	enlarging	6	555.06	False	5.5506
+patient13	2	enlarging	110	17.18	True	4.0219
+patient13	3	enlarging	18	222.02	False	0.64526
+patient13	4	shrinking	4	-83.259	False	-3.8785
+patient13	5	enlarging	49	353.22	False	17.322
+patient13	6	resolved	3	-111.01	False	-9.4361
+patient13	7	shrinking	7	-63.436	False	-5.1462
+patient13	8	resolved	1	-111.01	False	5.2453
+patient13	9	resolved	2	-111.01	False	-0.04163
+patient13	10	enlarging	58	869.6	True	13.525
+patient13	11	enlarging	36	88.81	False	-1.2357
+patient13	12	enlarging	263	306.08	True	-4.1828
+patient13	13	resolved	2	-111.01	False	-3.1916
+patient13	14	enlarging	72	176.61	False	-2.2083
+patient13	15	enlarging	16	61.674	False	-13.597
+patient13	16	enlarging	10	166.52	False	-12.586
+patient13	17	resolved	1	-111.01	False	17.235
+patient13	18	shrinking	23	-63.436	False	3.0641
+patient13	19	enlarging	10	444.05	False	5.5298
+patient13	20	trend_down	29	-8.881	False	9.7252
+patient13	21	enlarging	14	610.57	False	20.107
+patient13	22	enlarging	20	111.01	False	15.719
+patient13	23	new	14		False	
+patient13	24	new	21		False	
+patient13	25	new	5		False	
+patient13	26	new	10		False	
+patient13	27	new	34		True	
+patient13	28	new	11		False	
+patient13	29	new	2		False	
+patient13	30	new	4		False	
+patient13	31	new	1		False	
+patient13	32	new	14		False	
+patient13	33	adjacent_fragment	2		False	
+patient13	34	new	3		False	
+patient13	35	new	6		False	
+patient13	36	new	6		False	
+patient13	37	new	2		False	
+patient13	38	new	4		False	
+patient14	1	enlarging	3349	60.363	True	10.033
+patient14	2	resolved	8	-50.518	False	7.048
+patient14	3	enlarging	11	63.147	False	1.5897
+patient14	4	stable	553	2.7818	True	6.9663
+patient14	5	resolved	2	-50.518	False	4.7929
+patient14	6	shrinking	9	-16.839	False	-5.4994
+patient14	7	shrinking	11	-20.207	False	-3.3935
+patient14	8	enlarging	366	33.365	True	5.9741
+patient14	9	enlarging	889	23.275	True	2.722
+patient14	10	enlarging	2161	103.73	True	-2.5648
+patient14	11	shrinking	34	-15.155	True	-0.61505
+patient14	12	stable	338	1.3562	True	0.88131
+patient14	13	resolved	123	-50.518	False	-7.1563
+patient14	14	enlarging	570	47.524	True	-5.0918
+patient14	15	enlarging	312	10.347	False	1.3246
+patient14	16	enlarging	248	606.21	True	1.98
+patient14	17	resolved	2	-50.518	False	-5.2791
+patient14	18	enlarging	37	11.226	False	-0.52997
+patient14	19	shrinking	15	-19.43	False	-7.482
+patient14	20	new	12		True	
+patient14	21	new	289		True	
+patient14	22	adjacent_fragment	1		False	
+patient14	23	new	1		False	
+patient14	24	new	22		True	
+patient14	25	new	2		False	
+patient14	26	new	1		False	
+patient14	27	new	13		False	
+patient14	28	new	5		True	
+patient14	29	new	9		True	
+patient14	30	new	2		False	
+patient14	31	new	107		True	
+patient14	32	new	1		False	
+patient14	33	new	4		False	
+patient14	34	new	30		False	
+patient14	35	new	95		True	
+patient14	36	new	1		False	
+patient14	37	new	14		False	
+patient14	38	new	52		False	
+patient14	39	new	475		True	
+patient14	40	new	171		True	
+patient14	41	new	23		False	
+patient14	42	new	7		False	
+patient14	43	new	1		False	
+patient14	44	new	21		False	
+patient14	45	new	10		False	
+patient14	46	new	3		True	
+patient14	47	new	127		True	
+patient14	48	new	143		True	
+patient14	49	new	1		False	
+patient14	50	new	191		True	
+patient14	51	new	3		False	
+patient14	52	new	4		False	
+patient14	53	adjacent_fragment	3		False	
+patient14	54	new	3		False	
+patient14	55	new	4		False	
+patient14	56	new	58		True	
+patient15	1	resolved	3	-217.39	False	2.9076
+patient15	2	resolved	2	-217.39	False	-11.644
+patient15	3	trend_up	6	108.7	False	-13.845
+patient15	4	trend_up	23	13.587	False	-35.406
+patient15	5	resolved	9	-217.39	False	18.56
+patient15	6	shrinking	32	-112.2	True	-28.036
+patient15	7	shrinking	23	-43.478	False	-5.5503
+patient15	8	shrinking	15	-115.94	False	-13.087
+patient15	9	stable	6	0	False	-0.40761
+patient15	10	trend_up	19	16.722	False	11.081
+patient15	11	resolved	7	-217.39	False	-15.691
+patient15	12	resolved	1	-217.39	False	-11.902
+patient15	13	shrinking	209	-130.65	False	-22.472
+patient15	14	shrinking	3189	-50.185	True	-6.7466
+patient15	15	trend_down	5	-54.348	False	0.3057
+patient15	16	resolved	2	-217.39	False	-1.6848
+patient15	17	resolved	2	-217.39	False	9.8234
+patient15	18	stable	65	0	False	-8.9519
+patient15	19	resolved	3	-217.39	False	10.688
+patient15	20	shrinking	42	-84.836	False	-17.933
+patient15	21	resolved	4	-217.39	False	-37.181
+patient15	22	resolved	6	-217.39	False	-5.8922
+patient15	23	trend_up	30	8.0515	False	-10.472
+patient15	24	resolved	2	-217.39	False	14.62
+patient15	25	shrinking	59	-77.64	False	-36.816
+patient15	26	resolved	5	-217.39	False	-26.299
+patient15	27	trend_up	3	434.78	False	-21.196
+patient15	28	resolved	3	-217.39	False	6.2047
+patient15	29	resolved	1	-217.39	False	10.353
+patient15	30	shrinking	67	-50.167	False	-30.044
+patient15	31	resolved	6	-217.39	False	-11.322
+patient15	32	resolved	65	-217.39	True	11.933
+patient15	33	shrinking	452	-92.192	True	16.767
+patient15	34	trend_down	3	-144.93	False	-13.578
+patient15	35	shrinking	26	-72.464	False	-39.079
+patient15	36	resolved	3	-217.39	False	-15.761
+patient15	37	resolved	3	-217.39	False	-28.759
+patient15	38	trend_down	6	-43.478	False	38.087
+patient15	39	shrinking	4	-163.04	False	47.548
+patient15	40	shrinking	18	-122.28	False	-25.936
+patient15	41	resolved	8	-217.39	False	-34.443
+patient15	42	resolved	1	-217.39	False	10.87
+patient15	43	resolved	101	-217.39	False	11.976
+patient15	44	shrinking	9	-120.77	False	6.0658
+patient15	45	resolved	5	-217.39	False	2.288
+patient15	46	shrinking	8	-190.22	False	-34.83
+patient15	47	stable	21	0	False	-22.582
+patient15	48	enlarging	47	449.28	False	2.4257
+patient15	49	enlarging	12	144.93	False	-43.605
+patient15	50	shrinking	8	-163.04	False	-6.9973
+patient15	51	shrinking	39	-146.89	False	-59.686
+patient15	52	resolved	2	-217.39	False	17.473
+patient15	53	shrinking	53	-55.612	True	-44.772
+patient15	54	trend_up	6	72.464	False	-27.029
+patient15	55	resolved	158	-217.39	False	20.224
+patient15	56	shrinking	10	-152.17	False	-41.155
+patient15	57	resolved	53	-217.39	False	14.69
+patient15	58	resolved	1	-217.39	False	-45.924
+patient15	59	resolved	42	-217.39	False	-6.7741
+patient15	60	resolved	3	-217.39	False	-8.9493
+patient15	61	resolved	15	-217.39	False	-8.587
+patient15	62	shrinking	3646	-32.565	True	-4.9639
+patient15	63	shrinking	10	-130.43	False	-42.478
+patient15	64	resolved	48	-217.39	False	14.261
+patient15	65	shrinking	20	-102.97	False	6.3844
+patient15	66	resolved	4	-217.39	False	-13.967
+patient15	67	resolved	4	-217.39	False	7.8804
+patient15	68	resolved	5	-217.39	False	6.288
+patient15	69	resolved	9	-217.39	False	-42.328
+patient15	70	resolved	2	-217.39	False	27.989
+patient15	71	resolved	11	-217.39	False	-44.158
+patient15	72	shrinking	47	-16.722	False	-40.786
+patient15	73	shrinking	37	-21.739	False	-66.627
+patient15	74	shrinking	7	-155.28	False	-13.602
+patient15	75	enlarging	26	48.309	True	-7.494
+patient15	76	trend_down	15	-36.232	False	-10.199
+patient15	77	resolved	4	-217.39	False	-6.481
+patient15	78	enlarging	49	27.174	False	-38.274
+patient15	79	resolved	5	-217.39	False	13.152
+patient15	80	resolved	6	-217.39	False	16.87
+patient15	81	resolved	2	-217.39	False	-22.636
+patient15	82	stable	9	0	False	11.04
+patient15	83	enlarging	22	43.478	False	-4.8605
+patient15	84	resolved	31	-217.39	False	13.231
+patient15	85	resolved	6	-217.39	False	-7.7899
+patient15	86	enlarging	27	133.78	True	-28.313
+patient15	87	shrinking	38	-76.726	False	-38.687
+patient15	88	resolved	2	-217.39	False	-2.9348
+patient15	89	shrinking	9	-169.08	False	-9.2482
+patient15	90	shrinking	17	-102.3	False	-19.981
+patient15	91	trend_down	3	-144.93	False	-7.4638
+patient15	92	resolved	4	-217.39	False	9.7826
+patient15	93	resolved	1	-217.39	False	0.54349
+patient15	94	trend_down	6	-36.232	False	-13.361
+patient15	95	shrinking	21	-32.609	False	0.1413
+patient15	96	resolved	2	-217.39	False	17.391
+patient15	97	shrinking	7	-144.93	False	46.449
+patient15	98	enlarging	9	1739.1	False	-1.0598
+patient15	99	trend_down	26	-24.155	False	-26.327
+patient15	100	resolved	3	-217.39	False	20.806
+patient15	101	resolved	2	-217.39	True	38.859
+patient15	102	resolved	1	-217.39	False	-24.239
+patient15	103	shrinking	14	-133.78	False	-7.2387
+patient15	104	shrinking	80	-21.433	False	9.0485
+patient15	105	resolved	3	-217.39	False	-9.4203
+patient15	106	resolved	2	-217.39	False	-17.391
+patient15	107	shrinking	14	-155.28	False	-16.978
+patient15	108	resolved	2	-217.39	False	-26.63
+patient15	109	shrinking	30	-202.9	False	-42.427
+patient15	110	resolved	9	-217.39	False	24.254
+patient15	111	resolved	1	-217.39	False	-40.299
+patient15	112	shrinking	29	-48.309	False	-2.4638
+patient15	113	shrinking	9	-169.08	False	-40.371
+patient15	114	shrinking	67	-146.01	True	-81.071
+patient15	115	shrinking	31	-59.97	False	31.408
+patient15	116	resolved	2	-217.39	False	-1.6033
+patient15	117	resolved	3	-217.39	False	25.489
+patient15	118	shrinking	63	-77.933	True	-7.7241
+patient15	119	stable	1	0	False	-40.815
+patient15	120	stable	6	0	False	-20.136
+patient15	121	shrinking	57	-31.703	False	15.964
+patient15	122	resolved	30	-217.39	False	-0.68116
+patient15	123	trend_down	8	-31.056	False	-4.7205
+patient15	124	trend_up	17	39.526	False	-44.538
+patient15	125	shrinking	13	-50.167	False	-25.842
+patient15	126	resolved	3	-217.39	False	3.9402
+patient15	127	resolved	4	-217.39	False	-19.789
+patient15	128	shrinking	27	-54.348	False	-48.005
+patient15	129	trend_up	4	217.39	False	4.8777
+patient15	130	resolved	11	-217.39	False	-23.869
+patient15	131	resolved	2	-217.39	False	-6.25
+patient15	132	enlarging	75	16.722	False	-3.9206
+patient15	133	trend_up	6	108.7	False	-41.936
+patient15	134	new	2		False	
+patient15	135	new	4		False	
+patient15	136	new	3		True	
+patient15	137	new	45		True	
+patient15	138	new	4		False	
+patient15	139	new	1		False	
+patient15	140	new	1		False	
+patient15	141	new	22		False	
+patient15	142	new	1		False	
+patient15	143	new	11		False	
+patient15	144	new	1		False	
+patient15	145	new	1		False	
+patient15	146	new	13		True	
+patient15	147	adjacent_fragment	1		False	
+patient15	148	new	194		True	
+patient15	149	new	4		False	
+patient15	150	new	9		False	
+patient15	151	new	64		True	
+patient15	152	adjacent_fragment	1		False	
+patient15	153	new	1		False	
+patient15	154	new	1		False	
+patient15	155	new	3		False	
+patient15	156	new	6		False	
+patient15	157	new	27		False	
+patient15	158	new	2		False	
+patient15	159	new	5		False	
+patient15	160	new	10		False	
+patient15	161	new	21		False	
+patient15	162	new	25		True	
+patient15	163	new	10		False	
+patient15	164	new	32		False	
+patient15	165	new	4		False	
+patient15	166	new	27		False	
+patient15	167	new	1		False	
+patient15	168	new	5		True	
+patient15	169	new	1		False	
+patient15	170	new	1		False	
+patient15	171	new	2		False	
+patient15	172	adjacent_fragment	1		False	
+patient15	173	new	1		False	
+patient15	174	new	27		True	
+patient15	175	new	5		False	
+patient15	176	new	2		False	
+patient15	177	new	1		False	
+patient15	178	adjacent_fragment	2		False	
+patient15	179	new	1		False	
+patient15	180	new	1		False	
+patient15	181	new	2		False	
+patient15	182	new	8		True	
+patient15	183	new	3		False	
+patient15	184	new	1		False	
+patient15	185	adjacent_fragment	2		False	
+patient15	186	new	2		False	
+patient16	1	resolved	1	-222.72	False	-11.136
+patient16	2	enlarging	31	27.84	False	16.496
+patient16	3	shrinking	38	-210.68	False	15.705
+patient16	4	enlarging	48	824.05	False	-5.5011
+patient16	5	resolved	8	-222.72	False	-14.543
+patient16	6	shrinking	61	-200.81	True	-4.5196
+patient16	7	resolved	11	-222.72	False	10.541
+patient16	8	enlarging	68	132.43	False	-7.7763
+patient16	9	resolved	16	-222.72	False	16.692
+patient16	10	resolved	11	-222.72	False	-1.4426
+patient16	11	shrinking	99	-146.23	True	-105.31
+patient16	12	shrinking	13	-89.087	False	3.3658
+patient16	13	resolved	4	-222.72	False	41.947
+patient16	14	resolved	3	-222.72	False	-50.612
+patient16	15	resolved	1	-222.72	False	-11.136
+patient16	16	resolved	5	-222.72	False	35.223
+patient16	17	resolved	2	-222.72	False	30.665
+patient16	18	resolved	2	-222.72	False	-7.2801
+patient16	19	resolved	2	-222.72	False	0.25055
+patient16	20	resolved	1	-222.72	False	21.659
+patient16	21	enlarging	316	7423.9	True	13.023
+patient16	22	resolved	6	-222.72	False	32.786
+patient16	23	enlarging	19	286.35	True	54.967
+patient16	24	resolved	2	-222.72	False	-2.7979
+patient16	25	shrinking	16	-51.396	False	-22.475
+patient16	26	resolved	3	-222.72	False	-37.751
+patient16	27	resolved	1	-222.72	False	-1.6147
+patient16	28	resolved	2	-222.72	False	10.287
+patient16	29	resolved	12	-222.72	True	-40.33
+patient16	30	resolved	4	-222.72	False	22.411
+patient16	31	shrinking	73	-96.4	False	-20.779
+patient16	32	resolved	1	-222.72	False	-0.55679
+patient16	33	resolved	1	-222.72	False	9.3541
+patient16	34	resolved	6	-222.72	False	-43.332
+patient16	35	resolved	7	-222.72	False	-23.874
+patient16	36	enlarging	16	1559	False	-31.487
+patient16	37	resolved	1	-222.72	False	-32.294
+patient16	38	enlarging	15	296.96	False	50.334
+patient16	39	resolved	1	-222.72	False	-0.55679
+patient16	40	resolved	5	-222.72	False	-18.018
+patient16	41	resolved	4	-222.72	False	-16.418
+patient16	42	resolved	2	-222.72	False	11.136
+patient16	43	trend_down	10	-22.272	False	-2.9566
+patient16	44	enlarging	84	302.26	False	3.29
+patient16	45	shrinking	45	-139.85	False	-26.078
+patient16	46	resolved	20	-222.72	False	-3.6359
+patient16	47	resolved	1	-222.72	False	-11.136
+patient16	48	resolved	4	-222.72	False	-10.857
+patient16	49	new	3		False	
+patient16	50	new	2		False	
+patient16	51	new	1		True	
+patient16	52	new	14		False	
+patient16	53	new	466		True	
+patient16	54	new	1		False	
+patient16	55	new	1		False	
+patient16	56	new	98		False	
+patient16	57	new	12		False	
+patient16	58	new	7		True	
+patient16	59	new	3		False	
+patient16	60	new	3		False	
+patient16	61	new	145		True	
+patient16	62	new	8		False	
+patient16	63	new	3		False	
+patient16	64	new	9		False	
+patient16	65	new	1		False	
+patient16	66	new	8		False	
+patient16	67	new	7		False	
+patient16	68	new	5		False	
+patient16	69	new	2		True	
+patient16	70	new	2		False	
+patient16	71	new	4		False	
+patient16	72	new	1		False	
+patient16	73	new	3		False	
+patient16	74	new	4		False	
+patient16	75	new	5		True	
+patient16	76	new	2		False	
+patient16	77	new	19		True	
+patient16	78	new	1		False	
+patient16	79	new	1		False	
+patient16	80	new	9		False	
+patient16	81	new	1		False	
+patient16	82	new	14		True	
+patient16	83	new	10		True	
+patient16	84	new	54		True	
+patient16	85	new	8		False	
+patient16	86	new	15		True	
+patient16	87	new	2		False	
+patient16	88	new	3		False	
+patient16	89	new	353		True	
+patient16	90	new	4		False	
+patient16	91	adjacent_fragment	2		False	
+patient16	92	new	8		True	
+patient16	93	new	8		False	
+patient16	94	new	1		False	
+patient16	95	new	4		False	
+patient16	96	new	4		True	
+patient16	97	new	4		True	
+patient16	98	new	63		False	
+patient16	99	new	4		True	
+patient16	100	new	4		False	
+patient16	101	new	2		False	
+patient16	102	new	4		False	
+patient17	1	enlarging	30	227.56	True	11.213
+patient17	2	enlarging	15	204.8	False	11.896
+patient17	3	resolved	4	-113.78	False	-5.4543
+patient17	4	shrinking	15	-106.19	True	-15.378
+patient17	5	resolved	9	-113.78	False	-13.039
+patient17	6	trend_up	8	22.756	False	10.718
+patient17	7	shrinking	49	-15.515	False	-2.5988
+patient17	8	enlarging	55	199.11	True	7.6033
+patient17	9	enlarging	39	95.814	True	18.705
+patient17	10	shrinking	12	-45.511	False	6.8964
+patient17	11	trend_up	2	113.78	False	-12.445
+patient17	12	trend_down	12	-20.687	False	7.1823
+patient17	13	resolved	3	-113.78	False	-11.093
+patient17	14	shrinking	10	-42.667	False	-9.881
+patient17	15	resolved	10	-113.78	False	-22.545
+patient17	16	resolved	7	-113.78	False	4.7929
+patient17	17	enlarging	13	199.11	False	0.0071123
+patient17	18	enlarging	60	1228.8	False	1.0837
+patient17	19	shrinking	25	-28.445	False	0.055467
+patient17	20	resolved	1	-113.78	False	11.89
+patient17	21	resolved	2	-113.78	False	14.365
+patient17	22	resolved	2	-113.78	True	-5.6605
+patient17	23	resolved	1	-113.78	False	-11.093
+patient17	24	resolved	2	-113.78	False	-5.9734
+patient17	25	shrinking	16	-85.334	True	-22.315
+patient17	26	enlarging	47	58.996	True	-9.0349
+patient17	27	enlarging	18	853.34	True	-29.582
+patient17	28	resolved	11	-113.78	True	-5.5713
+patient17	29	resolved	9	-113.78	False	-2.6295
+patient17	30	resolved	20	-113.78	False	-33.288
+patient17	31	trend_up	128	4.3344	True	10.323
+patient17	32	resolved	4	-113.78	False	-6.0836
+patient17	33	resolved	5	-113.78	True	-13.15
+patient17	34	enlarging	110	1674.2	True	9.5472
+patient17	35	trend_down	32	-4.5511	True	-5.1229
+patient17	36	resolved	1	-113.78	False	12.544
+patient17	37	enlarging	69	29.582	True	8.534
+patient17	38	resolved	5	-113.78	False	-12.146
+patient17	39	shrinking	25	-59.363	True	-19.588
+patient17	40	resolved	1	-113.78	False	17.934
+patient17	41	enlarging	34	23.704	False	-6.499
+patient17	42	enlarging	7	284.45	False	11.947
+patient17	43	shrinking	18	-33.464	True	4.6783
+patient17	44	stable	160	-1.0344	True	-30.056
+patient17	45	resolved	6	-113.78	False	15.334
+patient17	46	resolved	16	-113.78	False	-8.1387
+patient17	47	resolved	56	-113.78	False	0.77232
+patient17	48	enlarging	12	199.11	False	45.604
+patient17	49	enlarging	65	58.277	False	8.9073
+patient17	50	resolved	1	-113.78	True	30.478
+patient17	51	enlarging	288	32654	True	37.035
+patient17	52	shrinking	66	-9.4815	True	-5.2732
+patient17	53	enlarging	28	27.09	False	6.0106
+patient17	54	resolved	17	-113.78	False	-1.0884
+patient17	55	resolved	2	-113.78	False	5.2552
+patient17	56	enlarging	150	514.11	True	21.3
+patient17	57	trend_up	35	4.214	True	-9.5132
+patient17	58	enlarging	40	2104.9	False	12.487
+patient17	59	enlarging	39	64.31	False	12.231
+patient17	60	enlarging	35	881.78	True	46.411
+patient17	61	enlarging	11	56.889	False	0.30341
+patient17	62	trend_down	7	-16.254	False	-12.926
+patient17	63	stable	9	0	False	10.112
+patient17	64	shrinking	8	-56.889	False	-11.581
+patient17	65	resolved	3	-113.78	False	13.469
+patient17	66	resolved	4	-113.78	False	-16.533
+patient17	67	shrinking	14	-97.525	True	0.89194
+patient17	68	trend_up	6	28.445	False	-2.2649
+patient17	69	enlarging	21	126.42	True	5.5214
+patient17	70	shrinking	30	-91.898	True	-23.168
+patient17	71	trend_down	6	-45.511	False	4.5995
+patient17	72	shrinking	19	-33.464	False	-8.3585
+patient17	73	resolved	19	-113.78	True	-25.992
+patient17	74	enlarging	446	9989.8	True	-11.099
+patient17	75	enlarging	32	28.445	False	15.674
+patient17	76	resolved	1	-113.78	False	-6.5565
+patient17	77	resolved	1	-113.78	False	-6.8836
+patient17	78	enlarging	112	430.38	True	14.805
+patient17	79	shrinking	17	-60.236	True	-28.353
+patient17	80	resolved	8	-113.78	False	-31.689
+patient17	81	resolved	3	-113.78	False	-3.1716
+patient17	82	resolved	3	-113.78	False	5.5941
+patient17	83	shrinking	77	-21.752	False	-24.857
+patient17	84	shrinking	9	-48.762	False	21.48
+patient17	85	resolved	1	-113.78	False	-0.8249
+patient17	86	resolved	2	-113.78	False	5.1058
+patient17	87	enlarging	12	568.89	False	8.8107
+patient17	88	shrinking	14	-52.513	False	22.583
+patient17	89	stable	15	0	False	7.4482
+patient17	90	shrinking	14	-73.143	True	-2.2299
+patient17	91	enlarging	26	113.78	False	-11.26
+patient17	92	resolved	8	-113.78	False	0.20267
+patient17	93	new	2		False	
+patient17	94	new	1		False	
+patient17	95	new	27		False	
+patient17	96	new	8		True	
+patient17	97	new	16		True	
+patient17	98	new	7		False	
+patient17	99	new	18		True	
+patient17	100	new	6		True	
+patient17	101	new	7		True	
+patient17	102	new	2		False	
+patient17	103	new	6		True	
+patient17	104	new	20		True	
+patient17	105	new	17		True	
+patient17	106	new	14		False	
+patient17	107	new	2		False	
+patient17	108	new	10		True	
+patient17	109	new	271		True	
+patient17	110	new	5		False	
+patient17	111	new	12		True	
+patient17	112	new	1		True	
+patient17	113	new	5		False	
+patient17	114	new	4		True	
+patient17	115	new	71		True	
+patient17	116	new	38		True	
+patient17	117	new	24		True	
+patient17	118	new	3		False	
+patient17	119	new	81		True	
+patient17	120	new	37		True	
+patient17	121	new	32		True	
+patient17	122	new	18		False	
+patient17	123	new	11		True	
+patient17	124	new	2		False	
+patient17	125	new	3		False	
+patient17	126	new	2		False	
+patient17	127	new	1		False	
+patient17	128	new	6		False	
+patient17	129	new	10		False	
+patient17	130	adjacent_fragment	15		True	
+patient17	131	new	21		False	
+patient17	132	new	1		False	
+patient17	133	new	1		False	
+patient17	134	new	18		True	
+patient17	135	new	7		False	
+patient17	136	new	9		False	
+patient17	137	new	5		True	
+patient17	138	new	1		False	
+patient17	139	new	8		True	
+patient17	140	new	1		False	
+patient17	141	new	185		True	
+patient17	142	new	11		False	
+patient17	143	new	11		True	
+patient17	144	new	6		True	
+patient17	145	new	2		False	
+patient17	146	new	6		True	
+patient17	147	new	44		True	
+patient17	148	new	81		True	
+patient17	149	new	1		False	
+patient17	150	new	1		False	
+patient17	151	new	2		False	
+patient17	152	new	50		False	
+patient17	153	new	20		True	
+patient17	154	new	11		False	
+patient17	155	new	26		True	
+patient17	156	new	11		False	
+patient17	157	new	1		False	
+patient17	158	new	1		True	
+patient17	159	new	4		False	
+patient17	160	new	5		False	
+patient17	161	new	5		False	
+patient17	162	new	1		True	
+patient17	163	new	12		False	
+patient17	164	new	2		False	
+patient17	165	new	3		True	
+patient17	166	new	1		False	
+patient17	167	new	1		False	
+patient17	168	new	2		True	
+patient17	169	new	7		False	
+patient17	170	new	3		False	
+patient17	171	new	9		False	
+patient17	172	new	10		True	
+patient17	173	new	13		True	
+patient17	174	new	14		True	
+patient17	175	new	2		False	
+patient17	176	new	77		False	
+patient17	177	new	13		True	
+patient17	178	new	26		False	
+patient17	179	new	8		False	
+patient17	180	new	13		True	
+patient17	181	new	4		False	
+patient17	182	new	17		False	
+patient17	183	new	15		False	
+patient17	184	new	4		True	
+patient17	185	new	17		True	
+patient17	186	new	1		False	
+patient17	187	new	10		False	
+patient17	188	new	484		True	
+patient17	189	new	15		True	
+patient17	190	new	4		False	
+patient17	191	new	11		False	
+patient17	192	new	4		False	
+patient17	193	new	2		False	
+patient17	194	new	2		False	
+patient17	195	new	3		True	
+patient17	196	adjacent_fragment	17		True	
+patient17	197	new	13		True	
+patient17	198	new	3		False	
+patient17	199	new	578		True	
+patient17	200	new	23		True	
+patient17	201	new	39		True	
+patient17	202	new	1		False	
+patient17	203	new	4		False	
+patient17	204	new	4		False	
+patient17	205	new	7		False	
+patient17	206	new	1		False	
+patient17	207	new	2		True	
+patient17	208	new	9		False	
+patient17	209	new	8		False	
+patient17	210	new	32		True	
+patient17	211	new	4		True	
+patient17	212	new	1		True	
+patient17	213	new	1		False	
+patient17	214	new	1		False	
+patient17	215	new	37		True	
+patient17	216	new	8		False	
+patient17	217	new	3		True	
+patient17	218	new	7		False	
+patient17	219	new	2		False	
+patient17	220	new	17		False	
+patient17	221	new	70		False	
+patient17	222	new	12		True	
+patient17	223	new	2		False	
+patient17	224	new	15		True	
+patient17	225	new	6		False	
+patient17	226	new	5		False	
+patient17	227	new	1		True	
+patient17	228	new	29		True	
+patient17	229	new	2		False	
+patient17	230	new	129		True	
+patient17	231	new	1		False	
+patient17	232	new	8		False	
+patient17	233	new	25		False	
+patient17	234	new	56		True	
+patient17	235	new	14		True	
+patient17	236	new	19		True	
+patient17	237	new	7		True	
+patient17	238	new	2		False	
+patient17	239	new	12		False	
+patient17	240	adjacent_fragment	50		True	
+patient17	241	new	18		False	
+patient17	242	new	6		True	
+patient17	243	new	10		True	
+patient17	244	new	2		False	
+patient17	245	new	7		True	
+patient17	246	new	1		False	
+patient17	247	new	5		True	
+patient17	248	new	9		True	
+patient17	249	new	8		False	
+patient17	250	new	47		True	
+patient17	251	adjacent_fragment	1		False	
+patient17	252	new	11		True	
+patient17	253	new	2		False	
+patient17	254	new	6		False	
+patient17	255	new	31		False	
+patient17	256	new	3		True	
+patient17	257	new	4		False	
+patient17	258	new	6		False	
+patient17	259	new	2		False	
+patient17	260	new	36		True	
+patient17	261	new	5		False	
+patient17	262	new	4		False	
+patient17	263	adjacent_fragment	1		False	
+patient17	264	new	17		True	
+patient17	265	new	1		False	
+patient17	266	new	2		False	
+patient17	267	new	27		True	
+patient17	268	new	15		True	
+patient17	269	new	3		False	
+patient17	270	new	16		True	
+patient17	271	new	13		True	
+patient17	272	new	4		False	
+patient17	273	new	17		False	
+patient17	274	new	4		False	
+patient17	275	new	4		False	
+patient17	276	new	8		False	
+patient17	277	new	12		False	
+patient17	278	new	2		False	
+patient17	279	new	15		False	
+patient17	280	new	25		True	
+patient17	281	new	1		False	
+patient17	282	new	2		False	
+patient18	1	enlarging	41	40.662	False	5.0243
+patient18	2	trend_down	6	-27.882	False	-0.6622
+patient18	3	trend_down	21	-4.1003	False	0.0076876
+patient18	4	shrinking	35	-33.797	False	-4.3455
+patient18	5	shrinking	41	-9.1718	False	-9.397
+patient18	6	enlarging	11	87.132	False	-5.1473
+patient18	7	trend_up	8	27.882	False	-11.392
+patient18	8	trend_up	11	17.426	False	-3.4199
+patient18	9	resolved	3	-69.706	False	-4.5657
+patient18	10	enlarging	12	46.471	False	-10.633
+patient18	11	enlarging	105	10.201	False	0.27234
+patient18	12	enlarging	11940	16.663	True	9.6923
+patient18	13	shrinking	18	-12.301	False	3.6621
+patient18	14	trend_down	10	-7.7451	True	-5.6868
+patient18	15	enlarging	17	127.79	False	-11.057
+patient18	16	shrinking	24	-16.597	False	-8.7576
+patient18	17	enlarging	72	41.19	False	10.79
+patient18	18	shrinking	15	-32.172	False	8.7126
+patient18	19	shrinking	140	-24.422	False	-8.6036
+patient18	20	resolved	3	-69.706	False	-0.38919
+patient18	21	trend_up	3	139.41	False	-4.1998
+patient18	22	shrinking	5	-55.765	False	-9.4451
+patient18	23	enlarging	1490	25.181	True	5.1728
+patient18	24	shrinking	19	-40.356	False	-1.2276
+patient18	25	resolved	1	-69.706	False	-10.107
+patient18	26	stable	57	3.0307	False	0.10645
+patient18	27	shrinking	15	-16.086	False	-4.2641
+patient18	28	shrinking	22	-25.348	False	-4.62
+patient18	29	resolved	1	-69.706	False	-6.2735
+patient18	30	resolved	3	-69.706	False	0.8568
+patient18	31	trend_up	206	4.8632	False	1.0879
+patient18	32	stable	210	-1.8153	False	4.7186
+patient18	33	shrinking	18	-34.853	False	-3.2784
+patient18	34	resolved	2	-69.706	False	5.3194
+patient18	35	trend_up	38	8.4492	False	-0.17268
+patient18	36	shrinking	31	-31.48	True	-10.79
+patient18	37	resolved	4	-69.706	False	3.8534
+patient18	38	resolved	14	-69.706	True	-5.569
+patient18	39	resolved	3	-69.706	False	-8.295
+patient18	40	resolved	14	-69.706	False	-0.59873
+patient18	41	resolved	2	-69.706	False	-5.3151
+patient18	42	resolved	2	-69.706	False	-3.4853
+patient18	43	resolved	8	-69.706	False	-5.6799
+patient18	44	enlarging	48	180.07	False	1.8516
+patient18	45	resolved	18	-69.706	False	0.42743
+patient18	46	resolved	17	-69.706	False	-2.4602
+patient18	47	shrinking	206	-15.891	True	-1.1551
+patient18	48	resolved	16	-69.706	False	7.5315
+patient18	49	resolved	3	-69.706	False	12.454
+patient18	50	enlarging	126	728.74	False	4.7503
+patient18	51	enlarging	180	54.458	False	-1.9063
+patient18	52	resolved	42	-69.706	False	-2.8619
+patient18	53	resolved	1	-69.706	False	-3.6596
+patient18	54	trend_up	11	8.7132	False	1.0325
+patient18	55	trend_down	62	-7.2109	True	-9.326
+patient18	56	stable	8	0	False	1.8671
+patient18	57	stable	1	0	False	-3.8338
+patient18	58	resolved	8	-69.706	False	-1.5401
+patient18	59	shrinking	19	-22.012	True	-10.054
+patient18	60	resolved	2	-69.706	False	-5.5895
+patient18	61	enlarging	18	348.53	False	-4.7051
+patient18	62	shrinking	182	-34.211	False	5.5291
+patient18	63	resolved	4	-69.706	False	0.69488
+patient18	64	enlarging	22	418.24	True	25.774
+patient18	65	resolved	1	-69.706	False	3.4853
+patient18	66	enlarging	340	19.496	True	9.388
+patient18	67	shrinking	7	-34.853	False	-3.3415
+patient18	68	enlarging	14	125.47	False	8.4623
+patient18	69	resolved	8	-69.706	False	-6.5905
+patient18	70	shrinking	13	-23.235	False	-13.286
+patient18	71	shrinking	4	-52.279	False	3.4592
+patient18	72	resolved	7	-69.706	False	-3.3173
+patient18	73	enlarging	42	17.426	False	12.486
+patient18	74	shrinking	12	-38.021	False	-4.9198
+patient18	75	shrinking	13	-29.044	False	-10.37
+patient18	76	resolved	5	-69.706	False	-0.87132
+patient18	77	resolved	1	-69.706	False	-0.17426
+patient18	78	enlarging	4	209.12	True	-7.4934
+patient18	79	stable	22	0	False	6.3735
+patient18	80	trend_down	12	-6.9706	False	-2.4807
+patient18	81	resolved	9	-69.706	False	-10.159
+patient18	82	resolved	21	-69.706	False	-2.4115
+patient18	83	shrinking	327	-18.28	False	0.41723
+patient18	84	trend_up	10	7.7451	False	-0.52667
+patient18	85	stable	8	0	False	-0.89892
+patient18	86	resolved	2	-69.706	False	-3.7423
+patient18	87	stable	81	-3.8195	False	-1.4142
+patient18	88	resolved	2	-69.706	False	5.4066
+patient18	89	shrinking	4	-52.279	False	-9.4539
+patient18	90	shrinking	34	-9.2941	False	-8.2697
+patient18	91	trend_down	10	-15.49	False	-3.7961
+patient18	92	trend_down	10	-7.7451	False	6.5766
+patient18	93	enlarging	64	19.699	False	-0.80654
+patient18	94	shrinking	24	-49.375	False	-5.5543
+patient18	95	new	5		False	
+patient18	96	new	20		True	
+patient18	97	new	2		False	
+patient18	98	new	10		True	
+patient18	99	new	4		False	
+patient18	100	new	1		False	
+patient18	101	adjacent_fragment	16		True	
+patient18	102	new	1		False	
+patient18	103	new	5		False	
+patient18	104	new	1		False	
+patient18	105	new	1		False	
+patient18	106	adjacent_fragment	1		False	
+patient18	107	new	4		False	
+patient18	108	adjacent_fragment	1		False	
+patient18	109	adjacent_fragment	17		True	
+patient18	110	new	1		False	
+patient18	111	new	8		False	
+patient18	112	new	11		False	
+patient18	113	new	36		False	
+patient18	114	new	76		False	
+patient18	115	new	12		False	
+patient18	116	new	1		False	
+patient18	117	new	8		False	
+patient18	118	new	1		False	
+patient18	119	new	109		False	
+patient18	120	new	1		False	
+patient18	121	new	1		False	
+patient18	122	new	28		False	
+patient18	123	new	9		True	
+patient18	124	new	12		False	
+patient18	125	adjacent_fragment	3		False	
+patient18	126	new	1		False	
+patient18	127	new	9		False	
+patient18	128	new	3		False	
+patient18	129	new	2		False	
+patient18	130	new	3		False	
+patient18	131	new	4		False	
+patient19	1	resolved	16	-160.21	False	82.708
+patient19	2	resolved	8	-160.21	False	37.591
+patient19	3	resolved	1	-160.21	False	-13.457
+patient19	4	resolved	7	-160.21	False	55.176
+patient19	5	resolved	11	-160.21	False	-16.88
+patient19	6	resolved	1	-160.21	False	48.943
+patient19	7	resolved	2	-160.21	False	-1.4218
+patient19	8	resolved	2	-160.21	False	-10.183
+patient19	9	resolved	10	-160.21	False	-55.135
+patient19	10	resolved	2	-160.21	False	-15.62
+patient19	11	resolved	4	-160.21	False	76.213
+patient19	12	resolved	1	-160.21	False	26.834
+patient19	13	resolved	32	-160.21	False	44.553
+patient19	14	resolved	5	-160.21	False	-4.4978
+patient19	15	resolved	1	-160.21	True	29.398
+patient19	16	resolved	1	-160.21	False	-9.7725
+patient19	17	resolved	8	-160.21	False	-21.725
+patient19	18	resolved	4	-160.21	False	1.7773
+patient19	19	resolved	6	-160.21	False	-54.72
+patient19	20	enlarging	8143	41839	True	-24.9
+patient19	21	resolved	2	-160.21	True	-31.891
+patient19	22	resolved	4	-160.21	False	20.827
+patient19	23	resolved	5	-160.21	False	21.107
+patient19	24	resolved	1	-160.21	False	-15.66
+patient19	25	resolved	1	-160.21	True	-25.092
+patient19	26	resolved	26	-160.21	False	16.285
+patient19	27	resolved	5	-160.21	True	-49.175
+patient19	28	resolved	5	-160.21	False	-39.795
+patient19	29	resolved	1	-160.21	True	-65.504
+patient19	30	enlarging	63	34.639	True	-79.963
+patient19	31	resolved	8	-160.21	False	1.2366
+patient19	32	resolved	6	-160.21	False	12.039
+patient19	33	resolved	8	-160.21	False	15.547
+patient19	34	resolved	7	-160.21	False	5.055
+patient19	35	resolved	1	-160.21	False	-24.031
+patient19	36	resolved	52	-160.21	False	76.853
+patient19	37	resolved	107	-160.21	True	-134.17
+patient19	38	resolved	2	-160.21	False	-8.591
+patient19	39	resolved	4	-160.21	False	-56.577
+patient19	40	resolved	1	-160.21	False	17.102
+patient19	41	resolved	3	-160.21	False	-27.422
+patient19	42	resolved	5	-160.21	True	55.603
+patient19	43	resolved	2	-160.21	True	65.163
+patient19	44	resolved	4	-160.21	True	147.3
+patient19	45	resolved	37	-160.21	False	45.139
+patient19	46	resolved	3	-160.21	False	-8.2906
+patient19	47	resolved	53	-160.21	False	-36.267
+patient19	48	shrinking	13	-80.103	False	-73.542
+patient19	49	enlarging	20	600.77	False	67.491
+patient19	50	resolved	33	-160.21	False	-27.059
+patient19	51	resolved	11	-160.21	False	-62.839
+patient19	52	resolved	4	-160.21	False	-4.9363
+patient19	53	enlarging	468	74816	True	-30.439
+patient19	54	enlarging	493	15540	True	-4.4857
+patient19	55	resolved	138	-160.21	False	-10.298
+patient19	56	resolved	3	-160.21	False	-25.259
+patient19	57	resolved	6	-160.21	False	9.5656
+patient19	58	resolved	5	-160.21	False	15.007
+patient19	59	resolved	1	-160.21	False	-44.537
+patient19	60	resolved	5	-160.21	False	33.523
+patient19	61	resolved	4	-160.21	False	27.13
+patient19	62	resolved	1	-160.21	False	14.058
+patient19	63	resolved	6	-160.21	False	-33.273
+patient19	64	resolved	1	-160.21	False	7.6898
+patient19	65	resolved	20	-160.21	False	8.6441
+patient19	66	resolved	7	-160.21	False	14.004
+patient19	67	resolved	2	-160.21	False	90.246
+patient19	68	resolved	3	-160.21	False	27.342
+patient19	69	resolved	3	-160.21	True	70.951
+patient19	70	resolved	3	-160.21	False	-44.877
+patient19	71	resolved	1	-160.21	False	40.492
+patient19	72	resolved	4	-160.21	False	-6.8488
+patient19	73	resolved	28	-160.21	False	51.429
+patient19	74	resolved	1	-160.21	False	-25.633
+patient19	75	resolved	1	-160.21	False	-49.503
+patient19	76	resolved	4	-160.21	False	22.314
+patient19	77	resolved	18	-160.21	False	1.4852
+patient19	78	resolved	34	-160.21	True	-24.98
+patient19	79	resolved	5	-160.21	False	21.548
+patient19	80	resolved	2	-160.21	False	56.963
+patient19	81	resolved	4	-160.21	False	-50.299
+patient19	82	resolved	37	-160.21	False	-27.981
+patient19	83	resolved	13	-160.21	False	84.688
+patient19	84	resolved	6	-160.21	False	52.434
+patient19	85	resolved	2	-160.21	False	48.792
+patient19	86	new	3		False	
+patient19	87	new	4		False	
+patient19	88	new	9		False	
+patient19	89	new	3		False	
+patient19	90	adjacent_fragment	4		False	
+patient19	91	new	59		True	
+patient19	92	new	1		False	
+patient19	93	new	28		True	
+patient19	94	new	308		False	
+patient19	95	new	18		True	
+patient19	96	new	1097		True	
+patient19	97	adjacent_fragment	28		True	
+patient19	98	new	17		False	
+patient19	99	adjacent_fragment	92		True	
+patient19	100	new	23		False	
+patient19	101	new	1		False	
+patient19	102	new	2		True	
+patient19	103	new	67		True	
+patient19	104	new	42		False	
+patient19	105	new	1		False	
+patient19	106	new	23		True	
+patient19	107	new	68		True	
+patient19	108	new	13		False	
+patient19	109	new	39		True	
+patient19	110	adjacent_fragment	89		True	
+patient19	111	new	83		True	
+patient19	112	new	13		False	
+patient19	113	new	5		True	
+patient19	114	new	42		False	
+patient19	115	new	886		True	
+patient19	116	new	9		False	
+patient19	117	new	4		True	
+patient19	118	new	10		False	
+patient19	119	new	41		True	
+patient19	120	new	4		False	
+patient19	121	new	5		False	
+patient19	122	new	2021		True	
+patient19	123	new	9		False	
+patient19	124	new	12		False	
+patient19	125	new	1		False	
+patient19	126	new	40		True	
+patient19	127	new	60		False	
+patient19	128	new	2		False	
+patient19	129	new	36		False	
+patient19	130	new	54		True	
+patient19	131	new	664		True	
+patient19	132	new	3		False	
+patient19	133	new	101		True	
+patient19	134	new	40		False	
+patient19	135	adjacent_fragment	291		True	
+patient19	136	adjacent_fragment	15		False	
+patient20	1	resolved	4	-80.451	False	2.6046
+patient20	2	resolved	1	-80.451	False	12.912
+patient20	3	resolved	18	-80.451	False	-3.0163
+patient20	4	enlarging	14	1045.9	False	8.6484
+patient20	5	shrinking	33	-12.377	False	-1.4597
+patient20	6	resolved	1	-80.451	False	8.2462
+patient20	7	enlarging	45	50.654	False	0.22645
+patient20	8	trend_up	15	6.7042	False	11.494
+patient20	9	enlarging	98	2547.6	True	1.2738
+patient20	10	stable	286	3.6568	False	-2.6089
+patient20	11	resolved	5	-80.451	False	-1.5286
+patient20	12	resolved	5	-80.451	False	-0.44248
+patient20	13	resolved	9	-80.451	False	2.2347
+patient20	14	resolved	1	-80.451	False	-7.6629
+patient20	15	stable	14	0	False	1.754
+patient20	16	resolved	35	-80.451	False	-3.2516
+patient20	17	enlarging	79	343.26	True	25.219
+patient20	18	trend_down	22	-4.2342	False	-4.1035
+patient20	19	resolved	28	-80.451	False	13.575
+patient20	20	shrinking	14	-40.225	False	-16.925
+patient20	21	trend_up	18	6.1885	True	1.8457
+patient20	22	shrinking	4	-60.338	False	-3.0169
+patient20	23	resolved	2	-80.451	False	-3.2985
+patient20	24	resolved	1	-80.451	False	11.856
+patient20	25	enlarging	55	26.817	False	1.1508
+patient20	26	enlarging	61	165.37	False	-4.6823
+patient20	27	trend_up	24	4.7324	False	-13.658
+patient20	28	resolved	12	-80.451	False	-4.8153
+patient20	29	enlarging	21	64.36	True	0.59835
+patient20	30	resolved	29	-80.451	False	-16.937
+patient20	31	new	5		False	
+patient20	32	new	4		False	
+patient20	33	new	8		False	
+patient20	34	new	1		False	
+patient20	35	new	9		False	
+patient20	36	new	2		False	
+patient20	37	new	43		False	
+patient20	38	new	2		False	
+patient20	39	new	15		False	
+patient20	40	new	1		False	
+patient20	41	new	5		False	
+patient20	42	new	5		False	
+patient20	43	new	4		False	
+patient20	44	new	2		False	
+patient20	45	adjacent_fragment	10		False	
+patient20	46	adjacent_fragment	5		False	
+patient20	47	new	2		False	
+patient20	48	new	3		False	
+patient20	49	new	1		False	
+patient20	50	new	34		True	
+patient20	51	new	5		True	
+patient20	52	new	3		False	
+patient20	53	new	44		True	
+patient20	54	new	10		False	

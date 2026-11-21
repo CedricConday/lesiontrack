@@ -187,3 +187,22 @@ is `work/backtest_P1_v5`, the 2026-11-19 re-score.
   Spearman Jacobian vs mask rate 0.31 (594 groups). No SEL ground truth: tracking only.
   Lesjak backtests 03/06/07 (greedy): sensitivity 1.00/1.00/0.96, FPR 0.22/0.09/0.12,
   recovery 1.02/1.03/1.00, noise floor 5.0/2.1/4.8 %/yr. Gap (3) closed.
+
+## 2026-11-21 — 0.3.0.dev0 re-run (similarity step, mean-rate default, frame fix)
+
+`scripts/run_v030.sh 4`, 10:55 to 16:55, 81 steps exit 0; one exit 1, MSLesSeg P49, the
+known broken T1 (input gate, as in 0.2.0). Code `b30520d`. Tables `results/v030/`, cohorts
+`derivatives/v030/`. ANTs and the LST-AI arm not re-run.
+
+* Pooled P1-P3, lesion level, mean rate >= 10 sens / FPR, 0.2.0 -> 0.3.0: unscaled
+  0.99/0.03 -> 0.97/0.03; 0.5 % scale 0.99/0.07 -> 0.97/0.06; 1 % scale 1.00/0.18 ->
+  0.99/0.00; thick3 0.96/0.06 -> 0.96/0.05; Lesjak x3 0.96/0.03 -> 0.96/0.05.
+* Definite S>=0 sensitivity drops: 0.74 -> 0.62 unscaled, 0.79 -> 0.56 at 1 %. FPR level.
+* Noise floor (median untouched peak) over 7 patients 10.8 -> 15.5 %/yr (P1 10.8 -> 15.8).
+  Not explained. Candidates to test: the frame fix (changes the intermediate timepoint,
+  which feeds the peak) against the similarity step (`work/dof7/` has dof 7 before the frame
+  fix on P1). Open.
+* Feature AUC medians: mean rate 0.98, constancy residual 0.75, S 0.62, concentricity 0.57.
+* Cohorts with defaults: MSLesSeg 246 candidates (median 6.5, P2 and P20 none), 75
+  definite; Lesjak 231 / 40; Lesjak tracking identical to 0.2.0. Halfway volume factor
+  0.975-1.010; residual global scale in backtests 0.993-0.996.

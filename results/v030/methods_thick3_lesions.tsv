@@ -1,0 +1,223 @@
+backtest	seed	lesion_id	n_voxels	size_stratum	nominal_pct_per_year	true_pct_per_year	def_mean_rate	measured_peak_pct_per_year	recovery	def_candidate	def_definite	expanded	def_mean_flag	seg_truth_seen	seg_truth_rate	seg_truth_flag
+P1_thick3	0	1	1354	large_ge500	40	21.497	19.623	58.7	0.9128	True	True	True	True	True	15.299	True
+P1_thick3	0	2	94	small_lt100	25	21.447	24.163	39.15	1.1267	True	False	True	True	True	11.702	True
+P1_thick3	0	4	51	small_lt100	15	12.395	16.14	26.275	1.3022	True	True	True	True	True	-9.8039	False
+P1_thick3	0	5	49	small_lt100	15	10.788	24.348	33.088	2.257	True	True	True	True	True	-6.1224	False
+P1_thick3	0	7	45	small_lt100	15	11.292	15.993	21.537	1.4163	True	False	True	True	True	-11.111	False
+P1_thick3	0	8	203	medium_100_500	25	24.596	28.288	45.187	1.1501	True	True	True	True	True	25.616	True
+P1_thick3	0	9	374	medium_100_500	40	21.391	26.59	65.6	1.243	True	True	True	True	True	16.043	True
+P1_thick3	0	17	58	small_lt100	25	25	29.585	39.7	1.1834	True	True	True	True	True	13.793	True
+P1_thick3	0	3	39	small_lt100	0	0	1.1163	10		False	False	False	False	True	-15.385	False
+P1_thick3	0	6	39	small_lt100	0	-0.38023	2.7333	15.5		True	False	False	False	True	-25.641	False
+P1_thick3	0	10	175	medium_100_500	0	0	9.6844	27.05		True	True	False	True	True	-5.7143	False
+P1_thick3	0	11	1063	large_ge500	0	-1.1674	-0.5903	21.275		True	True	False	False	True	-7.9022	False
+P1_thick3	0	12	15632	large_ge500	0	0	0.60576	21.275		True	True	False	False	True	-1.0364	False
+P1_thick3	0	13	72	small_lt100	0	0	6.6424	15.513		True	True	False	False	True	-12.5	False
+P1_thick3	0	14	1194	large_ge500	0	0	2.8341	21.275		True	True	False	False	True	-4.3551	False
+P1_thick3	0	15	123	medium_100_500	0	0	3.3504	10.25		False	False	False	False	True	-7.377	False
+P1_thick3	0	16	93	small_lt100	0	0	0.55874	10		False	False	False	False	True	-11.828	False
+P1_thick3	0	18	16	small_lt100	0	0	7.7391	16.55		True	False	False	False	True	-18.75	False
+P1_thick3	1	1	1354	large_ge500	15	7.9386	8.505	27.05	1.0713	True	True	True	False	True	5.4693	False
+P1_thick3	1	3	39	small_lt100	15	14.755	15.958	27.05	1.0816	True	False	True	True	True	0	False
+P1_thick3	1	5	49	small_lt100	25	25	30.519	45.475	1.2208	True	False	True	True	True	12.245	True
+P1_thick3	1	6	39	small_lt100	25	25	24.627	40.3	0.98509	True	False	True	True	True	7.6923	False
+P1_thick3	1	10	175	medium_100_500	40	39.843	44.548	72.8	1.1181	True	True	True	True	True	30.286	True
+P1_thick3	1	13	72	small_lt100	15	14.97	18.638	33.1	1.245	True	True	True	True	True	6.9444	False
+P1_thick3	1	14	1194	large_ge500	40	34.783	34.783	58.7	0.99999	True	False	True	True	True	31.822	True
+P1_thick3	1	17	58	small_lt100	25	25	30.602	52.375	1.2241	True	True	True	True	True	5.1724	False
+P1_thick3	1	2	94	small_lt100	0	-2.721	0.97207	15.5		True	False	False	False	True	-18.085	False
+P1_thick3	1	4	51	small_lt100	0	0	0.76421	5.25		False	False	False	False	True	-21.569	False
+P1_thick3	1	7	45	small_lt100	0	0	3.2267	10.25		False	False	False	False	True	-15.556	False
+P1_thick3	1	8	203	medium_100_500	0	-0.32177	2.1641	16.275		True	True	False	False	True	-2.9557	False
+P1_thick3	1	9	374	medium_100_500	0	0	7.5181	21.55		True	True	False	False	True	-10.428	False
+P1_thick3	1	11	1063	large_ge500	0	0	0.25179	20.75		True	True	False	False	True	0.94429	False
+P1_thick3	1	12	15632	large_ge500	0	-0.0197	1.2845	27.05		True	True	False	False	True	-0.99156	False
+P1_thick3	1	15	123	medium_100_500	0	0	4.5454	21.275		True	True	False	False	True	-0.81301	False
+P1_thick3	1	16	93	small_lt100	0	0	-2.596	10.25		False	False	False	False	True	-7.5269	False
+P1_thick3	1	18	16	small_lt100	0	0	-3.3406	0.25001		False	False	False	False	True	-25	False
+P1_thick3	2	2	94	small_lt100	25	24.923	30.097	39.725	1.2076	True	True	True	True	True	7.4468	False
+P1_thick3	2	3	39	small_lt100	25	24.574	24.723	33.1	1.0061	True	True	True	True	True	-10.256	False
+P1_thick3	2	4	51	small_lt100	25	25	24.135	32.825	0.9654	True	True	True	True	True	35.294	True
+P1_thick3	2	6	39	small_lt100	15	14.707	24.141	33.938	1.6415	True	False	True	True	True	5.1282	False
+P1_thick3	2	8	203	medium_100_500	15	14.515	17.417	33.1	1.1999	True	True	True	True	True	10.837	True
+P1_thick3	2	9	374	medium_100_500	40	21.391	25.192	58.413	1.1777	True	True	True	True	True	18.717	True
+P1_thick3	2	13	72	small_lt100	40	39.911	43.651	58.7	1.0937	True	True	True	True	True	36.111	True
+P1_thick3	2	17	58	small_lt100	15	15	15.973	27.875	1.0649	True	False	True	True	True	0	False
+P1_thick3	2	1	1354	large_ge500	0	-0.035256	1.492	16.025		True	True	False	False	True	-4.6529	False
+P1_thick3	2	5	49	small_lt100	0	-3.5189	4.298	15.5		True	False	False	False	True	-20.408	False
+P1_thick3	2	7	45	small_lt100	0	-4.4677	-5.7492	0		False	False	False	False	True	-15.556	False
+P1_thick3	2	10	175	medium_100_500	0	0	6.6694	16.025		True	True	False	False	True	-2.2857	False
+P1_thick3	2	11	1063	large_ge500	0	-0.79974	-0.03529	21.275		True	True	False	False	True	-5.5503	False
+P1_thick3	2	12	15632	large_ge500	0	-0.042707	0.59105	21.275		True	True	False	False	True	-0.56986	False
+P1_thick3	2	14	1194	large_ge500	0	0	3.0851	16		True	True	False	False	True	-4.6901	False
+P1_thick3	2	15	123	medium_100_500	0	0	1.3509	10.55		False	False	False	False	True	-1.626	False
+P1_thick3	2	16	93	small_lt100	0	0	2.0176	15.5		True	True	False	False	True	-4.3011	False
+P1_thick3	2	18	16	small_lt100	0	0	-17.195	-9.75		False	False	False	False	True	0	False
+P2_thick3	0	1	73	small_lt100	40	39.333	43.783	65.6	1.1131	True	True	True	True	True	35.616	True
+P2_thick3	0	2	109	medium_100_500	25	24.989	25.576	33.375	1.0235	True	True	True	True	True	3.7037	False
+P2_thick3	0	3	129	medium_100_500	15	14.959	28.387	58.4	1.8977	True	False	True	True	True	10.853	True
+P2_thick3	0	4	35	small_lt100	15	13.93	26.381	38.863	1.8939	True	True	True	True	True	2.8571	False
+P2_thick3	0	6	74	small_lt100	15	14.845	16.399	33.1	1.1047	True	True	True	True	True	6.7568	False
+P2_thick3	0	7	201	medium_100_500	25	24.3	24.701	39.15	1.0165	True	True	True	True	True	25.373	True
+P2_thick3	0	10	151	medium_100_500	40	39.997	42.375	58.7	1.0594	True	True	True	True	True	47.02	True
+P2_thick3	0	15	76	small_lt100	25	25	27.98	39.15	1.1192	True	True	True	True	True	15.789	True
+P2_thick3	0	5	455	medium_100_500	0	-0.0013886	-2.4597	15.762		True	False	False	False	True	0.883	False
+P2_thick3	0	8	144	medium_100_500	0	-6.3235	-0.63915	10.25		False	False	False	False	True	-17.361	False
+P2_thick3	0	9	48	small_lt100	0	0	0.47344	10.5		False	False	False	False	True	-18.75	False
+P2_thick3	0	11	250	medium_100_500	0	0	-2.9213	21.275		True	False	False	False	True	-2	False
+P2_thick3	0	12	428	medium_100_500	0	0	3.7519	16.275		True	True	False	False	True	-4.2056	False
+P2_thick3	0	13	40	small_lt100	0	0	5.1669	20.725		True	False	False	False	True	-27.5	False
+P2_thick3	0	14	48	small_lt100	0	-0.51291	-5.6763	5.525		False	False	False	False	True	-20.833	False
+P2_thick3	1	1	73	small_lt100	15	14.403	19.774	33.1	1.3729	True	True	True	True	True	27.397	True
+P2_thick3	1	2	109	medium_100_500	15	14.994	14.378	32.537	0.95893	True	False	True	True	True	5.5046	False
+P2_thick3	1	4	35	small_lt100	25	24.465	43.15	58.45	1.7637	True	True	True	True	True	45.714	True
+P2_thick3	1	5	455	medium_100_500	25	24.961	27.248	39.425	1.0916	True	False	True	True	True	27.253	True
+P2_thick3	1	8	144	medium_100_500	40	40	46.818	65.6	1.1704	True	True	True	True	True	38.194	True
+P2_thick3	1	11	250	medium_100_500	15	14.998	16.33	27.05	1.0888	True	False	True	True	True	21.285	True
+P2_thick3	1	12	428	medium_100_500	40	34.508	30.699	52.625	0.88963	True	True	True	True	True	25.234	True
+P2_thick3	1	15	76	small_lt100	25	25	30.353	39.425	1.2141	True	True	True	True	True	6.5789	False
+P2_thick3	1	3	129	medium_100_500	0	0	9.6599	21.55		True	False	False	True	True	-13.953	False
+P2_thick3	1	6	74	small_lt100	0	0	-0.78395	6.075		False	False	False	False	True	0	False
+P2_thick3	1	7	201	medium_100_500	0	0	0.46019	26.538		True	False	False	False	True	1	False
+P2_thick3	1	9	48	small_lt100	0	0	1.9258	16.275		True	False	False	False	True	0	False
+P2_thick3	1	10	151	medium_100_500	0	-4.2226	-5.2807	26.262		True	False	False	False	True	-9.9338	False
+P2_thick3	1	13	40	small_lt100	0	0	5.2991	11.275		False	False	False	False	True	-10	False
+P2_thick3	1	14	48	small_lt100	0	0	-8.3172	0.75001		False	False	False	False	True	-14.583	False
+P2_thick3	2	2	109	medium_100_500	25	24.989	29.771	66.2	1.1914	True	False	True	True	True	0.91743	False
+P2_thick3	2	3	129	medium_100_500	25	24.928	36.444	58.7	1.4619	True	True	True	True	True	22.481	True
+P2_thick3	2	4	35	small_lt100	25	25	33.455	58.687	1.3382	True	False	True	True	True	25.714	True
+P2_thick3	2	5	455	medium_100_500	15	14.977	18.688	39.15	1.2478	True	False	True	True	True	16.923	True
+P2_thick3	2	7	201	medium_100_500	15	13.679	14.809	38.575	1.0826	True	False	True	True	True	4.4776	False
+P2_thick3	2	11	250	medium_100_500	40	39.994	35.516	52.375	0.88804	True	True	True	True	True	41.6	True
+P2_thick3	2	14	48	small_lt100	40	39.764	38.011	65.625	0.95592	True	True	True	True	True	35.417	True
+P2_thick3	2	15	76	small_lt100	15	15	14.944	39.15	0.99626	True	True	True	True	True	5.2632	False
+P2_thick3	2	1	73	small_lt100	0	-0.43015	6.6497	16.025		True	False	False	False	True	-9.589	False
+P2_thick3	2	6	74	small_lt100	0	0	8.375	21.275		True	True	False	False	True	-16.216	False
+P2_thick3	2	8	144	medium_100_500	0	0	3.5697	15.762		True	True	False	False	True	0	False
+P2_thick3	2	9	48	small_lt100	0	0	1.7036	15.5		True	False	False	False	True	-12.5	False
+P2_thick3	2	10	151	medium_100_500	0	-0.091771	-3.9555	16.025		True	False	False	False	True	0	False
+P2_thick3	2	12	428	medium_100_500	0	0	5.0744	26.513		True	True	False	False	True	-8.1776	False
+P2_thick3	2	13	40	small_lt100	0	0	9.3494	16		True	False	False	True	True	-5	False
+P3_thick3	0	3	100	medium_100_500	40	39.578	41.273	72.8	1.0428	True	True	True	True	True	36	True
+P3_thick3	0	5	67	small_lt100	25	25	26.053	39.15	1.0421	True	True	True	True	True	4.4776	False
+P3_thick3	0	6	30	small_lt100	15	15	0.275	10.512	0.018333	False	False	True	False	True	3.3333	False
+P3_thick3	0	12	108	medium_100_500	15	15	22.119	33.1	1.4746	True	False	True	True	True	8.3333	False
+P3_thick3	0	13	43	small_lt100	15	15	32.274	45.475	2.1516	True	True	True	True	True	-2.3256	False
+P3_thick3	0	17	62	small_lt100	25	24.977	34.103	45.775	1.3654	True	True	True	True	True	9.6774	True
+P3_thick3	0	20	78	small_lt100	40	40	35.717	51.813	0.89293	True	True	True	True	True	17.949	True
+P3_thick3	0	23	52	small_lt100	25	25	32.992	45.75	1.3197	True	True	True	True	True	1.9231	False
+P3_thick3	0	1	6	small_lt100	0	0	-5.7521	-0.2625		False	False	False	False	True	-100	False
+P3_thick3	0	2	21	small_lt100	0	0	-9.9643	-5		False	False	False	False	True	-42.857	False
+P3_thick3	0	4	21	small_lt100	0	0	2.8619	15.5		True	False	False	False	True	-23.81	False
+P3_thick3	0	7	24	small_lt100	0	4.4831	1.4458	10.012		False	False	False	False	True	-20.833	False
+P3_thick3	0	8	856	large_ge500	0	0	2.8659	16.55		True	True	False	False	True	-7.7103	False
+P3_thick3	0	9	2	small_lt100	0	0	18.387	21.275		False	False	False	True	True	-100	False
+P3_thick3	0	10	64	small_lt100	0	-0.67607	6.5666	16.275		True	False	False	False	True	-39.062	False
+P3_thick3	0	11	78	small_lt100	0	0	1.0752	10.263		False	False	False	False	True	0	False
+P3_thick3	0	14	32	small_lt100	0	0	4.9855	15.75		True	False	False	False	True	0	False
+P3_thick3	0	15	77	small_lt100	0	0	-1.5776	10.25		False	False	False	False	True	-20.779	False
+P3_thick3	0	16	39	small_lt100	0	0	-1.5513	10.5		False	False	False	False	True	-10.256	False
+P3_thick3	0	18	55	small_lt100	0	0	-0.55591	10.5		False	False	False	False	True	0	False
+P3_thick3	0	19	44	small_lt100	0	-1.5302	-3.819	10.25		False	False	False	False	True	-13.636	False
+P3_thick3	0	21	73	small_lt100	0	0	0.71969	10.5		False	False	False	False	True	0	False
+P3_thick3	0	22	45	small_lt100	0	0	-1.5522	10		False	False	False	False	True	-4.4444	False
+P3_thick3	0	24	116	medium_100_500	0	0	2.6017	15.762		True	False	False	False	True	-9.4828	False
+P3_thick3	0	25	149	medium_100_500	0	0	2.8422	15.5		True	False	False	False	True	-4.0541	False
+P3_thick3	0	26	15	small_lt100	0	0	2.3342	10.25		False	False	False	False	True	-46.667	False
+P3_thick3	0	27	21	small_lt100	0	0	-9.6006	-4.75		False	False	False	False	True	-19.048	False
+P3_thick3	0	28	61	small_lt100	0	-1.3361	-3.0664	5.25		False	False	False	False	True	-16.393	False
+P3_thick3	0	29	117	medium_100_500	0	0	3.4525	16.025		True	True	False	False	True	-18.803	False
+P3_thick3	0	30	2	small_lt100	0	0	-5	-5		False	False	False	False	True	-100	False
+P3_thick3	0	31	28	small_lt100	0	0	0.71473	21.55		True	False	False	False	True	-14.286	False
+P3_thick3	0	32	45	small_lt100	0	0	1.5906	15.75		True	False	False	False	True	-17.778	False
+P3_thick3	0	33	47	small_lt100	0	0	-1.3043	0		False	False	False	False	True	-6.5217	False
+P3_thick3	0	34	17	small_lt100	0	0	-1.5279	5.2625		False	False	False	False	True	-100	False
+P3_thick3	0	35	72	small_lt100	0	0	2.7391	10.512		False	False	False	False	True	-20.833	False
+P3_thick3	0	36	18	small_lt100	0	0	5.4444	10.25		False	False	False	False	True	-27.778	False
+P3_thick3	0	37	14	small_lt100	0	0	-5.7321	0		False	False	False	False	True	-100	False
+P3_thick3	0	38	55	small_lt100	0	0	-0.37273	5.25		False	False	False	False	True	-16.364	False
+P3_thick3	0	39	69	small_lt100	0	0	1.1091	15.762		True	False	False	False	True	-18.841	False
+P3_thick3	0	40	18	small_lt100	0	0	8.5125	21.275		True	False	False	False	True	-16.667	False
+P3_thick3	0	41	138	medium_100_500	0	0	0.35543	10		False	False	False	False	True	-5.0725	False
+P3_thick3	1	3	100	medium_100_500	15	14.858	18.129	39.15	1.2202	True	True	True	True	True	20	True
+P3_thick3	1	8	856	large_ge500	15	9.7677	13.606	32.825	1.3929	True	False	True	True	True	8.1776	False
+P3_thick3	1	15	77	small_lt100	25	25	22.556	33.1	0.90222	True	False	True	True	True	11.688	True
+P3_thick3	1	17	62	small_lt100	25	24.977	27.452	39.15	1.0991	True	True	True	True	True	4.8387	False
+P3_thick3	1	23	52	small_lt100	40	40	45.956	51.8	1.1489	True	True	True	True	True	23.077	True
+P3_thick3	1	32	45	small_lt100	15	15	23.704	33.125	1.5803	True	False	True	True	True	8.8889	False
+P3_thick3	1	39	69	small_lt100	40	40	47.001	59	1.175	True	True	True	True	True	17.391	True
+P3_thick3	1	41	138	medium_100_500	25	24.997	20.835	39.15	0.8335	True	True	True	True	True	39.13	True
+P3_thick3	1	1	6	small_lt100	0	0	-0.83334	5		False	False	False	False	True	-16.667	False
+P3_thick3	1	2	21	small_lt100	0	0	-8.5286	-5		False	False	False	False	True	-9.5238	False
+P3_thick3	1	4	21	small_lt100	0	0	-3.4089	0.012505		False	False	False	False	True	-14.286	False
+P3_thick3	1	5	67	small_lt100	0	0	3.8321	10.25		False	False	False	False	True	0	False
+P3_thick3	1	6	30	small_lt100	0	0	-15.023	0.25001		False	False	False	False	True	-16.667	False
+P3_thick3	1	7	24	small_lt100	0	0	2.676	10.512		False	False	False	False	True	0	False
+P3_thick3	1	9	2	small_lt100	0	0	7.4937	10.25		False	False	False	False	True	-100	False
+P3_thick3	1	10	64	small_lt100	0	0	7.4914	16.038		True	True	False	False	True	-25	False
+P3_thick3	1	11	78	small_lt100	0	0	-0.1218	5.25		False	False	False	False	True	-12.821	False
+P3_thick3	1	12	108	medium_100_500	0	0	1.2747	16.288		True	False	False	False	True	-7.4074	False
+P3_thick3	1	13	43	small_lt100	0	0	4.3311	21.275		True	False	False	False	True	-18.605	False
+P3_thick3	1	14	32	small_lt100	0	0	0.49101	15.5		True	False	False	False	True	-28.125	False
+P3_thick3	1	16	39	small_lt100	0	0	-0.29263	9.9875		False	False	False	False	True	-25.641	False
+P3_thick3	1	18	55	small_lt100	0	0	-5.4	10.25		False	False	False	False	True	-14.545	False
+P3_thick3	1	19	44	small_lt100	0	0	1.0909	5.25		False	False	False	False	True	-25	False
+P3_thick3	1	20	78	small_lt100	0	0	-5.5237	4.25		False	False	False	False	True	-7.6923	False
+P3_thick3	1	21	73	small_lt100	0	0	1.892	10.25		False	False	False	False	True	-10.959	False
+P3_thick3	1	22	45	small_lt100	0	0	0.28944	10.012		False	False	False	False	True	-17.778	False
+P3_thick3	1	24	116	medium_100_500	0	-0.074873	1.7161	21.275		True	False	False	False	True	-4.3478	False
+P3_thick3	1	25	149	medium_100_500	0	0	5.793	16.3		True	False	False	False	True	0	False
+P3_thick3	1	26	15	small_lt100	0	0	8.3975	15.5		True	False	False	False	True	-26.667	False
+P3_thick3	1	27	21	small_lt100	0	0	-12.331	-9		False	False	False	False	True	-23.81	False
+P3_thick3	1	28	61	small_lt100	0	-1.9031	-4.0711	10.5		False	False	False	False	True	-6.5574	False
+P3_thick3	1	29	117	medium_100_500	0	0	0.39904	10.5		False	False	False	False	True	-5.9829	False
+P3_thick3	1	30	2	small_lt100	0	0	-2.5	0		False	False	False	False	True	-100	False
+P3_thick3	1	31	28	small_lt100	0	0	1.9487	10.5		False	False	False	False	True	-7.1429	False
+P3_thick3	1	33	47	small_lt100	0	0	0.016755	10.5		False	False	False	False	True	0	False
+P3_thick3	1	34	17	small_lt100	0	-0.50883	4.7963	10.25		False	False	False	False	True	-5.8824	False
+P3_thick3	1	35	72	small_lt100	0	0	1.9811	10.25		False	False	False	False	True	-6.9444	False
+P3_thick3	1	36	18	small_lt100	0	0	11.575	21.275		True	False	False	True	True	-11.111	False
+P3_thick3	1	37	14	small_lt100	0	0	8.6795	15.5		True	False	False	False	True	-42.857	False
+P3_thick3	1	38	55	small_lt100	0	0	3.2177	16.025		True	False	False	False	True	-5.4545	False
+P3_thick3	1	40	18	small_lt100	0	0	0.95556	5.4875		False	False	False	False	True	-16.667	False
+P3_thick3	2	6	30	small_lt100	25	25	27.499	39.15	1.1	True	True	True	True	True	10	True
+P3_thick3	2	11	78	small_lt100	25	24.055	24.407	39.15	1.0146	True	True	True	True	True	0	False
+P3_thick3	2	13	43	small_lt100	25	25	34.057	46	1.3623	True	True	True	True	True	9.3023	True
+P3_thick3	2	16	39	small_lt100	15	12.531	11.4	27.05	0.90975	True	False	True	True	True	-5.1282	False
+P3_thick3	2	18	55	small_lt100	15	13.187	7.7909	21.55	0.59078	True	False	True	False	True	5.4545	False
+P3_thick3	2	23	52	small_lt100	40	40	45.965	58.7	1.1491	True	True	True	True	True	29.412	True
+P3_thick3	2	29	117	medium_100_500	40	31.881	34.218	59	1.0733	True	True	True	True	True	9.4017	True
+P3_thick3	2	41	138	medium_100_500	15	14.998	12.588	27.05	0.83928	True	True	True	True	True	7.971	False
+P3_thick3	2	1	6	small_lt100	0	0	-1.7083	0		False	False	False	False	True	-100	False
+P3_thick3	2	2	21	small_lt100	0	0	-2.7131	5		False	False	False	False	True	-19.048	False
+P3_thick3	2	3	100	medium_100_500	0	0	-0.51763	10.5		False	False	False	False	True	-5	False
+P3_thick3	2	4	21	small_lt100	0	0	-1.2125	5		False	False	False	False	True	-14.286	False
+P3_thick3	2	5	67	small_lt100	0	0	3.809	15.5		True	False	False	False	True	-14.925	False
+P3_thick3	2	7	24	small_lt100	0	0	-0.086461	10.25		False	False	False	False	True	-20.833	False
+P3_thick3	2	8	856	large_ge500	0	0	2.4645	20.75		True	True	False	False	True	-3.3879	False
+P3_thick3	2	9	2	small_lt100	0	0	15.5	15.5		False	False	False	True	True	-100	False
+P3_thick3	2	10	64	small_lt100	0	0	3.7916	15.762		True	True	False	False	True	-17.188	False
+P3_thick3	2	12	108	medium_100_500	0	0	2.7207	16.025		True	False	False	False	True	-12.037	False
+P3_thick3	2	14	32	small_lt100	0	2.6793	0.25195	5.25		False	False	False	False	True	-18.75	False
+P3_thick3	2	15	77	small_lt100	0	0	-0.60065	10.25		False	False	False	False	True	-1.2987	False
+P3_thick3	2	17	62	small_lt100	0	0	7.4367	16.025		True	False	False	False	True	-1.6129	False
+P3_thick3	2	19	44	small_lt100	0	0	-3.892	10.5		False	False	False	False	True	-9.0909	False
+P3_thick3	2	20	78	small_lt100	0	0	-1.2405	10.25		False	False	False	False	True	-8.9744	False
+P3_thick3	2	21	73	small_lt100	0	0	2.8976	16.025		True	True	False	False	True	1.3699	False
+P3_thick3	2	22	45	small_lt100	0	0	-5.6461	5		False	False	False	False	True	0	False
+P3_thick3	2	24	116	medium_100_500	0	-1.7396	-0.25248	15.762		True	False	False	False	True	-10.345	False
+P3_thick3	2	25	149	medium_100_500	0	0	4.3405	16.025		True	True	False	False	True	-1.3423	False
+P3_thick3	2	26	15	small_lt100	0	0	5.7158	15.762		False	False	False	False	True	0	False
+P3_thick3	2	27	21	small_lt100	0	0	-2.3708	5		False	False	False	False	True	0	False
+P3_thick3	2	28	61	small_lt100	0	-1.9031	-1.1215	10.775		False	False	False	False	True	-14.754	False
+P3_thick3	2	30	2	small_lt100	0	-8.8741	-0.775	-0.775		False	False	False	False	True	-100	False
+P3_thick3	2	31	28	small_lt100	0	0	-6.8567	5		False	False	False	False	True	-14.286	False
+P3_thick3	2	32	45	small_lt100	0	0	-0.78472	9.725		False	False	False	False	True	-17.778	False
+P3_thick3	2	33	47	small_lt100	0	0	-0.28192	5.25		False	False	False	False	True	-8.5106	False
+P3_thick3	2	34	17	small_lt100	0	0	1.9397	10.25		False	False	False	False	True	-23.529	False
+P3_thick3	2	35	72	small_lt100	0	0	-0.54861	5.25		False	False	False	False	True	-2.7778	False
+P3_thick3	2	36	18	small_lt100	0	0	8.9257	15		True	False	False	False	True	-27.778	False
+P3_thick3	2	37	14	small_lt100	0	0	12.978	25.5		True	False	False	True	True	-28.571	False
+P3_thick3	2	38	55	small_lt100	0	0	-0.43364	10		False	False	False	False	True	-16.364	False
+P3_thick3	2	39	69	small_lt100	0	0	-1.7335	10.25		False	False	False	False	True	-1.4706	False
+P3_thick3	2	40	18	small_lt100	0	0	8.2986	26.787		True	False	False	False	True	-55.556	False

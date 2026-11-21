@@ -1,0 +1,106 @@
+{
+  "n_subjects": 3,
+  "n_candidates": 308,
+  "rules": {
+    "S >= 0 (Elliott)": {
+      "sensitivity": 0.5625,
+      "false_positive_rate": 0.32894736842105265,
+      "n_injected": 80,
+      "n_spurious": 228,
+      "sensitivity_range": [
+        0.5384615384615384,
+        0.6071428571428571
+      ],
+      "false_positive_rate_range": [
+        0.2,
+        0.36419753086419754
+      ]
+    },
+    "mean_pct_per_year >= t": {
+      "sensitivity": 0.925,
+      "false_positive_rate": 0.06578947368421052,
+      "n_injected": 80,
+      "n_spurious": 228,
+      "sensitivity_range": [
+        0.8571428571428571,
+        1.0
+      ],
+      "false_positive_rate_range": [
+        0.0,
+        0.2903225806451613
+      ],
+      "threshold_median": 9.2382,
+      "threshold_range": [
+        8.9387,
+        11.0
+      ]
+    },
+    "constancy_slope_pct_per_year >= t": {
+      "sensitivity": 0.8875,
+      "false_positive_rate": 0.03070175438596491,
+      "n_injected": 80,
+      "n_spurious": 228,
+      "sensitivity_range": [
+        0.8461538461538461,
+        0.9615384615384616
+      ],
+      "false_positive_rate_range": [
+        0.0,
+        0.22580645161290322
+      ],
+      "threshold_median": 12.994,
+      "threshold_range": [
+        10.347,
+        13.717
+      ]
+    },
+    "peak_pct_per_year >= t": {
+      "sensitivity": 0.8125,
+      "false_positive_rate": 0.043859649122807015,
+      "n_injected": 80,
+      "n_spurious": 228,
+      "sensitivity_range": [
+        0.6923076923076923,
+        0.9615384615384616
+      ],
+      "false_positive_rate_range": [
+        0.0,
+        0.2903225806451613
+      ],
+      "threshold_median": 21.55,
+      "threshold_range": [
+        21.0,
+        33.1
+      ]
+    },
+    "seed_voxels >= t": {
+      "sensitivity": 0.8375,
+      "false_positive_rate": 0.03070175438596491,
+      "n_injected": 80,
+      "n_spurious": 228,
+      "sensitivity_range": [
+        0.75,
+        0.9230769230769231
+      ],
+      "false_positive_rate_range": [
+        0.018518518518518517,
+        0.0967741935483871
+      ],
+      "threshold_median": 27.0,
+      "threshold_range": [
+        27.0,
+        30.0
+      ]
+    }
+  },
+  "auc": {
+    "mean_pct_per_year": 0.9857456140350878,
+    "constancy_slope_pct_per_year": 0.980701754385965,
+    "peak_pct_per_year": 0.9427631578947369,
+    "concentricity": 0.5282837967401726,
+    "constancy_residual": 0.7708333333333334,
+    "score_S": 0.5881112176414189,
+    "seed_voxels": 0.9319353070175439,
+    "n_voxels": 0.5378563596491228
+  }
+}
