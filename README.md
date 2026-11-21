@@ -166,8 +166,8 @@ Three conclusions the tool would not have earned without the gate:
 2. **Elliott's candidate rule is noise-limited on confluent lesions.** A one-voxel peak
    over 12.5 %/yr, grown by hysteresis to 4 %/yr, makes a 10-voxel candidate; every
    untouched lesion over 500 voxels produced one. Concentricity and constancy, the
-   published filters, stay weak on the corrected Jacobian and on six more patients; see
-   "Validation beyond P1" below.
+   published filters, stayed weak on six more patients in 0.2.0; with unrounded warps
+   (0.3.0) S reaches AUC 0.76. See "Validation beyond P1" and "0.3.0" below.
 3. **The candidate's mean rate is the filter that works** (AUC 0.99). It is exposed as
    `min_mean_pct_per_year`; since 0.3.0 it is on by default at 10 (`--min-mean 0` gives
    Elliott's rule). Trade-off on this registration (mean over
@@ -213,6 +213,9 @@ Cohort tables: `derivatives/mslesseg/cohort_summary.tsv`, `sel_cohort.tsv`,
 (`scripts/summarize_cohort.py`, `scripts/cohort_checks.py`).
 
 ### Validation beyond P1 (2026-11-20)
+
+_These are 0.2.0 numbers, taken from warps greedy had rounded to 0.1 voxel; the 0.3.0
+section below has them re-measured._
 
 Same backtest design as for P1 (three seeds, eight lesions expanded per seed, 24 injected
 lesions per backtest), lesiontrack 0.2.0 with the corrected Jacobian. The six extra
@@ -286,55 +289,75 @@ Backtests on three Lesjak patients (03, 06, 07, greedy) at this resolution: cand
 sensitivity 1.00 / 1.00 / 0.96, FPR 0.22 / 0.09 / 0.12, recovery 1.02 / 1.03 / 1.00,
 noise floor 5.0 / 2.1 / 4.8 %/yr. Tables: `results/lesjak/`.
 
-### 0.3.0: similarity step, mean-rate filter on (2026-11-21)
+### 0.3.0: unrounded warps, similarity step, mean-rate filter on (2026-11-21)
 
-Three changes, and every greedy number above re-run with them (`scripts/run_v030.sh`,
-tables in `results/v030/`, cohorts in `derivatives/v030/`). ANTs and the LST-AI arm were
-not re-run; their numbers above are 0.2.0 with the rigid step.
+Four changes, and every greedy number above re-run with them (`TAG=v031
+scripts/run_v030.sh`, tables in `results/v031/`, cohorts in `derivatives/v031/`). ANTs and
+the LST-AI arm were not re-run; their numbers above are 0.2.0, and the first change does
+not touch ANTs.
 
-1. **The linear step fits one global scale** (`affine_dof = 7`, `--affine-dof 6` restores
-   rigid). A simulated scanner change, every follow-up rescaled by 1 %, used to make
-   untouched lesions look like they were expanding. The cost: whole-brain atrophy is
-   absorbed as well, so lesion change is measured relative to the brain.
-2. **`lesiontrack run` drops candidates under 10 %/yr mean rate** by default. `backtest`
+1. **The warp is saved unrounded.** greedy rounds the warp it writes to 0.1 voxel unless
+   told otherwise (`-wp`, default 0.1), and lesiontrack takes the Jacobian from that file.
+   Every rate up to 0.2.0 sat on steps of about 5 %/yr at a one-year interval, coarser
+   than Elliott's 4 %/yr growth threshold. This is the largest change below.
+2. **The linear step fits one global scale** (`affine_dof = 7`, `--affine-dof 6` restores
+   rigid). A simulated scanner change, every follow-up rescaled by 1 %, made untouched
+   lesions look like they were expanding. The cost: whole-brain atrophy is absorbed as
+   well, so lesion change is measured relative to the brain.
+3. **`lesiontrack run` drops candidates under 10 %/yr mean rate** by default. `backtest`
    still scores every candidate.
-3. **Earlier follow-ups land in the right frame.** For a third or later timepoint the
-   rigid and halfway matrices were composed in the wrong order (under a millimetre; it
-   moves constancy and tracking on intermediate timepoints). Cached registrations from
-   before the fix are redone.
+4. **Earlier follow-ups land in the right frame.** For a third or later timepoint the
+   rigid and halfway matrices were composed in the wrong order. At the small rotations
+   seen here the two orders give the same alignment; it is fixed for larger ones.
 
 `summary.json` now reports the residual global scale away from lesions (QC only) and the
 halfway volume factor; tracking and candidate volumes are on the halfway grid, the
 baseline lesion volume is native.
 
 **P1 to P3, three seeds each, lesion level** (72 expanded, 150 untouched lesions per
-condition), sensitivity / false positive rate:
+condition), sensitivity / false positive rate, 0.2.0 -> 0.3.0:
 
-| condition | mean rate >= 10, 0.2.0 | 0.3.0 | definite S >= 0, 0.2.0 | 0.3.0 |
-|---|---|---|---|---|
-| no scanner change | 0.99 / 0.03 | 0.97 / 0.03 | 0.74 / 0.17 | 0.62 / 0.18 |
-| 0.5 % scale change | 0.99 / 0.07 | 0.97 / 0.06 | 0.74 / 0.19 | 0.62 / 0.19 |
-| 1 % scale change | 1.00 / **0.18** | 0.99 / **0.00** | 0.79 / 0.29 | 0.56 / 0.18 |
-| FLAIR at 3 mm slices | 0.96 / 0.06 | 0.96 / 0.05 | 0.64 / 0.18 | 0.68 / 0.18 |
-| Lesjak 03, 06, 07 | 0.96 / 0.03 | 0.96 / 0.05 | 0.61 / 0.05 | 0.61 / 0.04 |
+| condition | Elliott candidate | definite S >= 0 | mean rate >= 10 |
+|---|---|---|---|
+| no scanner change | 1.00 / 0.37 -> 1.00 / **0.15** | 0.74 / 0.17 -> 0.57 / **0.04** | 0.99 / 0.03 -> 0.99 / 0.03 |
+| 0.5 % scale change | 1.00 / 0.49 -> 1.00 / 0.12 | 0.74 / 0.19 -> 0.54 / 0.03 | 0.99 / 0.07 -> 0.99 / 0.03 |
+| 1 % scale change | 1.00 / 0.67 -> 1.00 / 0.14 | 0.79 / 0.29 -> 0.54 / 0.05 | 1.00 / **0.18** -> 0.99 / **0.03** |
+| FLAIR at 3 mm slices | 0.99 / 0.43 -> 0.99 / 0.23 | 0.64 / 0.18 -> 0.58 / 0.07 | 0.96 / 0.06 -> 0.96 / 0.05 |
+| Lesjak 03, 06, 07 | 0.99 / 0.12 -> 0.97 / 0.08 | 0.61 / 0.05 -> 0.61 / 0.03 | 0.96 / 0.03 -> 0.96 / 0.03 |
 
-The 1 % failure is gone; 0.5 % was never far above the unchanged run and still is not.
-Two things got worse and are not explained yet: definite-SEL sensitivity drops by about
-0.1, and the noise floor (median peak rate in untouched lesions) rises from 10.8 to 15.5
-%/yr over the seven patients, so peak-based rules are noisier than in 0.2.0 while the mean
-rate is not.
+A 1 % scale change now costs nothing. The Elliott rule and S >= 0 lose most of their
+false positives; S >= 0 also loses sensitivity (0.74 -> 0.57), so it is now a specific
+but conservative call. The mean rate was already near its ceiling and stays there.
 
-**Seven MSLesSeg patients, greedy, 0.2.0 -> 0.3.0** (median, range): candidate FPR 0.46
--> 0.49 (0.21 to 0.86); definite SEL 0.71 / 0.18 -> 0.67 / 0.24; recovery 1.16 -> 1.17;
-residual global scale 0.995 (0.993 to 0.996). Feature AUC: mean rate 1.00 -> 0.98,
-constancy residual 0.78 -> 0.75, S 0.64 -> 0.62, concentricity 0.58 -> 0.57.
+**Seven MSLesSeg patients, greedy, 0.2.0 -> 0.3.0** (median, range):
 
-**Cohorts with the defaults.** MSLesSeg (24 patients): 246 candidates, median 6.5 per
-patient (two patients have none), 75 definite; 0.2.0 without the filter gave 484, 16 and
-97. Mask against Jacobian volume change per subject: Spearman 0.42 (0.41). The halfway
-volume factor spans 0.975 to 1.010, which is how much global scale the linear step took
-up. Lesjak (20 patients): 231 candidates, 40 definite (318, 62); tracking is unchanged,
-it depends on the masks alone.
+| quantity | 0.2.0 | 0.3.0 |
+|---|---|---|
+| candidates per backtest | 154 (55 to 278) | 37 (29 to 152) |
+| candidate FPR | 0.46 (0.25 to 0.81) | 0.27 (0.04 to 0.59) |
+| definite SEL sensitivity / FPR | 0.71 / 0.18 | 0.71 / 0.10 |
+| recovery fraction | 1.16 | 1.17 |
+| noise floor, median peak in untouched lesions | 10.8 %/yr | 8.9 %/yr (5.1 to 14.4) |
+| AUC mean rate | 1.00 (0.67 to 1.00) | 0.99 (0.87 to 1.00) |
+| AUC constancy residual | 0.78 | 0.76 (0.61 to 0.94) |
+| AUC S | 0.64 | **0.76** (0.63 to 0.78) |
+| AUC concentricity | 0.58 | 0.62 (0.31 to 0.76) |
+
+With unrounded rates S carries real information (0.76), though the mean rate still
+separates best. P13 stays the hardest patient (candidate FPR 0.59).
+
+**Greedy 0.3.0 against ANTs 0.2.0** (P1 / P2 / P3): candidates 37 / 35 / 29 against 33 /
+29 / 27; candidate FPR 0.27 / 0.48 / 0.04 against 0.20 / 0.24 / 0.03; definite sensitivity
+0.50 / 0.50 / 0.71 against 0.58 / 0.50 / 0.54; noise floor 8.9 / 12.3 / 5.1 against 10.0 /
+9.7 / 6.5 %/yr. Most of the gap in the ANTs table above was greedy's rounding; ANTs
+keeps an edge on P2 and in recovery (1.02 to 1.06 against 1.14 to 1.21).
+
+**Cohorts with the defaults.** MSLesSeg (24 patients): 232 candidates, median 6 per
+patient (P2 none), 68 definite; 0.2.0 without the filter gave 484, 16 and 97. Mask against
+Jacobian volume change per subject: Spearman 0.40 (0.41). The halfway volume factor spans
+0.975 to 1.010, which is how much global scale the linear step took up. Lesjak (20
+patients): 208 candidates (median 6.5), 45 definite, 85 on expert change (318 / 62 / 121);
+tracking is unchanged, it depends on the masks alone.
 
 ## Data used
 
@@ -358,6 +381,10 @@ RAS (two flips) reports (1-k)^2 (1+k), which is below 1 for any expansion, and L
 flip) reports (1-k)(1+k)^2, roughly a third of the true volume change for small k. greedy's standalone `-jac` converts the warp first and is
 correct; the reslice path does not (found 2026-09-27, draft report in
 `docs/upstream/greedy_rj_direction.md`).
+
+A second loss of precision sat in the warp file itself: greedy writes it rounded to 0.1
+voxel by default (`-wp 0.1`), which put every rate on steps of about 5 %/yr. Since 0.3.0
+the warp is written unrounded (`-wp 0`, found 2026-11-21).
 
 lesiontrack now computes det(I + grad u) itself from the warp file, after taking the
 vectors LPS -> RAS -> voxel units through the inverse affine, and `tests/test_jacobian.py`

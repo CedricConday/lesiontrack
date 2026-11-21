@@ -1,0 +1,230 @@
+subject	seed	candidate_id	n_voxels	volume_mm3	peak_pct_per_year	mean_pct_per_year	seed_voxels	parent_lesion_id	cx	cy	cz	concentricity	n_bands	constancy_residual	constancy_slope_pct_per_year	dt_years	n_followups	z_concentricity	z_constancy	score_S	score_basis	definite_sel	injected
+lesjak_patient03_greedy	0	1	66	102.29	48.209	35.678	66	2	124.15	231.56	32.636	5.0807	2	0.00093069	36.442	1	2	1.2669	-0.61526	1.8821	concentricity_and_constancy	True	True
+lesjak_patient03_greedy	0	2	308	477.34	26.399	18.472	249	4	135.94	239.4	35.997	2.4519	2	0.0029931	19.194	1	2	-0.066893	-0.35487	0.28797	concentricity_and_constancy	True	True
+lesjak_patient03_greedy	0	3	296	458.74	25.077	13	160	5	137.19	253.2	32.277	1.7565	2	0.00047776	13.198	1	2	-0.41971	-0.67244	0.25273	concentricity_and_constancy	True	True
+lesjak_patient03_greedy	0	4	108	167.38	20.725	15.115	85	8	138.83	194.66	34.676	2.3244	2	0.018806	16.688	1	2	-0.13155	1.6416	-1.7732	concentricity_and_constancy	False	True
+lesjak_patient03_greedy	0	5	90	139.48	29.056	16.218	55	10	144.66	139.1	37.978	-1.1697	2	0.023401	18.124	1	2	-1.9043	2.2217	-4.126	concentricity_and_constancy	False	True
+lesjak_patient03_greedy	0	6	31	48.044	19.696	17.183	31	15	188.77	108.42	39.484		1	0.0018506	16.69	1	2		-0.49912		unscorable	False	True
+lesjak_patient03_greedy	0	7	504	781.1	22.658	9.9028	143	18	196.98	213.46	39.609	2.6227	2	0.0066154	10.489	1	2	0.019767	0.10247	-0.082707	concentricity_and_constancy	False	False
+lesjak_patient03_greedy	0	8	395	612.17	57.202	28.054	322	20	203.87	232.19	34.894	6.1593	2	0.0001097	27.854	1	2	1.8141	-0.71891	2.533	concentricity_and_constancy	True	True
+lesjak_patient03_greedy	0	9	51	79.04	14.246	7.9385	4	20	196.96	249.51	37.902	2.4807	2	0.0023182	7.6842	1	2	-0.052264	-0.44007	0.3878	concentricity_and_constancy	True	True
+lesjak_patient03_greedy	0	10	153	237.12	36.177	23.739	139	23	210.68	248.04	27.51	1.547	2	0.00053565	23.367	1	2	-0.52597	-0.66513	0.13916	concentricity_and_constancy	True	True
+lesjak_patient03_greedy	1	1	66	102.29	25.209	17.428	56	2	124.15	231.56	33.636	4.4823	2	0.0055789	18.371	1	2	0.52451	0.42818	0.09633	concentricity_and_constancy	True	True
+lesjak_patient03_greedy	1	2	45	69.741	23.943	17.62	39	3	127.31	177.67	46.667		1	2.2777e-05	17.562	1	2		-0.66991		unscorable	False	True
+lesjak_patient03_greedy	1	3	315	488.19	32.143	20.964	276	4	135.86	239.43	36.994	1.2445	2	0.00054049	20.634	1	2	-0.015613	-0.56759	0.55198	concentricity_and_constancy	True	True
+lesjak_patient03_greedy	1	4	298	461.84	39.508	22.946	279	5	136.99	253.16	33.279	2.784	2	0.00026064	23.203	1	2	0.24121	-0.6229	0.86411	concentricity_and_constancy	True	True
+lesjak_patient03_greedy	1	5	34	52.693	18.374	10.401	10	10	142.29	138.5	38.529		1	0.016886	11.421	1	2		2.6629		unscorable	False	False
+lesjak_patient03_greedy	1	6	106	164.28	56.156	35.503	104	13	188.24	168.67	41.302	-14.239	2	0.0016634	34.535	1	2	-2.5985	-0.34567	-2.2529	concentricity_and_constancy	False	True
+lesjak_patient03_greedy	1	7	59	91.439	20.436	14.96	51	15	189.97	137.73	40.322	2.0981	2	0.0014819	15.366	1	2	0.12679	-0.38154	0.50833	concentricity_and_constancy	True	True
+lesjak_patient03_greedy	1	8	704	1091.1	55.575	33.873	621	18	198.14	215.99	39.649	8.9589	3	0.00022007	33.531	1	2	1.2713	-0.63092	1.9022	concentricity_and_constancy	True	True
+lesjak_patient03_greedy	1	9	81	125.53	17.712	9.8748	22	19	197.94	155.23	37.84	2.2686	2	0.0093124	10.576	1	2	0.15524	1.166	-1.0108	concentricity_and_constancy	False	False
+lesjak_patient03_greedy	1	10	45	69.741	35.536	13.278	24	20	200.44	221.49	34.778	0.26087	2	0.00054269	13.068	1	2	-0.1797	-0.56716	0.38746	concentricity_and_constancy	True	False
+lesjak_patient03_greedy	1	11	157	243.32	42.951	25.181	138	23	209.76	247.73	28.548	4.1843	2	0.001027	25.748	1	2	0.4748	-0.47144	0.94624	concentricity_and_constancy	True	True
+lesjak_patient03_greedy	2	1	66	102.29	37.784	29.135	66	2	124.15	231.56	32.636	3.1782	2	0.0021697	28.231	1	2	-0.084202	-0.61756	0.53336	concentricity_and_constancy	True	True
+lesjak_patient03_greedy	2	2	44	68.192	29.91	21.785	40	3	128.14	176.66	46.682		1	7.1532e-07	21.773	1	2		-0.72035		unscorable	False	True
+lesjak_patient03_greedy	2	3	305	472.69	35.661	23.9	283	4	135.82	239.2	35.99	0.58283	2	3.3285e-05	23.806	1	2	-1.0732	-0.7188	-0.35444	concentricity_and_constancy	False	True
+lesjak_patient03_greedy	2	4	10	15.498	12.79	9.6716	2	5	132	249.1	31.3		1	0.02485	10.847	1	2		0.45722		unscorable	False	False
+lesjak_patient03_greedy	2	5	78	120.89	14.206	8.0868	8	5	135.13	256.17	31.564	1.7668	2	0.014144	8.8066	1	2	-0.62205	-0.050129	-0.57192	concentricity_and_constancy	False	False
+lesjak_patient03_greedy	2	6	108	167.38	29.798	19.044	86	9	138.83	194.66	34.676	3.8794	2	0.00033561	18.808	1	2	0.18298	-0.70448	0.88745	concentricity_and_constancy	True	True
+lesjak_patient03_greedy	2	7	74	114.69	35.526	17.565	49	10	143.96	138.81	38.932	0.80776	2	0.00021637	17.744	1	2	-0.98753	-0.71013	-0.2774	concentricity_and_constancy	False	True
+lesjak_patient03_greedy	2	8	102	158.08	18.568	11.001	37	13	188.25	167.75	41.275		1	0.061115	9.4037	1	2		2.1758		unscorable	False	False
+lesjak_patient03_greedy	2	9	59	91.439	50.131	40.805	59	15	189.97	136.73	39.322	6.8952	2	0.0019633	39.599	1	2	1.3322	-0.62734	1.9596	concentricity_and_constancy	True	True
+lesjak_patient03_greedy	2	10	24	37.195	14.239	10.252	5	18	191.92	195.46	41		1	0.05845	12.295	1	2		2.0495		unscorable	False	False
+lesjak_patient03_greedy	2	11	496	768.71	18.462	9.0097	101	18	196.84	212.7	39.425	2.4974	2	0.037936	10.402	1	2	-0.34364	1.0774	-1.421	concentricity_and_constancy	False	False
+lesjak_patient03_greedy	2	12	461	714.46	53.061	24.474	319	20	202.8	234.18	35.369	8.9105	2	0.0016455	25.175	1	2	2.1002	-0.6424	2.7426	concentricity_and_constancy	True	True
+lesjak_patient03_greedy	2	13	68	105.39	13.49	7.7593	2	19	197.6	154.44	36.956	0.8682	2	0.0050699	7.3973	1	2	-0.9645	-0.48012	-0.48437	concentricity_and_constancy	False	False
+lesjak_patient03_greedy	2	14	156	241.77	32.719	18.609	127	24	209.74	247.78	27.538	4.6056	2	0.0048907	19.548	1	2	0.45974	-0.48862	0.94836	concentricity_and_constancy	True	True
+lesjak_patient06_greedy	0	1	57	137.96	32.411	24.315	57	5	86.579	154.74	52.351	1.6266	2	0.0048869	23.2	1	2	-0.88297	-0.32127	-0.5617	concentricity_and_constancy	False	True
+lesjak_patient06_greedy	0	2	38	91.975	43.723	31.19	38	8	89	158.71	32.579		1	0.0072626	29.464	1	2		-0.2396		unscorable	False	True
+lesjak_patient06_greedy	0	3	308	745.48	26.803	15.289	207	16	105.36	195.87	35.075	4.5358	2	0.019021	16.89	1	2	0.14915	0.16463	-0.015478	concentricity_and_constancy	False	True
+lesjak_patient06_greedy	0	4	173	418.73	35.786	26.838	172	22	103.05	148.09	43.416	6.2661	2	0.0033214	27.945	1	2	0.76301	-0.37508	1.1381	concentricity_and_constancy	True	True
+lesjak_patient06_greedy	0	5	134	324.33	21.792	10.884	46	23	104.28	163.56	44.604	4.004	2	0.0087941	11.633	1	2	-0.03953	-0.18695	0.14742	concentricity_and_constancy	True	False
+lesjak_patient06_greedy	0	6	255	617.2	25.508	16.45	188	25	109.71	179.01	41.647	3.0882	2	0.00467	17.261	1	2	-0.36444	-0.32872	-0.035718	concentricity_and_constancy	False	True
+lesjak_patient06_greedy	0	7	86	208.15	31.565	15.041	46	48	146.52	216.72	20.372		1	0.12499	12.101	1	2		3.8076		unscorable	False	True
+lesjak_patient06_greedy	0	8	77	186.37	54.34	39.778	77	50	147.78	188.68	35.545	11.371	2	0.0010173	38.925	1	2	2.574	-0.45429	3.0283	concentricity_and_constancy	True	True
+lesjak_patient06_greedy	0	9	67	162.17	14.509	8.3591	8	53	150.1	124.01	45.552	3.0863	2	0.00031379	8.4621	1	2	-0.36511	-0.47848	0.11337	concentricity_and_constancy	True	False
+lesjak_patient06_greedy	0	10	64	154.91	18.938	10.638	20	55	153.17	176.72	42.938	3.832	2	0.012764	11.534	1	2	-0.10056	-0.050474	-0.050087	concentricity_and_constancy	False	False
+lesjak_patient06_greedy	0	11	16	38.726	14.678	10.74	3	61	159.62	169.5	43.375		1	0.017042	11.799	1	2		0.096597		unscorable	False	False
+lesjak_patient06_greedy	0	12	43	104.08	17.401	8.6945	7	62	161.65	179.86	37.419		1	0.0042457	9.1021	1	2		-0.34331		unscorable	False	False
+lesjak_patient06_greedy	0	13	16	38.726	12.739	8.9415	1	61	161.19	171.88	44.062		1	0.00021296	8.8527	1	2		-0.48194		unscorable	False	False
+lesjak_patient06_greedy	0	14	70	169.43	18.354	11.074	23	66	163.41	143.93	47.114	4.6527	2	0.0060262	11.698	1	2	0.19061	-0.2821	0.47271	concentricity_and_constancy	True	False
+lesjak_patient06_greedy	0	15	68	164.59	13.899	8.1829	4	70	167.9	194.69	37.926	3.2141	2	0.0091327	8.7581	1	2	-0.31975	-0.17531	-0.14444	concentricity_and_constancy	False	False
+lesjak_patient06_greedy	0	16	37	89.555	31.863	20.859	35	101	193.14	182.92	40.919	-0.40689	2	0.0040142	19.988	1	2	-1.6044	-0.35127	-1.2531	concentricity_and_constancy	False	True
+lesjak_patient06_greedy	1	1	38	91.975	29.701	22.876	38	10	89.579	174.5	33.658		1	2.3773e-05	22.953	1	2		-0.5961		unscorable	False	True
+lesjak_patient06_greedy	1	2	289	699.5	28.837	13.379	148	18	104.74	195.6	36.111	3.8828	2	0.014521	14.587	1	2	-0.48402	-0.073206	-0.41081	concentricity_and_constancy	False	False
+lesjak_patient06_greedy	1	3	177	428.41	49.353	30.443	173	24	104.69	163.28	45.492	6.8085	2	0.002883	31.609	1	2	0.28895	-0.49297	0.78193	concentricity_and_constancy	True	True
+lesjak_patient06_greedy	1	4	132	319.49	13.739	8.0625	5	23	103.19	147.41	44.485	3.8769	2	0.10083	10.313	1	2	-0.48558	3.0399	-3.5255	concentricity_and_constancy	False	False
+lesjak_patient06_greedy	1	5	284	687.39	43.97	28.803	267	26	109.85	178.9	42.496	5.9957	2	0.00021639	29.097	1	2	0.074215	-0.58915	0.66337	concentricity_and_constancy	True	True
+lesjak_patient06_greedy	1	6	77	186.37	50.893	37.13	77	51	147.78	188.68	35.545	13.137	2	5.751e-05	36.938	1	2	1.961	-0.59488	2.5559	concentricity_and_constancy	True	True
+lesjak_patient06_greedy	1	7	27	65.351	12.869	7.357	1	50	145.56	166.19	26.037	1.934	2	0.0096648	7.8901	1	2	-0.99889	-0.24837	-0.75052	concentricity_and_constancy	False	False
+lesjak_patient06_greedy	1	8	88	213	16.526	9.4399	17	54	149.7	122.8	45.636	4.4172	2	0.028841	10.687	1	2	-0.34283	0.44327	-0.7861	concentricity_and_constancy	False	False
+lesjak_patient06_greedy	1	9	36	87.134	30.639	18.391	27	62	160.53	170.83	43.75		1	0.00061427	18.71	1	2		-0.5748		unscorable	False	True
+lesjak_patient06_greedy	1	10	63	152.49	16.852	10.482	21	67	163.16	143.76	47.206	2.9804	2	0.046594	12.309	1	2	-0.72244	1.0836	-1.806	concentricity_and_constancy	False	False
+lesjak_patient06_greedy	1	11	124	300.13	62.792	42.936	124	71	168.91	195.32	37.742	12.21	2	0.00091441	42.061	1	2	1.7161	-0.56398	2.2801	concentricity_and_constancy	True	True
+lesjak_patient06_greedy	1	12	18	43.567	17.99	14.854	14	76	167.72	157.83	48.722		1	0.0081815	15.839	1	2		-0.30187		unscorable	False	False
+lesjak_patient06_greedy	1	13	37	89.555	39.45	27.588	37	102	193.14	182.92	40.919	1.905	2	0.0018169	26.803	1	2	-1.0065	-0.53142	-0.47511	concentricity_and_constancy	False	True
+lesjak_patient06_greedy	2	1	38	91.975	34.515	27.832	37	8	89	158.71	33.579		1	0.010388	29.928	1	2		-0.25408		unscorable	False	True
+lesjak_patient06_greedy	2	2	338	818.1	53.455	27.509	281	18	105.64	195.4	35.426	7.7981	2	0.0029087	26.525	1	2	0.54849	-0.39503	0.94353	concentricity_and_constancy	True	True
+lesjak_patient06_greedy	2	3	173	418.73	56.593	37.811	173	23	103.05	148.09	44.416	10.158	2	0.0085678	40.38	1	2	1.2224	-0.28838	1.5108	concentricity_and_constancy	True	True
+lesjak_patient06_greedy	2	4	130	314.65	20.726	11.535	55	24	104.7	163.76	45.546	3.7092	2	0.000197	11.647	1	2	-0.61909	-0.44614	-0.17295	concentricity_and_constancy	False	False
+lesjak_patient06_greedy	2	5	275	665.61	33.11	21.337	236	26	109.85	178.92	42.48	6.7966	2	0.00048328	21.02	1	2	0.26251	-0.44074	0.70326	concentricity_and_constancy	True	True
+lesjak_patient06_greedy	2	6	77	186.37	57.058	42.897	77	51	147.78	188.68	35.545	11.664	2	0.0045345	41	1	2	1.6524	-0.36439	2.0168	concentricity_and_constancy	True	True
+lesjak_patient06_greedy	2	7	47	113.76	23.817	11.423	18	49	146.45	216.47	20.149		1	0.19354	8.7712	1	2		3.1976		unscorable	False	True
+lesjak_patient06_greedy	2	8	49	118.6	14.739	7.7373	2	50	145.86	165	26.224	3.2885	2	0.0023743	8.0054	1	2	-0.73922	-0.4051	-0.33412	concentricity_and_constancy	False	False
+lesjak_patient06_greedy	2	9	86	208.15	25.964	10.735	28	54	149.58	122.94	44.744	2.9949	2	0.00040078	10.885	1	2	-0.82307	-0.4423	-0.38077	concentricity_and_constancy	False	False
+lesjak_patient06_greedy	2	10	36	87.134	61.028	46.087	36	62	160.53	169.83	43.75		1	0.002081	44.686	1	2		-0.41063		unscorable	False	True
+lesjak_patient06_greedy	2	11	75	181.53	28.276	17.422	61	67	163.4	142.96	46.2	6.4399	2	0.0022548	16.872	1	2	0.16065	-0.40736	0.56801	concentricity_and_constancy	True	False
+lesjak_patient06_greedy	2	12	25	60.51	13.03	8.2656	1	63	161.88	180.56	37.4		1	0.079475	6.9241	1	2		1.0479		unscorable	False	False
+lesjak_patient06_greedy	2	13	32	77.453	24.746	13.599	18	103	193	181.91	40.781	0.04605	2	0.003104	14.141	1	2	-1.6651	-0.39135	-1.2737	concentricity_and_constancy	False	True
+lesjak_patient07_greedy	0	1	88	212.99	61.002	38.89	83	4	85.182	156.84	37.545	14.2	2	0.0018096	37.785	1	2	4.25	-0.75573	5.0058	concentricity_and_constancy	True	True
+lesjak_patient07_greedy	0	2	161	389.68	46.435	28.068	151	9	91.901	183.23	35.019	10.725	2	0.0060351	29.651	1	2	2.8767	-0.53127	3.4079	concentricity_and_constancy	True	True
+lesjak_patient07_greedy	0	3	33	79.873	15.754	7.7686	5	8	89.273	140.42	34.606		1	0.00015877	7.8365	1	2		-0.84342		unscorable	False	False
+lesjak_patient07_greedy	0	4	53	128.28	24.184	14.466	32	11	91.396	228.09	24.943	3.3868	2	0.002903	15.023	1	2	-0.023722	-0.69764	0.67392	concentricity_and_constancy	True	True
+lesjak_patient07_greedy	0	5	25	60.51	23.933	15.943	17	18	92.08	180.72	40.08	4.1502	2	0.014891	14.709	1	2	0.278	-0.060845	0.33885	concentricity_and_constancy	True	False
+lesjak_patient07_greedy	0	6	20	48.408	12.555	7.7112	1	14	92.3	182.65	24.3		1	0.00040322	7.8191	1	2		-0.83043		unscorable	False	False
+lesjak_patient07_greedy	0	7	51	123.44	14.854	8.5518	8	20	96.647	138.63	28.314	2.0857	2	0.0015137	8.7868	1	2	-0.53802	-0.77144	0.23342	concentricity_and_constancy	True	False
+lesjak_patient07_greedy	0	8	34	82.293	13.299	8.0619	2	14	98.588	173.35	24.676		1	0.0042627	8.4407	1	2		-0.62542		unscorable	False	False
+lesjak_patient07_greedy	0	9	104	251.72	20.831	11.898	39	14	99.952	187.29	24.423	3.8227	2	0.020412	13.193	1	2	0.14855	0.23243	-0.083872	concentricity_and_constancy	False	False
+lesjak_patient07_greedy	0	10	123	297.71	15.683	8.2384	11	14	101.07	151.89	22.927	3.5333	2	0.047841	9.6959	1	2	0.034154	1.6895	-1.6553	concentricity_and_constancy	False	False
+lesjak_patient07_greedy	0	11	17	41.147	14.767	10.067	4	40	103.12	153.24	34.706		1	0.0027903	10.446	1	2		-0.70363		unscorable	False	False
+lesjak_patient07_greedy	0	12	144	348.54	13.575	7.1462	2	14	105.63	208.72	27.319	2.3352	2	0.047462	8.4046	1	2	-0.43939	1.6693	-2.1087	concentricity_and_constancy	False	False
+lesjak_patient07_greedy	0	13	17	41.147	15.33	10.705	6	44	105.06	143.76	35.647		1	0.026117	12.042	1	2		0.53548		unscorable	False	False
+lesjak_patient07_greedy	0	14	290	701.91	16.776	12.444	165	47	108.98	197.03	35.772	1.8973	3	0.011836	13.45	1	2	-0.61245	-0.22311	-0.38934	concentricity_and_constancy	False	True
+lesjak_patient07_greedy	0	15	131	317.07	20.597	11.112	44	50	109.53	145.21	42.061	4.5531	2	4.3989e-07	11.107	1	2	0.43724	-0.85183	1.2891	concentricity_and_constancy	True	False
+lesjak_patient07_greedy	0	16	158	382.42	14.193	8.4666	15	14	111.93	223.56	25.892	4.5963	2	7.5367e-05	8.4164	1	2	0.4543	-0.84785	1.3022	concentricity_and_constancy	True	False
+lesjak_patient07_greedy	0	17	75	181.53	13.988	7.1872	1	43	112.04	168.69	39.347	1.7827	2	0.038052	8.3	1	2	-0.65776	1.1695	-1.8272	concentricity_and_constancy	False	False
+lesjak_patient07_greedy	0	18	34	82.293	20.871	17.935	34	64	114.21	177.38	43.382	3.0256	2	0.0029622	17.288	1	2	-0.16651	-0.6945	0.52799	concentricity_and_constancy	True	True
+lesjak_patient07_greedy	0	19	161	389.68	22.066	10.369	49	43	115.05	125.23	36.72	5.7755	3	0.044355	12.124	1	2	0.92039	1.5043	-0.58391	concentricity_and_constancy	False	False
+lesjak_patient07_greedy	0	20	114	275.92	15.176	7.9626	6	43	114.24	177.88	36.114	2.8603	2	0.0086535	8.5064	1	2	-0.23185	-0.39218	0.16033	concentricity_and_constancy	True	False
+lesjak_patient07_greedy	0	21	227	549.43	18.752	8.4663	31	43	113.57	116.43	34.176	5.3102	2	0.016814	9.2946	1	2	0.7365	0.041288	0.69521	concentricity_and_constancy	True	False
+lesjak_patient07_greedy	0	22	30	72.612	15.151	6.5852	1	73	116.77	183.23	46.033	1.3605	2	0.042801	5.7654	1	2	-0.82463	1.4217	-2.2463	concentricity_and_constancy	False	False
+lesjak_patient07_greedy	0	23	247	597.84	14.457	8.4592	23	43	115.71	161.64	39.008	2.0229	3	0.059603	10.165	1	2	-0.56281	2.3143	-2.8771	concentricity_and_constancy	False	False
+lesjak_patient07_greedy	0	24	227	549.43	17.942	8.4481	38	14	119.17	234.49	25.414	4.1968	2	7.9642e-05	8.5002	1	2	0.29642	-0.84762	1.144	concentricity_and_constancy	True	False
+lesjak_patient07_greedy	0	25	153	370.32	12.666	6.7804	1	43	118.67	141.03	39.641	2.0915	2	0.028341	7.6676	1	2	-0.53573	0.65362	-1.1893	concentricity_and_constancy	False	False
+lesjak_patient07_greedy	0	26	32	77.452	38.211	28.994	32	110	136.41	172.19	29.156		1	0.0032613	27.899	1	2		-0.67861		unscorable	False	True
+lesjak_patient07_greedy	0	27	18	43.567	14.1	9.2947	3	131	147.67	190.28	41.389		1	0.0018853	9.5806	1	2		-0.75171		unscorable	False	False
+lesjak_patient07_greedy	0	28	55	133.12	45.58	33.304	55	142	154.75	176.45	15.127	4.0523	2	0.0039786	31.92	1	2	0.2393	-0.64051	0.87981	concentricity_and_constancy	True	True
+lesjak_patient07_greedy	0	29	412	997.2	18.439	8.1861	52	137	154.19	118.62	36.087	1.5609	3	0.00034365	8.0831	1	2	-0.74543	-0.8336	0.088164	concentricity_and_constancy	True	False
+lesjak_patient07_greedy	0	30	65	157.33	15.341	8.9531	10	145	153.23	165.94	37.908	1.7198	2	0.017369	9.8448	1	2	-0.68261	0.070815	-0.75343	concentricity_and_constancy	False	False
+lesjak_patient07_greedy	0	31	44	106.5	12.776	8.0537	1	124	152.2	239.5	28.159	2.6774	2	0.031959	7.1725	1	2	-0.30411	0.84584	-1.15	concentricity_and_constancy	False	False
+lesjak_patient07_greedy	0	32	23	55.669	13.23	7.3222	2	145	154.09	160.48	38.783		1	0.00011828	7.3773	1	2		-0.84557		unscorable	False	False
+lesjak_patient07_greedy	0	33	29	70.191	13.169	7.1324	1	145	154.34	171.24	37.759	3.6068	2	0.04899	8.412	1	2	0.063232	1.7505	-1.6873	concentricity_and_constancy	False	False
+lesjak_patient07_greedy	0	34	26	62.93	16.619	9.1396	6	153	155.12	199.62	43.923	4.6201	2	0.00011028	9.2061	1	2	0.46374	-0.84599	1.3097	concentricity_and_constancy	True	False
+lesjak_patient07_greedy	0	35	74	179.11	13.237	7.8078	5	145	156.72	170.27	41.365	2.8388	2	0.012174	8.4485	1	2	-0.24034	-0.20515	-0.035198	concentricity_and_constancy	False	False
+lesjak_patient07_greedy	0	36	19	45.987	24.537	12.202	8	155	156.32	194.32	35.632		1	0.0094502	11.438	1	2		-0.34986		unscorable	False	False
+lesjak_patient07_greedy	0	37	25	60.51	14.248	9.3585	3	124	157.8	225.96	24.6		1	0.0051407	8.919	1	2		-0.57878		unscorable	False	False
+lesjak_patient07_greedy	0	38	557	1348.2	25.873	12.019	234	124	162.83	226.03	27.476	5.3527	3	0.0013446	12.33	1	2	0.75328	-0.78042	1.5337	concentricity_and_constancy	True	False
+lesjak_patient07_greedy	0	39	85	205.73	14.854	8.1134	6	148	154.72	147.29	38.976	0.26877	2	0.0014852	8.3342	1	2	-1.2561	-0.77296	-0.48319	concentricity_and_constancy	False	False
+lesjak_patient07_greedy	0	40	84	203.31	23.649	10.594	26	145	158.19	179.52	36.012	-0.33691	2	0.0091455	11.339	1	2	-1.4955	-0.36604	-1.1295	concentricity_and_constancy	False	False
+lesjak_patient07_greedy	0	41	166	401.78	23.267	9.3928	32	124	156.3	241.7	27.536	4.8769	2	0.0018829	9.1208	1	2	0.56521	-0.75183	1.317	concentricity_and_constancy	True	False
+lesjak_patient07_greedy	0	42	35	84.714	40.094	29.281	35	170	160.4	190.94	37.114	5.2885	2	0.0051601	27.904	1	2	0.72789	-0.57775	1.3056	concentricity_and_constancy	True	True
+lesjak_patient07_greedy	0	43	66	159.75	12.705	7.8162	2	165	159.12	209.62	34.273	2.3635	2	0.0049361	8.2128	1	2	-0.42819	-0.58965	0.16145	concentricity_and_constancy	True	False
+lesjak_patient07_greedy	0	44	118	285.61	14.273	8.2186	8	154	159.93	153.1	40.737	3.3437	2	0.030252	9.3344	1	2	-0.040781	0.75516	-0.79594	concentricity_and_constancy	False	False
+lesjak_patient07_greedy	0	45	96	232.36	21.126	10.368	30	124	163.31	209.19	29.146	5.0324	2	0.010736	11.163	1	2	0.6267	-0.28156	0.90826	concentricity_and_constancy	True	False
+lesjak_patient07_greedy	0	46	76	183.95	14.034	8.2101	9	145	162.5	175.79	41.382	3.0876	2	2.3774e-05	8.1827	1	2	-0.14199	-0.85059	0.7086	concentricity_and_constancy	True	False
+lesjak_patient07_greedy	0	47	17	41.147	19.165	12.37	5	154	167.29	138.24	36.294		1	3.6077e-05	12.319	1	2		-0.84994		unscorable	False	False
+lesjak_patient07_greedy	0	48	270	653.51	20.475	10.44	77	154	168.23	144.79	37.504	4.6119	3	0.0055487	11.004	1	2	0.46047	-0.5571	1.0176	concentricity_and_constancy	True	False
+lesjak_patient07_greedy	0	49	180	435.67	14.833	8.9166	14	154	168.89	151.73	38.983	2.2911	2	0.020192	9.8817	1	2	-0.45684	0.22076	-0.6776	concentricity_and_constancy	False	False
+lesjak_patient07_greedy	0	50	33	79.873	13.519	8.579	5	193	168.52	169.48	33.212	2.5334	2	0.0053563	9.0334	1	2	-0.36104	-0.56733	0.20629	concentricity_and_constancy	True	False
+lesjak_patient07_greedy	0	51	101	244.46	14.888	9.6121	24	192	171.6	107.31	36.327	1.8324	2	0.036148	11.057	1	2	-0.6381	1.0683	-1.7064	concentricity_and_constancy	False	False
+lesjak_patient07_greedy	0	52	20	48.408	12.629	8.6125	2	124	170.45	211.15	27.1		1	0.042688	10.038	1	2		1.4157		unscorable	False	False
+lesjak_patient07_greedy	0	53	11	26.624	13.307	8.7478	2	207	172.91	151.27	25		1	0.01327	9.4999	1	2		-0.14694		unscorable	False	False
+lesjak_patient07_greedy	0	54	151	365.48	21.284	11.407	59	124	173.68	198.28	26.291	2.547	2	0.003998	11.925	1	2	-0.35566	-0.63948	0.28381	concentricity_and_constancy	True	False
+lesjak_patient07_greedy	0	55	127	307.39	19.107	9.6342	27	124	176.87	173.35	25.323	-0.82529	2	0.045051	11.28	1	2	-1.6886	1.5413	-3.2299	concentricity_and_constancy	False	False
+lesjak_patient07_greedy	0	56	30	72.612	13.094	9.1489	2	124	176.3	183.47	25.433		1	0.068933	11.163	1	2		2.8099		unscorable	False	False
+lesjak_patient07_greedy	0	57	28	67.771	25.69	17.102	22	214	179.46	180.57	37.536		1	1.3731e-05	17.058	1	2		-0.85112		unscorable	False	False
+lesjak_patient07_greedy	0	58	23	55.669	12.862	8.4299	1	223	182.22	187.57	25.652		1	0.064538	7.1768	1	2		2.5764		unscorable	False	False
+lesjak_patient07_greedy	0	59	46	111.34	17.507	9.6216	12	233	189.04	169.61	36.63	1.1602	2	0.010451	8.9899	1	2	-0.90382	-0.29669	-0.60712	concentricity_and_constancy	False	False
+lesjak_patient07_greedy	1	1	65	157.33	26.319	16.535	47	8	89.108	139.55	35.154		1	0.0035859	17.245	1	2		-0.61469		unscorable	False	True
+lesjak_patient07_greedy	1	2	18	43.567	15.969	9.7442	4	7	86.056	172.11	37		1	0.0011748	9.9793	1	2		-0.74296		unscorable	False	False
+lesjak_patient07_greedy	1	3	143	346.12	20.683	11.381	54	9	91.594	182.77	36.51	4.0974	2	0.01304	12.35	1	2	0.39925	-0.11172	0.51097	concentricity_and_constancy	True	False
+lesjak_patient07_greedy	1	4	315	762.42	20.564	10.432	102	14	101.63	193.83	26.638	4.1808	2	0.048081	12.283	1	2	0.44119	1.7525	-1.3113	concentricity_and_constancy	False	False
+lesjak_patient07_greedy	1	5	134	324.33	29.577	18.057	108	33	105.25	174.38	30.455		1	0.00019837	18.233	1	2		-0.79491		unscorable	False	True
+lesjak_patient07_greedy	1	6	368	890.7	23.842	13.143	198	14	114.78	228.82	26.641	5.2741	2	0.016292	14.407	1	2	0.99128	0.061272	0.93001	concentricity_and_constancy	True	False
+lesjak_patient07_greedy	1	7	30	72.612	18.432	10.118	9	43	109.2	171.23	40.633		1	0.014491	11.03	1	2		-0.034564		unscorable	False	False
+lesjak_patient07_greedy	1	8	37	89.554	19.314	11.896	17	14	110.51	208.89	30.568		1	0.011557	12.846	1	2		-0.19065		unscorable	False	False
+lesjak_patient07_greedy	1	9	419	1014.1	12.981	6.8372	2	43	115.21	167.2	38.408	0.73315	3	0.054496	8.1438	1	2	-1.2934	2.0937	-3.3871	concentricity_and_constancy	False	False
+lesjak_patient07_greedy	1	10	230	556.69	15.494	7.0193	12	43	115.61	131.83	37.661	3.952	2	0.0098579	7.5334	1	2	0.3261	-0.28102	0.60713	concentricity_and_constancy	True	False
+lesjak_patient07_greedy	1	11	233	563.95	16.728	7.6936	17	43	113.55	116.81	35.017	3.2699	2	0.0040639	8.0461	1	2	-0.017057	-0.58926	0.57221	concentricity_and_constancy	True	False
+lesjak_patient07_greedy	1	12	100	242.04	13.786	7.9346	4	68	117.76	210.63	33.98	1.9715	2	0.085363	9.9282	1	2	-0.67033	3.7358	-4.4062	concentricity_and_constancy	False	False
+lesjak_patient07_greedy	1	13	74	179.11	15.055	9.4183	10	14	119.55	241.34	26.014	3.4538	2	0.032516	10.751	1	2	0.07544	0.9244	-0.84896	concentricity_and_constancy	False	False
+lesjak_patient07_greedy	1	14	77	186.37	33.667	24.631	76	97	124.14	150.05	45.753	5.7593	2	6.0949e-05	24.764	1	2	1.2354	-0.80222	2.0376	concentricity_and_constancy	True	True
+lesjak_patient07_greedy	1	15	24	58.089	16.166	7.8271	3	84	122.58	144.5	44.125	-1.4794	2	0.023712	8.7535	1	2	-2.4065	0.45602	-2.8625	concentricity_and_constancy	False	False
+lesjak_patient07_greedy	1	16	85	205.73	25.886	13.991	48	106	131.93	155.62	18.341	4.787	2	0.0007762	14.264	1	2	0.74618	-0.76417	1.5103	concentricity_and_constancy	True	True
+lesjak_patient07_greedy	1	17	399	965.74	21	8.9834	69	139	154.84	113.88	35.812	3.7805	3	0.023654	10.045	1	2	0.23979	0.45292	-0.21313	concentricity_and_constancy	False	False
+lesjak_patient07_greedy	1	18	59	142.8	12.521	7.4652	1	126	151.46	242.83	28.881	1.9331	2	0.014313	8.134	1	2	-0.68966	-0.04403	-0.64563	concentricity_and_constancy	False	False
+lesjak_patient07_greedy	1	19	153	370.32	19.666	10.489	52	139	155.14	125.77	37.641	3.3787	2	0.020353	11.63	1	2	0.037639	0.2773	-0.23966	concentricity_and_constancy	False	False
+lesjak_patient07_greedy	1	20	33	79.873	13.549	8.9243	4	126	156.33	227.48	25.485		1	0.0004451	9.0556	1	2		-0.78178		unscorable	False	False
+lesjak_patient07_greedy	1	21	620	1500.6	23.027	9.1266	135	126	161.35	225.68	28.621	3.3911	3	0.00025924	9.2288	1	2	0.04388	-0.79167	0.83555	concentricity_and_constancy	True	False
+lesjak_patient07_greedy	1	22	110	266.24	15.186	8.1745	10	126	157.58	240.86	28.727	2.8408	2	0.008606	8.7312	1	2	-0.23294	-0.34762	0.11468	concentricity_and_constancy	True	False
+lesjak_patient07_greedy	1	23	14	33.885	29.163	11.156	4	150	157.43	147.57	39.643		1	0.016907	10.241	1	2		0.093984		unscorable	False	False
+lesjak_patient07_greedy	1	24	645	1561.2	57.259	35.473	573	156	166.65	148.49	38.448	6.963	3	0.00066298	36.112	1	2	1.841	-0.77019	2.6112	concentricity_and_constancy	True	True
+lesjak_patient07_greedy	1	25	34	82.293	25.944	13.795	17	146	165.65	167.65	36.647	0.97794	2	0.0012671	13.466	1	2	-1.1702	-0.73805	-0.43214	concentricity_and_constancy	False	False
+lesjak_patient07_greedy	1	26	57	137.96	23.634	16.627	48	195	168.68	168.53	32.877	2.2428	2	0.00028852	16.435	1	2	-0.53381	-0.79011	0.2563	concentricity_and_constancy	True	True
+lesjak_patient07_greedy	1	27	112	271.08	15.331	11.084	36	194	172.05	107.04	36.179	3.1727	2	0.0093156	10.395	1	2	-0.06598	-0.30987	0.24389	concentricity_and_constancy	True	False
+lesjak_patient07_greedy	1	28	195	471.98	15.61	7.9771	13	126	174.92	188.32	25.949	0.73808	2	0.042175	9.288	1	2	-1.2909	1.4382	-2.7291	concentricity_and_constancy	False	False
+lesjak_patient07_greedy	1	29	49	118.6	13.996	8.5051	6	126	176.82	167.69	25.449	1.9217	2	0.014752	9.2797	1	2	-0.69537	-0.020682	-0.67469	concentricity_and_constancy	False	False
+lesjak_patient07_greedy	1	30	30	72.612	45.27	39.803	30	222	177.9	220.07	28.767	4.4684	2	0.0012235	38.868	1	2	0.58592	-0.74037	1.3263	concentricity_and_constancy	True	True
+lesjak_patient07_greedy	1	31	28	67.771	12.592	8.9452	1	216	179.46	180.57	37.536		1	0.022225	8.1138	1	2		0.37689		unscorable	False	False
+lesjak_patient07_greedy	1	32	114	275.92	39.746	23.41	95	236	192.76	170.04	36.886	7.4839	2	0.0028793	22.578	1	2	2.1031	-0.65228	2.7553	concentricity_and_constancy	True	True
+lesjak_patient07_greedy	1	33	18	43.567	18.609	10.334	5	241	193.22	164.11	34.056		1	0.001039	10.11	1	2		-0.75019		unscorable	False	False
+lesjak_patient07_greedy	2	1	46	111.34	15.637	9.0671	7	4	86.152	157.65	38.609	3.4833	2	0.034724	10.399	1	2	0.15582	0.3995	-0.24368	concentricity_and_constancy	False	False
+lesjak_patient07_greedy	2	2	12	29.045	15.065	10.029	3	7	86.5	172.33	36		1	0.07506	12.356	1	2		1.6866		unscorable	False	False
+lesjak_patient07_greedy	2	3	143	346.12	22.023	11.458	53	9	91.951	182.85	35.594	3.783	2	0.0019236	11.814	1	2	0.25631	-0.64715	0.90345	concentricity_and_constancy	True	False
+lesjak_patient07_greedy	2	4	40	96.816	15.161	8.9876	9	8	90.325	140.82	35.75		1	0.028273	10.162	1	2		0.19368		unscorable	False	False
+lesjak_patient07_greedy	2	5	30	72.612	33.432	24.027	30	17	92.333	165.33	25.433		1	0.00067577	24.464	1	2		-0.68696		unscorable	False	True
+lesjak_patient07_greedy	2	6	37	89.554	12.755	8.3213	2	10	90.838	227.81	24.811	3.2498	2	0.0025662	8.0413	1	2	0.077521	-0.62664	0.70416	concentricity_and_constancy	True	False
+lesjak_patient07_greedy	2	7	32	77.452	16.336	9.7543	6	14	98.25	166.94	24.688		1	0.014819	10.645	1	2		-0.23567		unscorable	False	True
+lesjak_patient07_greedy	2	8	86	208.15	14.497	7.9573	9	14	98.395	183.17	24.535	2.5238	2	0.021806	8.8561	1	2	-0.16589	-0.012701	-0.15319	concentricity_and_constancy	False	True
+lesjak_patient07_greedy	2	9	75	181.53	21.431	9.7588	19	14	99.307	150.23	23.133		1	0.084603	12.197	1	2		1.9912		unscorable	False	True
+lesjak_patient07_greedy	2	10	200	484.08	47.572	18.957	125	14	104.88	206.49	27.185	-1.3737	2	0.00045587	19.239	1	2	-1.4728	-0.69398	-0.77881	concentricity_and_constancy	False	True
+lesjak_patient07_greedy	2	11	98	237.2	15.089	8.9901	9	14	102.58	156.62	24.898	1.9306	2	0.0084528	9.5965	1	2	-0.36482	-0.4388	0.073978	concentricity_and_constancy	True	True
+lesjak_patient07_greedy	2	12	12	29.045	22.319	10.519	3	36	102.92	199.67	32.417		1	0.0035086	10.108	1	2		-0.59657		unscorable	False	False
+lesjak_patient07_greedy	2	13	288	697.07	36.591	18.493	240	49	108.95	197	35.785	1.1663	3	0.00048356	18.777	1	2	-0.62108	-0.6931	0.07202	concentricity_and_constancy	True	True
+lesjak_patient07_greedy	2	14	11	26.624	12.762	8.07	1	40	103.82	154.36	36.182		1	0.0076175	7.6133	1	2		-0.46545		unscorable	False	False
+lesjak_patient07_greedy	2	15	30	72.612	22.259	13.359	16	43	108.93	170.3	40.433		1	0.0027879	12.891	1	2		-0.61956		unscorable	False	False
+lesjak_patient07_greedy	2	16	457	1106.1	40.442	18.705	344	14	115.62	230.93	25.479	7.5756	2	0.0049983	19.66	1	2	1.528	-0.54903	2.0771	concentricity_and_constancy	True	True
+lesjak_patient07_greedy	2	17	69	167.01	20.605	13.29	39	54	110.3	121.65	31.058	4.5091	2	0.021065	12.085	1	2	0.49978	-0.036353	0.53613	concentricity_and_constancy	True	True
+lesjak_patient07_greedy	2	18	50	121.02	15.799	9.3549	9	43	112.26	183.24	34.82	1.3673	2	0.016947	10.274	1	2	-0.5537	-0.16776	-0.38595	concentricity_and_constancy	False	False
+lesjak_patient07_greedy	2	19	464	1123.1	21.924	11.729	209	43	115.37	165.45	38.444	4.029	3	0.010548	10.956	1	2	0.3388	-0.37194	0.71074	concentricity_and_constancy	True	False
+lesjak_patient07_greedy	2	20	253	612.36	17.34	8.6137	36	43	113.74	124.97	37.15	2.2999	3	0.016616	9.451	1	2	-0.24099	-0.17832	-0.062667	concentricity_and_constancy	False	False
+lesjak_patient07_greedy	2	21	22	53.249	14.932	9.1638	4	43	114.5	111.73	34	1.1389	2	0.0413	10.652	1	2	-0.63029	0.60937	-1.2397	concentricity_and_constancy	False	False
+lesjak_patient07_greedy	2	22	95	229.94	13.586	7.8582	4	43	117.17	116.67	33.526	3.2178	2	0.12678	10.404	1	2	0.066819	3.3369	-3.2701	concentricity_and_constancy	False	False
+lesjak_patient07_greedy	2	23	45	108.92	13.276	8.6043	3	43	116.64	132.91	37.511		1	0.10712	11.101	1	2		2.7096		unscorable	False	False
+lesjak_patient07_greedy	2	24	63	152.48	13.353	8.1896	3	43	116.02	149	38.556	0.67242	2	0.019188	7.4777	1	2	-0.78669	-0.096246	-0.69045	concentricity_and_constancy	False	False
+lesjak_patient07_greedy	2	25	54	130.7	14.011	8.2376	5	43	117.63	140.89	38.037	1.4095	2	0.00070561	8.3908	1	2	-0.53953	-0.68601	0.14648	concentricity_and_constancy	True	False
+lesjak_patient07_greedy	2	26	12	29.045	15.4	10.953	5	103	125.75	222.5	37		1	0.0021162	10.617	1	2		-0.641		unscorable	False	False
+lesjak_patient07_greedy	2	27	85	205.73	52.806	36.441	84	107	131.93	155.62	18.341	12.751	2	0.00051427	35.881	1	2	3.2634	-0.69212	3.9555	concentricity_and_constancy	True	True
+lesjak_patient07_greedy	2	28	19	45.987	16.2	8.557	3	108	128.95	187.63	31.579		1	5.6175e-05	8.6013	1	2		-0.70673		unscorable	False	False
+lesjak_patient07_greedy	2	29	31	75.032	19.098	10.848	9	114	136.42	172.1	29.129		1	0.022482	12.094	1	2		0.0088712		unscorable	False	False
+lesjak_patient07_greedy	2	30	41	99.236	12.661	8.0385	1	127	147.05	190.63	31.415		1	0.0065582	8.5123	1	2		-0.49925		unscorable	False	False
+lesjak_patient07_greedy	2	31	87	210.57	14.097	7.5142	3	127	150.92	241.89	28.253	2.0825	2	0.0006376	7.386	1	2	-0.31388	-0.68818	0.3743	concentricity_and_constancy	True	False
+lesjak_patient07_greedy	2	32	131	317.07	14.412	7.929	9	140	153.59	107.39	35.58	2.0128	2	0.0019542	7.6952	1	2	-0.33724	-0.64617	0.30893	concentricity_and_constancy	True	False
+lesjak_patient07_greedy	2	33	384	929.43	27.863	12.355	157	140	155.2	120.33	35.396	4.0218	3	0.00064529	12.143	1	2	0.33641	-0.68793	1.0243	concentricity_and_constancy	True	False
+lesjak_patient07_greedy	2	34	195	471.98	15.04	8.8309	19	146	154.53	167.62	37.841	1.5113	2	0.027099	9.9575	1	2	-0.50541	0.15621	-0.66162	concentricity_and_constancy	False	False
+lesjak_patient07_greedy	2	35	97	234.78	18.283	9.4432	24	151	154.63	145.66	38.804	-0.60297	2	0.013215	8.7517	1	2	-1.2143	-0.28684	-0.92751	concentricity_and_constancy	False	False
+lesjak_patient07_greedy	2	36	14	33.885	21.588	12.248	5	142	153.21	208.36	33.286		1	0.028383	13.852	1	2		0.19718		unscorable	False	False
+lesjak_patient07_greedy	2	37	93	225.1	14.851	7.8226	9	127	156.75	194.17	27.978	5.6269	2	0.00013962	7.7596	1	2	0.87462	-0.70407	1.5787	concentricity_and_constancy	True	False
+lesjak_patient07_greedy	2	38	556	1345.7	25.037	10.895	179	127	162.5	225.29	27.059	3.028	3	0.048906	12.848	1	2	0.0031668	0.85207	-0.84891	concentricity_and_constancy	False	False
+lesjak_patient07_greedy	2	39	140	338.85	48.41	24.448	113	127	160.9	209.59	29.443	10.02	2	0.0010968	23.904	1	2	2.3477	-0.67353	3.0213	concentricity_and_constancy	True	False
+lesjak_patient07_greedy	2	40	106	256.56	57.429	40.699	105	169	159.61	208.52	34.142	11.401	2	0.00081988	39.914	1	2	2.8106	-0.68236	3.493	concentricity_and_constancy	True	True
+lesjak_patient07_greedy	2	41	179	433.25	17.31	7.8853	19	127	159.82	239.09	25.793	3.7282	2	2.3402e-06	7.8936	1	2	0.23795	-0.70845	0.9464	concentricity_and_constancy	True	False
+lesjak_patient07_greedy	2	42	107	258.98	13.376	7.9039	3	146	159.56	170.79	41.449	1.7578	2	0.0058397	8.342	1	2	-0.42275	-0.52218	0.099433	concentricity_and_constancy	True	False
+lesjak_patient07_greedy	2	43	49	118.6	13.036	8.3149	2	146	159.67	181.02	35.347	-0.11412	2	0.030273	9.4442	1	2	-1.0504	0.25749	-1.3079	concentricity_and_constancy	False	False
+lesjak_patient07_greedy	2	44	24	58.089	13.099	8.9829	2	175	159.71	190.04	36.5	-0.90213	2	0.015746	9.8307	1	2	-1.3147	-0.20608	-1.1086	concentricity_and_constancy	False	False
+lesjak_patient07_greedy	2	45	12	29.045	15.675	7.34	1	159	159.08	201.75	36.583		1	0.0068268	6.9456	1	2		-0.49068		unscorable	False	False
+lesjak_patient07_greedy	2	46	176	425.99	14.909	8.3458	15	157	160.3	151.99	40.67	3.3569	2	0.0020967	8.617	1	2	0.11345	-0.64162	0.75507	concentricity_and_constancy	True	False
+lesjak_patient07_greedy	2	47	410	992.36	21.656	11.586	172	157	168.23	145.55	37.317	2.0148	3	0.0012374	11.313	1	2	-0.33657	-0.66904	0.33247	concentricity_and_constancy	True	False
+lesjak_patient07_greedy	2	48	47	113.76	14.618	9.2682	7	146	164.66	166.38	36.553	1.2137	2	0.00019693	9.1797	1	2	-0.60518	-0.70224	0.097059	concentricity_and_constancy	True	False
+lesjak_patient07_greedy	2	49	114	275.92	34.953	24.695	108	196	171.96	106.11	35.193	4.668	2	0.00014024	24.898	1	2	0.55309	-0.70405	1.2571	concentricity_and_constancy	True	True
+lesjak_patient07_greedy	2	50	37	89.554	17.845	9.6023	8	199	169.11	188.43	30.108		1	0.026801	10.82	1	2		0.1467		unscorable	False	False
+lesjak_patient07_greedy	2	51	19	45.987	17.796	10.138	6	204	171.21	195.47	36.263		1	0.010252	10.896	1	2		-0.38138		unscorable	False	False
+lesjak_patient07_greedy	2	52	75	181.53	18.906	9.8908	21	127	172.59	203.2	26.467	3.1443	2	0.043892	11.554	1	2	0.042145	0.69207	-0.64992	concentricity_and_constancy	False	False
+lesjak_patient07_greedy	2	53	39	94.395	19.413	10.629	13	127	174.05	193.38	25.923	1.9229	2	0.11935	13.938	1	2	-0.36738	3.1	-3.4674	concentricity_and_constancy	False	False
+lesjak_patient07_greedy	2	54	157	380	19.144	10.923	54	127	176.52	172.89	25.268	3.1902	2	0.050837	12.926	1	2	0.057547	0.91368	-0.85614	concentricity_and_constancy	False	False
+lesjak_patient07_greedy	2	55	34	82.293	16.593	10.415	10	127	175.82	184.09	25.471		1	0.10881	13.468	1	2		2.7635		unscorable	False	False
+lesjak_patient07_greedy	2	56	101	244.46	12.528	7.0759	1	127	179.38	193.07	34.515	1.901	2	0.054639	8.4302	1	2	-0.37475	1.035	-1.4098	concentricity_and_constancy	False	False
+lesjak_patient07_greedy	2	57	27	65.351	20.77	14.324	16	218	179.59	179.59	37.519		1	0.041808	16.666	1	2		0.62557		unscorable	False	False
+lesjak_patient07_greedy	2	58	24	58.089	13.484	8.5236	2	227	182.42	187.62	25.583		1	0.00092707	8.7058	1	2		-0.67894		unscorable	False	False
+lesjak_patient07_greedy	2	59	50	121.02	18.283	10.514	17	238	189.4	168.52	36.64	2.9928	2	0.00055222	10.686	1	2	-0.0086301	-0.6909	0.68227	concentricity_and_constancy	True	False
+lesjak_patient07_greedy	2	60	35	84.714	13.059	7.5858	1	236	188.91	146.2	32.971	-0.96632	2	0.0043662	7.9466	1	2	-1.3362	-0.5692	-0.76698	concentricity_and_constancy	False	False

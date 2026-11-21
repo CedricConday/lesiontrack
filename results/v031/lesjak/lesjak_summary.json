@@ -1,0 +1,89 @@
+{
+  "subjects": 20,
+  "voxel": {
+    "dice_median": 0.3265563355299227,
+    "dice_pooled": 0.3804429416737109,
+    "sensitivity_pooled": 0.399514259743211,
+    "ppv_pooled": 0.3631094530574309
+  },
+  "expert_components": {
+    "n": 846,
+    "hit": 453,
+    "inside_either_mask": 466,
+    "hit_by_size": {
+      "1-10": [
+        52,
+        185
+      ],
+      "10-50": [
+        219,
+        434
+      ],
+      "50-1000000000": [
+        182,
+        227
+      ]
+    }
+  },
+  "mask_change_components_ge3": {
+    "n": 2084,
+    "on_expert_change": 413
+  },
+  "tracking_groups": {
+    "n_scored": 2020,
+    "adjacent_fragments_not_scored": 52,
+    "expert_changed": 436,
+    "sensitivity_called_changed": 0.9541284403669725,
+    "specificity_called_unchanged": 0.0763888888888889,
+    "ppv_called_changed": 0.22139435870143692,
+    "by_class": {
+      "adjacent_fragment": {
+        "n": 52,
+        "expert_changed": 13
+      },
+      "enlarging": {
+        "n": 168,
+        "expert_changed": 56
+      },
+      "new": {
+        "n": 710,
+        "expert_changed": 200
+      },
+      "resolved": {
+        "n": 716,
+        "expert_changed": 82
+      },
+      "shrinking": {
+        "n": 285,
+        "expert_changed": 78
+      },
+      "stable": {
+        "n": 40,
+        "expert_changed": 8
+      },
+      "trend_down": {
+        "n": 57,
+        "expert_changed": 7
+      },
+      "trend_up": {
+        "n": 44,
+        "expert_changed": 5
+      }
+    }
+  },
+  "jacobian_per_baseline_lesion_ge10_voxels": {
+    "n": 626,
+    "expert_changed": 208,
+    "auc_abs_mean": 0.5893218623481782,
+    "auc_signed_mean": 0.41959192123665806,
+    "auc_peak": 0.5355056128082444,
+    "auc_has_sel_candidate": 0.5546213654766287,
+    "spearman_jacobian_vs_mask_rate_matched_groups": 0.31518392612666113,
+    "n_matched_groups": 594
+  },
+  "sel_candidates": {
+    "n": 208,
+    "median_per_subject": 6.5,
+    "on_expert_change": 85
+  }
+}

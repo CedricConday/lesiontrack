@@ -206,3 +206,26 @@ known broken T1 (input gate, as in 0.2.0). Code `b30520d`. Tables `results/v030/
 * Cohorts with defaults: MSLesSeg 246 candidates (median 6.5, P2 and P20 none), 75
   definite; Lesjak 231 / 40; Lesjak tracking identical to 0.2.0. Halfway volume factor
   0.975-1.010; residual global scale in backtests 0.993-0.996.
+
+## 2026-11-21 late — greedy's saved warp was rounded; v031 re-run
+
+The v030 noise-floor rise (10.8 -> 15.5 %/yr) was not the similarity step (P1 with
+`--affine-dof 6` on the new code: 15.8) and not the frame order (intermediate follow-up
+resliced with either order: correlation 0.9902 both). Peaks sat on ~5 %/yr steps: greedy
+writes the warp rounded to 0.1 voxel (`-wp`, default 0.1; the old warps have 0 % of values
+off that grid). Fixed `16d72c0` (`-wp 0`, `RegParams.warp_precision_vox`), `3684dc2` (ANTs
+records not invalidated). Affects every greedy number through v030; not ANTs.
+
+`TAG=v031 scripts/run_v030.sh 4`, 17:39 to 23:20, 81 exit 0, P49 exit 1 (broken T1, known).
+Tables `results/v031/`; `results/v030/` kept as the rounded-warp record.
+
+* Pooled P1-P3 lesion level, sens / FPR: Elliott candidate 1.00/0.15 (v030 0.39, 0.2.0
+  0.37); definite S>=0 0.57/0.04; mean rate >= 10 0.99/0.03. At 1 % scale 1.00/0.14,
+  0.54/0.05, 0.99/0.03. Thick3 0.99/0.23, 0.58/0.07, 0.96/0.05. Lesjak x3 0.97/0.08,
+  0.61/0.03, 0.96/0.03.
+* 7 patients: candidates median 37 (154 in 0.2.0); candidate FPR 0.27 (0.04-0.59); definite
+  0.71/0.10; noise floor 8.9 (5.1-14.4); AUC mean 0.99, constancy residual 0.76, S 0.76,
+  concentricity 0.62.
+* Greedy now close to ANTs 0.2.0 on P1/P3; P2 candidate FPR 0.48 vs 0.24.
+* Cohorts: MSLesSeg 232 candidates, median 6, P2 none, 68 definite; Spearman 0.40. Lesjak
+  208 / 45, 85 on expert change; tracking identical.

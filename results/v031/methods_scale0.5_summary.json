@@ -1,0 +1,244 @@
+{
+  "pooled": {
+    "n_expanded": 72,
+    "n_unexpanded": 150,
+    "methods": {
+      "deformation / SEL candidate": {
+        "n_expanded": 72,
+        "n_unexpanded": 150,
+        "sensitivity": 1.0,
+        "false_positive_rate": 0.12,
+        "auc": 0.9962962962962963
+      },
+      "deformation / definite SEL": {
+        "n_expanded": 72,
+        "n_unexpanded": 150,
+        "sensitivity": 0.5416666666666666,
+        "false_positive_rate": 0.02666666666666667
+      },
+      "deformation / mean rate": {
+        "n_expanded": 72,
+        "n_unexpanded": 150,
+        "sensitivity": 0.9861111111111112,
+        "false_positive_rate": 0.03333333333333333,
+        "auc": 0.9994444444444445
+      },
+      "segmentation / truth masks": {
+        "n_expanded": 72,
+        "n_unexpanded": 150,
+        "sensitivity": 0.7222222222222222,
+        "false_positive_rate": 0.0,
+        "auc": 0.9517592592592593
+      }
+    }
+  },
+  "by_backtest": {
+    "P1_scale0.5": {
+      "n_expanded": 24,
+      "n_unexpanded": 30,
+      "methods": {
+        "deformation / SEL candidate": {
+          "n_expanded": 24,
+          "n_unexpanded": 30,
+          "sensitivity": 1.0,
+          "false_positive_rate": 0.26666666666666666,
+          "auc": 0.9875
+        },
+        "deformation / definite SEL": {
+          "n_expanded": 24,
+          "n_unexpanded": 30,
+          "sensitivity": 0.5833333333333334,
+          "false_positive_rate": 0.13333333333333333
+        },
+        "deformation / mean rate": {
+          "n_expanded": 24,
+          "n_unexpanded": 30,
+          "sensitivity": 0.9583333333333334,
+          "false_positive_rate": 0.0,
+          "auc": 1.0
+        },
+        "segmentation / truth masks": {
+          "n_expanded": 24,
+          "n_unexpanded": 30,
+          "sensitivity": 0.6666666666666666,
+          "false_positive_rate": 0.0,
+          "auc": 0.9006944444444445
+        }
+      }
+    },
+    "P2_scale0.5": {
+      "n_expanded": 24,
+      "n_unexpanded": 21,
+      "methods": {
+        "deformation / SEL candidate": {
+          "n_expanded": 24,
+          "n_unexpanded": 21,
+          "sensitivity": 1.0,
+          "false_positive_rate": 0.42857142857142855,
+          "auc": 1.0
+        },
+        "deformation / definite SEL": {
+          "n_expanded": 24,
+          "n_unexpanded": 21,
+          "sensitivity": 0.5416666666666666,
+          "false_positive_rate": 0.0
+        },
+        "deformation / mean rate": {
+          "n_expanded": 24,
+          "n_unexpanded": 21,
+          "sensitivity": 1.0,
+          "false_positive_rate": 0.23809523809523808,
+          "auc": 1.0
+        },
+        "segmentation / truth masks": {
+          "n_expanded": 24,
+          "n_unexpanded": 21,
+          "sensitivity": 0.7916666666666666,
+          "false_positive_rate": 0.0,
+          "auc": 0.9851190476190477
+        }
+      }
+    },
+    "P3_scale0.5": {
+      "n_expanded": 24,
+      "n_unexpanded": 99,
+      "methods": {
+        "deformation / SEL candidate": {
+          "n_expanded": 24,
+          "n_unexpanded": 99,
+          "sensitivity": 1.0,
+          "false_positive_rate": 0.010101010101010102,
+          "auc": 1.0
+        },
+        "deformation / definite SEL": {
+          "n_expanded": 24,
+          "n_unexpanded": 99,
+          "sensitivity": 0.5,
+          "false_positive_rate": 0.0
+        },
+        "deformation / mean rate": {
+          "n_expanded": 24,
+          "n_unexpanded": 99,
+          "sensitivity": 1.0,
+          "false_positive_rate": 0.0,
+          "auc": 1.0
+        },
+        "segmentation / truth masks": {
+          "n_expanded": 24,
+          "n_unexpanded": 99,
+          "sensitivity": 0.7083333333333334,
+          "false_positive_rate": 0.0,
+          "auc": 0.9501262626262627
+        }
+      }
+    }
+  },
+  "by_size": {
+    "large_ge500": {
+      "n_expanded": 4,
+      "n_unexpanded": 11,
+      "methods": {
+        "deformation / SEL candidate": {
+          "n_expanded": 4,
+          "n_unexpanded": 11,
+          "sensitivity": 1.0,
+          "false_positive_rate": 0.45454545454545453,
+          "auc": 1.0
+        },
+        "deformation / definite SEL": {
+          "n_expanded": 4,
+          "n_unexpanded": 11,
+          "sensitivity": 0.25,
+          "false_positive_rate": 0.18181818181818182
+        },
+        "deformation / mean rate": {
+          "n_expanded": 4,
+          "n_unexpanded": 11,
+          "sensitivity": 0.75,
+          "false_positive_rate": 0.0,
+          "auc": 1.0
+        },
+        "segmentation / truth masks": {
+          "n_expanded": 4,
+          "n_unexpanded": 11,
+          "sensitivity": 1.0,
+          "false_positive_rate": 0.0,
+          "auc": 1.0
+        }
+      }
+    },
+    "medium_100_500": {
+      "n_expanded": 25,
+      "n_unexpanded": 29,
+      "methods": {
+        "deformation / SEL candidate": {
+          "n_expanded": 25,
+          "n_unexpanded": 29,
+          "sensitivity": 1.0,
+          "false_positive_rate": 0.20689655172413793,
+          "auc": 0.9972413793103448
+        },
+        "deformation / definite SEL": {
+          "n_expanded": 25,
+          "n_unexpanded": 29,
+          "sensitivity": 0.56,
+          "false_positive_rate": 0.06896551724137931
+        },
+        "deformation / mean rate": {
+          "n_expanded": 25,
+          "n_unexpanded": 29,
+          "sensitivity": 1.0,
+          "false_positive_rate": 0.034482758620689655,
+          "auc": 1.0
+        },
+        "segmentation / truth masks": {
+          "n_expanded": 25,
+          "n_unexpanded": 29,
+          "sensitivity": 0.88,
+          "false_positive_rate": 0.0,
+          "auc": 0.9993103448275862
+        }
+      }
+    },
+    "small_lt100": {
+      "n_expanded": 43,
+      "n_unexpanded": 110,
+      "methods": {
+        "deformation / SEL candidate": {
+          "n_expanded": 43,
+          "n_unexpanded": 110,
+          "sensitivity": 1.0,
+          "false_positive_rate": 0.06363636363636363,
+          "auc": 0.9976744186046511
+        },
+        "deformation / definite SEL": {
+          "n_expanded": 43,
+          "n_unexpanded": 110,
+          "sensitivity": 0.5581395348837209,
+          "false_positive_rate": 0.0
+        },
+        "deformation / mean rate": {
+          "n_expanded": 43,
+          "n_unexpanded": 110,
+          "sensitivity": 1.0,
+          "false_positive_rate": 0.03636363636363636,
+          "auc": 0.9997885835095137
+        },
+        "segmentation / truth masks": {
+          "n_expanded": 43,
+          "n_unexpanded": 110,
+          "sensitivity": 0.6046511627906976,
+          "false_positive_rate": 0.0,
+          "auc": 0.9364693446088795
+        }
+      }
+    }
+  },
+  "tracking_thresholds": {
+    "change_pct_per_year": 9.0,
+    "stable_pct_per_year": 4.0,
+    "min_change_voxels": 3,
+    "new_lesion_margin_voxels": 1,
+    "connectivity": 2
+  }
+}
