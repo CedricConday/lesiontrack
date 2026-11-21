@@ -105,3 +105,13 @@ def test_cache_comparison_survives_the_json_round_trip():
     for engine in ("greedy", "ants"):
         cur = _params_record(RegParams(engine=engine), None)
         assert _same_registration(json.loads(json.dumps(cur)), cur), engine
+
+
+def test_warp_precision_invalidates_greedy_but_not_ants_records():
+    from lesiontrack.registration import _params_record, _same_registration
+
+    for engine, reused in (("greedy", False), ("ants", True)):
+        cur = _params_record(RegParams(engine=engine), None)
+        old = json.loads(json.dumps(cur))
+        old["reg"].pop("warp_precision_vox")  # written before -wp 0
+        assert _same_registration(old, cur) is reused, engine

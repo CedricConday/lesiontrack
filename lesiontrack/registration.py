@@ -204,6 +204,8 @@ def _same_registration(previous: dict | None, current: dict) -> bool:
         reg.setdefault("engine", "greedy")
         if reg["engine"] == "greedy":
             reg = {k: v for k, v in reg.items() if not k.startswith("ants_")}
+        else:  # greedy's saved-warp rounding never touches an ANTs warp
+            reg.pop("warp_precision_vox", None)
         # Records without a frame_version predate the 0.3.0 composition fix; for a pair
         # registered without a frame the composition was never used, so they still match.
         fv = rec.get("frame_version") if rec.get("frame") else None
