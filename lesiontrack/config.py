@@ -62,6 +62,12 @@ class RegParams:
     deform_sigma_total: str = "0.5vox"
     deform_iterations: str = "100x60x30"
     stationary_velocity: bool = True
+    # greedy rounds the saved warp to 0.1 voxel unless told otherwise (-wp, default 0.1).
+    # The Jacobian is a finite difference of that field, so the rounding put every rate on
+    # steps of about 5 %/yr at a one-year interval: Elliott's 12.5 %/yr seed is two to
+    # three steps and the 4 %/yr growth threshold less than one. 0 saves the warp unrounded
+    # (found 2026-11-21; 0.2.0 and earlier saved it rounded).
+    warp_precision_vox: float = 0.0
     t1_weight: float = 1.0
     flair_weight: float = 1.0
     threads: int = 4

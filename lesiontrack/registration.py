@@ -309,7 +309,7 @@ def register_pair(baseline: Timepoint, follow: Timepoint, out_dir: Path,
             f"-e {params.deform_step} -s {params.deform_sigma_update} {params.deform_sigma_total} "
             f"{sv_arg}{mask_arg}"
             f"-w {params.t1_weight} -i {bl['T1w']} {fu['T1w']} "
-            f"-w {params.flair_weight} -i {bl['FLAIR']} {fu['FLAIR']} -o {warp}",
+            f"-w {params.flair_weight} -i {bl['FLAIR']} {fu['FLAIR']} -wp {params.warp_precision_vox} -o {warp}",
             log,
         )
         run_greedy(f"-d 3 -threads {thr} -rf {bl['T1w']} -rm {fu['T1w']} {warped} -r {warp}", log)

@@ -62,6 +62,11 @@ def test_both_engines_recover_the_sign_of_an_injected_expansion(tmp_path, engine
     assert inside > far + 5.0
     record = json.loads((tmp_path / f"reg_{engine}" / "followup_reg_params.json").read_text())
     assert record["reg"]["engine"] == engine
+    if engine == "greedy":
+        # greedy's default -wp 0.1 would round every displacement to a 0.1-voxel grid
+        u = np.asarray(nib.load(tmp_path / "reg_greedy" / "followup_warp.nii.gz").dataobj, dtype=float)
+        off_grid = np.abs(u * 10 - np.round(u * 10)) > 1e-3
+        assert off_grid.mean() > 0.5, "the saved warp is quantized"
 
 
 def test_old_record_reuses_the_warp_and_recomputes_only_the_jacobian(tmp_path, monkeypatch):
