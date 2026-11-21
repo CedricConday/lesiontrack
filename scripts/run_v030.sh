@@ -24,7 +24,7 @@ bt() {  # name t1 flair mask extra-args...
   if [ -f "$out/backtest_metrics.json" ]; then say "$name: done"; return; fi
   local start=$(date +%s)
   $LT backtest --t1 "$t1" --flair "$fl" --mask "$mk" --out "$out" --threads "$THREADS" "$@" \
-    > "work/logs/$TAG_$name.log" 2>&1
+    > "work/logs/${TAG}_$name.log" 2>&1
   say "backtest $name exit=$? seconds=$(( $(date +%s) - start ))"
 }
 ms() { local name=$1 s=$2; shift 2; bt "$name" $MS/$s/T1/${s}_T1_T1.nii.gz $MS/$s/T1/${s}_T1_FLAIR.nii.gz $MS/$s/T1/${s}_T1_MASK.nii.gz "$@"; }
@@ -43,9 +43,9 @@ score() {  # label dirs...
   local label=$1; shift
   local dirs=$(existing "$@")
   [ -n "$dirs" ] || { say "score $label: nothing to score"; return; }
-  $PY scripts/bench_methods.py $R/methods_$label $dirs > "work/logs/$TAG_methods_$label.log" 2>&1
+  $PY scripts/bench_methods.py $R/methods_$label $dirs > "work/logs/${TAG}_methods_$label.log" 2>&1
   say "methods $label exit=$?"
-  $PY scripts/bench_rule.py $R/rule_$label $dirs > "work/logs/$TAG_rule_$label.log" 2>&1
+  $PY scripts/bench_rule.py $R/rule_$label $dirs > "work/logs/${TAG}_rule_$label.log" 2>&1
   say "rule $label exit=$?"
 }
 B=$W/backtests
@@ -55,7 +55,7 @@ score thick3 $B/P{1,2,3}_thick3
 score scale0.5 $B/P{1,2,3}_scale0.5
 score scale1.0 $B/P{1,2,3}_scale1.0
 score lesjak $B/lesjak_*_greedy
-$PY scripts/summarize_validation.py --backtests $B --out $R > work/logs/$TAG_summary.log 2>&1
+$PY scripts/summarize_validation.py --backtests $B --out $R > work/logs/${TAG}_summary.log 2>&1
 say "summary exit=$?"
 
 # Cohorts: MSLesSeg (24 patients) and Lesjak (20), same commands as 0.2.0.
@@ -63,19 +63,19 @@ D=derivatives/$TAG
 for s in $(tail -n +2 work/manifest_mslesseg.tsv | cut -f1 | sort -u -V); do
   [ -f "$D/mslesseg/$s/summary.json" ] && continue
   start=$(date +%s)
-  $LT run work/manifest_mslesseg.tsv --out $D/mslesseg --subject "$s" --threads "$THREADS" > "work/logs/$TAG_ms_$s.log" 2>&1
+  $LT run work/manifest_mslesseg.tsv --out $D/mslesseg --subject "$s" --threads "$THREADS" > "work/logs/${TAG}_ms_$s.log" 2>&1
   say "mslesseg $s exit=$? seconds=$(( $(date +%s) - start ))"
 done
-$LT cohort --out $D/mslesseg > work/logs/$TAG_ms_cohort.log 2>&1; say "mslesseg cohort exit=$?"
-$PY scripts/summarize_cohort.py $D/mslesseg > work/logs/$TAG_ms_summary.log 2>&1; say "summarize_cohort exit=$?"
-$PY scripts/cohort_checks.py $D/mslesseg > work/logs/$TAG_ms_checks.log 2>&1; say "cohort_checks exit=$?"
+$LT cohort --out $D/mslesseg > work/logs/${TAG}_ms_cohort.log 2>&1; say "mslesseg cohort exit=$?"
+$PY scripts/summarize_cohort.py $D/mslesseg > work/logs/${TAG}_ms_summary.log 2>&1; say "summarize_cohort exit=$?"
+$PY scripts/cohort_checks.py $D/mslesseg > work/logs/${TAG}_ms_checks.log 2>&1; say "cohort_checks exit=$?"
 for s in $(tail -n +2 work/lesjak/manifest_lesjak.tsv | cut -f1 | sort -u); do
   [ -f "$D/lesjak/$s/summary.json" ] && continue
   start=$(date +%s)
-  $LT run work/lesjak/manifest_lesjak.tsv --out $D/lesjak --subject "$s" --threads "$THREADS" > "work/logs/$TAG_lesjak_$s.log" 2>&1
+  $LT run work/lesjak/manifest_lesjak.tsv --out $D/lesjak --subject "$s" --threads "$THREADS" > "work/logs/${TAG}_lesjak_$s.log" 2>&1
   say "lesjak $s exit=$? seconds=$(( $(date +%s) - start ))"
 done
-$LT cohort --out $D/lesjak > work/logs/$TAG_lesjak_cohort.log 2>&1; say "lesjak cohort exit=$?"
-$PY scripts/eval_lesjak.py $D/lesjak sourcedata/lesjak/longitudinal $R/lesjak > work/logs/$TAG_eval_lesjak.log 2>&1
+$LT cohort --out $D/lesjak > work/logs/${TAG}_lesjak_cohort.log 2>&1; say "lesjak cohort exit=$?"
+$PY scripts/eval_lesjak.py $D/lesjak sourcedata/lesjak/longitudinal $R/lesjak > work/logs/${TAG}_eval_lesjak.log 2>&1
 say "eval_lesjak exit=$?"
 say "$TAG done"
