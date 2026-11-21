@@ -1,0 +1,244 @@
+{
+  "pooled": {
+    "n_expanded": 72,
+    "n_unexpanded": 1062,
+    "methods": {
+      "deformation / SEL candidate": {
+        "n_expanded": 72,
+        "n_unexpanded": 1062,
+        "sensitivity": 0.9861111111111112,
+        "false_positive_rate": 0.11958568738229755,
+        "auc": 0.9897402699309479
+      },
+      "deformation / definite SEL": {
+        "n_expanded": 72,
+        "n_unexpanded": 1062,
+        "sensitivity": 0.6111111111111112,
+        "false_positive_rate": 0.0480225988700565
+      },
+      "deformation / mean rate": {
+        "n_expanded": 72,
+        "n_unexpanded": 1062,
+        "sensitivity": 0.9583333333333334,
+        "false_positive_rate": 0.03295668549905838,
+        "auc": 0.984450198786357
+      },
+      "segmentation / truth masks": {
+        "n_expanded": 72,
+        "n_unexpanded": 1062,
+        "sensitivity": 0.4583333333333333,
+        "false_positive_rate": 0.0,
+        "auc": 0.9767406884285416
+      }
+    }
+  },
+  "by_backtest": {
+    "lesjak_patient03_greedy": {
+      "n_expanded": 24,
+      "n_unexpanded": 54,
+      "methods": {
+        "deformation / SEL candidate": {
+          "n_expanded": 24,
+          "n_unexpanded": 54,
+          "sensitivity": 1.0,
+          "false_positive_rate": 0.2222222222222222,
+          "auc": 0.9830246913580247
+        },
+        "deformation / definite SEL": {
+          "n_expanded": 24,
+          "n_unexpanded": 54,
+          "sensitivity": 0.6666666666666666,
+          "false_positive_rate": 0.1111111111111111
+        },
+        "deformation / mean rate": {
+          "n_expanded": 24,
+          "n_unexpanded": 54,
+          "sensitivity": 1.0,
+          "false_positive_rate": 0.07407407407407407,
+          "auc": 1.0
+        },
+        "segmentation / truth masks": {
+          "n_expanded": 24,
+          "n_unexpanded": 54,
+          "sensitivity": 0.4583333333333333,
+          "false_positive_rate": 0.0,
+          "auc": 0.9764660493827161
+        }
+      }
+    },
+    "lesjak_patient06_greedy": {
+      "n_expanded": 24,
+      "n_unexpanded": 294,
+      "methods": {
+        "deformation / SEL candidate": {
+          "n_expanded": 24,
+          "n_unexpanded": 294,
+          "sensitivity": 1.0,
+          "false_positive_rate": 0.09183673469387756,
+          "auc": 0.9931972789115646
+        },
+        "deformation / definite SEL": {
+          "n_expanded": 24,
+          "n_unexpanded": 294,
+          "sensitivity": 0.4166666666666667,
+          "false_positive_rate": 0.03741496598639456
+        },
+        "deformation / mean rate": {
+          "n_expanded": 24,
+          "n_unexpanded": 294,
+          "sensitivity": 0.9166666666666666,
+          "false_positive_rate": 0.05102040816326531,
+          "auc": 0.9783163265306123
+        },
+        "segmentation / truth masks": {
+          "n_expanded": 24,
+          "n_unexpanded": 294,
+          "sensitivity": 0.4583333333333333,
+          "false_positive_rate": 0.0,
+          "auc": 0.9767573696145124
+        }
+      }
+    },
+    "lesjak_patient07_greedy": {
+      "n_expanded": 24,
+      "n_unexpanded": 714,
+      "methods": {
+        "deformation / SEL candidate": {
+          "n_expanded": 24,
+          "n_unexpanded": 714,
+          "sensitivity": 0.9583333333333334,
+          "false_positive_rate": 0.12324929971988796,
+          "auc": 0.9833683473389355
+        },
+        "deformation / definite SEL": {
+          "n_expanded": 24,
+          "n_unexpanded": 714,
+          "sensitivity": 0.75,
+          "false_positive_rate": 0.047619047619047616
+        },
+        "deformation / mean rate": {
+          "n_expanded": 24,
+          "n_unexpanded": 714,
+          "sensitivity": 0.9583333333333334,
+          "false_positive_rate": 0.022408963585434174,
+          "auc": 0.9774159663865546
+        },
+        "segmentation / truth masks": {
+          "n_expanded": 24,
+          "n_unexpanded": 714,
+          "sensitivity": 0.4583333333333333,
+          "false_positive_rate": 0.0,
+          "auc": 0.9757528011204482
+        }
+      }
+    }
+  },
+  "by_size": {
+    "large_ge500": {
+      "n_expanded": 5,
+      "n_unexpanded": 19,
+      "methods": {
+        "deformation / SEL candidate": {
+          "n_expanded": 5,
+          "n_unexpanded": 19,
+          "sensitivity": 1.0,
+          "false_positive_rate": 1.0,
+          "auc": 1.0
+        },
+        "deformation / definite SEL": {
+          "n_expanded": 5,
+          "n_unexpanded": 19,
+          "sensitivity": 1.0,
+          "false_positive_rate": 1.0
+        },
+        "deformation / mean rate": {
+          "n_expanded": 5,
+          "n_unexpanded": 19,
+          "sensitivity": 1.0,
+          "false_positive_rate": 0.0,
+          "auc": 1.0
+        },
+        "segmentation / truth masks": {
+          "n_expanded": 5,
+          "n_unexpanded": 19,
+          "sensitivity": 0.6,
+          "false_positive_rate": 0.0,
+          "auc": 0.8947368421052632
+        }
+      }
+    },
+    "medium_100_500": {
+      "n_expanded": 29,
+      "n_unexpanded": 43,
+      "methods": {
+        "deformation / SEL candidate": {
+          "n_expanded": 29,
+          "n_unexpanded": 43,
+          "sensitivity": 1.0,
+          "false_positive_rate": 0.813953488372093,
+          "auc": 0.9735364875701684
+        },
+        "deformation / definite SEL": {
+          "n_expanded": 29,
+          "n_unexpanded": 43,
+          "sensitivity": 0.6896551724137931,
+          "false_positive_rate": 0.46511627906976744
+        },
+        "deformation / mean rate": {
+          "n_expanded": 29,
+          "n_unexpanded": 43,
+          "sensitivity": 0.9655172413793104,
+          "false_positive_rate": 0.06976744186046512,
+          "auc": 0.9711307137129109
+        },
+        "segmentation / truth masks": {
+          "n_expanded": 29,
+          "n_unexpanded": 43,
+          "sensitivity": 0.5172413793103449,
+          "false_positive_rate": 0.0,
+          "auc": 0.9767441860465116
+        }
+      }
+    },
+    "small_lt100": {
+      "n_expanded": 38,
+      "n_unexpanded": 1000,
+      "methods": {
+        "deformation / SEL candidate": {
+          "n_expanded": 38,
+          "n_unexpanded": 1000,
+          "sensitivity": 0.9736842105263158,
+          "false_positive_rate": 0.073,
+          "auc": 0.9918815789473684
+        },
+        "deformation / definite SEL": {
+          "n_expanded": 38,
+          "n_unexpanded": 1000,
+          "sensitivity": 0.5,
+          "false_positive_rate": 0.012
+        },
+        "deformation / mean rate": {
+          "n_expanded": 38,
+          "n_unexpanded": 1000,
+          "sensitivity": 0.9473684210526315,
+          "false_positive_rate": 0.032,
+          "auc": 0.9831315789473685
+        },
+        "segmentation / truth masks": {
+          "n_expanded": 38,
+          "n_unexpanded": 1000,
+          "sensitivity": 0.39473684210526316,
+          "false_positive_rate": 0.0,
+          "auc": 0.9700657894736842
+        }
+      }
+    }
+  },
+  "tracking_thresholds": {
+    "change_pct_per_year": 9.0,
+    "stable_pct_per_year": 4.0,
+    "min_change_voxels": 3,
+    "new_lesion_margin_voxels": 1,
+    "connectivity": 2
+  }
+}
