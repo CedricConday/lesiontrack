@@ -186,43 +186,64 @@ What the gate showed:
 
 The design above injects 11 to 25 %/yr inside the lesion, and the floor was first chosen
 on it. SELs are defined by slow expansion, so the backtest was repeated at nominal 3, 5
-and 8 %/yr with scans at 0, 1 and 2 years (`scripts/run_slow.sh`). P1 and P2, three seeds
-each, 48 expanded and 51 untouched lesions, share of lesions with a candidate (2026-11-23):
+and 8 %/yr, three scans, over two years and over one (`scripts/run_slow.sh`; P1 to P3,
+three seeds each, 72 expanded and 150 untouched lesions per interval; 2026-11-23). Share
+of lesions that keep a SEL candidate:
 
-| injected rate | Elliott candidate | floor 5 %/yr (default at 2 years) | fixed 10 %/yr (0.3.0.dev0) |
-|---|---|---|---|
-| 3 %/yr (n = 18) | 0.22 | 0.22 | 0.06 |
-| 5 %/yr (n = 18) | 0.33 | 0.33 | 0.11 |
-| 8 %/yr (n = 12) | 0.92 | 0.92 | 0.50 |
-| untouched (false positive rate) | 0.02 | 0.02 | 0.00 |
+| interval | injected rate | Elliott's rule | default floor (10 % total) | fixed 10 %/yr (0.3.0.dev0) |
+|---|---|---|---|---|
+| 2 years | 3 %/yr (n = 27) | 0.15 | 0.15 | 0.04 |
+| 2 years | 5 %/yr (n = 27) | 0.26 | 0.26 | 0.07 |
+| 2 years | 8 %/yr (n = 18) | 0.89 | 0.89 | 0.50 |
+| 2 years | untouched (false positive rate) | 0.01 | 0.01 | 0.00 |
+| 1 year | 3 %/yr (n = 27) | 0.59 | 0.26 | 0.26 |
+| 1 year | 5 %/yr (n = 27) | 0.70 | 0.37 | 0.37 |
+| 1 year | 8 %/yr (n = 18) | 0.94 | 0.89 | 0.89 |
+| 1 year | untouched (false positive rate) | 0.12 | 0.05 | 0.05 |
 
-Two things follow. A fixed floor in %/yr is wrong for longer intervals: noise in %/yr
-about halves over two years (mean rate of untouched lesions, SD 2.0 against 3.7 %/yr), and
-a 10 %/yr floor removed half the lesions expanding at 8 %/yr to remove one false positive.
-The default is therefore a floor on total change, 10 % over the interval. And **uniform
-expansion at 3 to 5 %/yr is mostly missed by Elliott's rule itself** on this registration:
-few such lesions hold a voxel at the 12.5 %/yr seed. The lesion's mean Jacobian rate still
-separates expanded from untouched lesions (AUC 0.94), so the signal is in the map more
-than in the candidates. P3 and the one-year series are added to docs/VALIDATION.md as
-they finish.
+What this says:
+
+1. **A fixed floor in %/yr is wrong for longer intervals.** Noise in %/yr halves over two
+   years (mean rate of untouched lesions, SD 1.8 against 3.7 %/yr). At two years a
+   10 %/yr floor removed nearly half the lesions expanding at 8 %/yr to remove one false
+   positive in 150. The default is therefore a floor on total change, 10 % over the
+   interval, which at two years costs nothing.
+2. **At one year the floor is a real trade.** It takes the false positive rate from 0.12
+   to 0.05 and detection of lesions expanding at 3 to 5 %/yr from about two thirds to
+   about one third. `--min-mean 0` gives the published rule and the other side of that
+   trade; `--min-mean 8` sits between (0.48 / 0.59 / 0.94, false positives 0.07).
+3. **Uniform expansion at 3 to 5 %/yr is mostly missed over two years by Elliott's rule
+   itself**: few such lesions hold a voxel at the 12.5 %/yr seed once the noise is lower.
+   The one-year detections of the same lesions lean on that noise: the measured rate
+   over-reads small expansions (median 6.4 %/yr measured for 3.0 injected at one year,
+   4.6 at two).
+4. The lesion's mean Jacobian rate separates expanded from untouched lesions at AUC 0.96
+   (two years) and 0.89 (one year), so the signal is in the map more than in the
+   candidates.
 
 ### Cohorts with the defaults
 
-Measured with 0.3.0.dev0 (fixed 10 %/yr floor; the re-run with the floor on total change is
-in docs/VALIDATION.md). MSLesSeg, 24 patients, baseline against last scan, median interval
-1.5 years: 232 SEL candidates, median 6 per patient, 68 definite; Elliott's rule without a
-floor gave 484 and 16 on 0.2.0, and the literature reports about 2 to 4 SELs per patient
-over two years. Mask-based against Jacobian volume change per subject: Spearman 0.40. One
-patient (P49) is refused by the input gate: its follow-up T1 is 0.1 % nonzero.
+MSLesSeg, 24 patients, baseline against last scan, median interval 1.5 years (0.16 to
+6.0): 374 SEL candidates, median 12.5 per patient, 92 definite. The fixed 10 %/yr floor
+gave 232 and 6, Elliott's rule without a floor 484 and 16 (0.2.0); the literature reports
+about 2 to 4 SELs per patient over two years, so these counts are still noise-heavy.
+Mask-based against Jacobian volume change per subject: Spearman 0.40. Of 216 new and 250
+resolved lesions by the masks, FLAIR supports 55 and 40. One patient (P49) is refused by
+the input gate: its follow-up T1 is 0.1 % nonzero.
 
-Lesjak et al. 2016, 20 patients, LST-AI masks, scored against expert masks of lesion
-change (there is no SEL ground truth, so this tests tracking): tracked groups called
-changed have sensitivity 0.95 and specificity 0.08, because 1,426 of 2,020 groups are new
-or resolved by the masks against 282 expert-confirmed. The churn is the segmenter's.
-`flair_supported` is the answer to it: the FLAIR change separates expert-confirmed from
-unconfirmed new lesions at AUC 0.83 (resolved 0.70), and at the default threshold keeps
-0.84 of the confirmed new lesions while dropping 0.65 of the unconfirmed. The threshold
-was chosen on these same 20 patients.
+Lesjak et al. 2016, 20 patients, median interval 0.87 years, LST-AI masks, scored against
+expert masks of lesion change (there is no SEL ground truth, so this tests tracking):
+162 SEL candidates, median 7 per patient, 82 on expert change.
+
+| tracked groups called changed | sensitivity | specificity | PPV |
+|---|---|---|---|
+| by the masks alone | 0.95 | 0.08 | 0.22 |
+| new and resolved counted only when `flair_supported` | 0.81 | 0.59 | 0.35 |
+
+The masks call 1,426 of 2,020 groups new or resolved, against 282 expert-confirmed; the
+churn is the segmenter's. FLAIR supports 346 of the 710 new lesions (168 of the 200
+expert-confirmed ones) and 207 of the 716 resolved (49 of 82). The support threshold was
+chosen on these same 20 patients, so the second row is an in-sample number.
 
 ## Data used
 
@@ -268,7 +289,7 @@ older record are not redone; their Jacobian is recomputed from the stored warp.
   masks from different segmenters or resolutions. Subject-level counts were stable;
   lesion-level identity was not. Expect the same here.
 * Slow uniform expansion is missed. Elliott's seed needs a voxel at 12.5 %/yr; lesions
-  injected at 3 to 5 %/yr over two years got a candidate in about a quarter of cases. The injected expansion is a
+  injected at 3 to 5 %/yr over two years got a candidate in about a fifth of cases. The injected expansion is a
   uniform scaling, not the centre-weighted pattern SELs are described by, so real SELs
   may fare better or worse; nothing public can tell.
 * A re-run is not bit-identical. greedy with several threads does not reproduce a

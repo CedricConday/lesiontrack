@@ -236,10 +236,23 @@ tracking is unchanged, it depends on the masks alone.
 Raised in review: the backtests above inject 11 to 25 %/yr inside the lesion and the
 10 %/yr floor was chosen on them, while SELs are defined by slow expansion.
 `scripts/run_slow.sh` injects nominal 3, 5 and 8 %/yr, three scans, over two years and
-over one, on P1 to P3; `scripts/summarize_slow.py` writes `results/slow/`. In so far:
-P1 and P2 at two years (table in the README). The floor became one on total change
-(10 % over the interval) on that evidence. P3, the one-year series, the cohort re-runs
-with the new floor and the ANTs backtests at 0.3.0 are appended here as they finish.
+over one, on P1 to P3; `scripts/summarize_slow.py` writes `results/slow/`. All six
+backtests are in; the table and what it says are in the README ("Backtest: slow
+expansion"), the numbers in `results/slow/sensitivity_by_rate.tsv` and `conditions.tsv`.
+Recovery fraction at these rates is 1.41 (two years) and 1.67 (one year): small
+expansions are over-read. Definite SEL (S >= 0) sensitivity at 3 / 5 / 8 %/yr: 0.07 /
+0.11 / 0.61 at two years, 0.26 / 0.30 / 0.67 at one; false positive rate 0.00 and 0.07.
+
+The floor became one on total change (10 % over the interval) on the two-year result.
+
+**Cohorts re-run with that floor and the FLAIR flag** (`scripts/run_cohorts.sh`, cached
+registrations, tables in `results/v0.3.0/`). MSLesSeg: 374 candidates, median 12.5 per
+patient, 92 definite (0.3.0.dev0 with the fixed floor: 232 / 6 / 68); most intervals are
+over a year, so the floor is lower than 10 %/yr for them. Lesjak: 162 candidates, median
+7, 46 definite, 82 on expert change (dev0: 208 / 6.5 / 45 / 85); its median interval is
+0.87 years, so the floor is higher. Tracking with FLAIR support on Lesjak: sensitivity
+0.95 -> 0.81, specificity 0.08 -> 0.59, PPV 0.22 -> 0.35 (threshold chosen in-sample).
+The ANTs backtests at 0.3.0 are appended here when they finish.
 
 **Run-to-run reproducibility (2026-11-23).** Lesjak patient03 was registered three times
 with identical settings: the v031 run (4 threads), once at 1 thread, once more at 4.
