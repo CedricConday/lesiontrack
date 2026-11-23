@@ -271,6 +271,10 @@ older record are not redone; their Jacobian is recomputed from the stored warp.
   injected at 3 to 5 %/yr over two years got a candidate in about a quarter of cases. The injected expansion is a
   uniform scaling, not the centre-weighted pattern SELs are described by, so real SELs
   may fare better or worse; nothing public can tell.
+* A re-run is not bit-identical. greedy with several threads does not reproduce a
+  registration exactly: the same patient, settings and thread count gave candidates of
+  129 and 177 voxels where the first run gave 131 and 184, and a 10-voxel candidate at the
+  size limit appeared. Counts near a threshold can move by one between runs.
 * The mean-rate floor is this package's, not Elliott's, and it was chosen on synthetic
   expansion. `--min-mean 0` reports the published rule.
 * Masks are taken as given. A segmenter that hallucinates at follow-up will produce

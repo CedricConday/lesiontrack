@@ -240,3 +240,12 @@ over one, on P1 to P3; `scripts/summarize_slow.py` writes `results/slow/`. In so
 P1 and P2 at two years (table in the README). The floor became one on total change
 (10 % over the interval) on that evidence. P3, the one-year series, the cohort re-runs
 with the new floor and the ANTs backtests at 0.3.0 are appended here as they finish.
+
+**Run-to-run reproducibility (2026-11-23).** Lesjak patient03 was registered three times
+with identical settings: the v031 run (4 threads), once at 1 thread, once more at 4.
+Neither repeat reproduced the first. Candidates shared by the two 4-thread runs: 131 /
+184 / 24 / 39 voxels against 129 / 177 / 26 / 37, mean rates within 1 %/yr (10.05 against
+9.93 for the weakest); the repeat also has a 10-voxel candidate at the size limit that the
+first run lacks. So greedy's multi-threaded result is not bit-reproducible and candidates
+near a threshold can flip. The registration cache keys on the thread count, so a cached
+tree is only reused at the thread count it was made with.
