@@ -1,0 +1,4 @@
+condition	nominal_pct_per_year	n	true_pct_per_year_median	measured_pct_per_year_median	sens_definite	sens_min_mean_0	sens_min_mean_2	sens_min_mean_4	sens_min_mean_5	sens_min_mean_6	sens_min_mean_8	sens_min_mean_10	sens_min_mean_12.5
+slow_2y_P1P2	3	18	2.95	4.76	0.111	0.222	0.222	0.222	0.222	0.222	0.111	0.0556	0
+slow_2y_P1P2	5	18	5	6.99	0.111	0.333	0.333	0.333	0.333	0.333	0.222	0.111	0.111
+slow_2y_P1P2	8	12	7.92	9.61	0.667	0.917	0.917	0.917	0.917	0.917	0.917	0.5	0.25

@@ -1,0 +1,2 @@
+condition	dt_years	backtests	n_expanded	n_untouched	recovery_fraction_median	untouched_mean_rate_sd	untouched_peak_median	auc_candidate_mean_rate	auc_lesion_mean_rate	fpr_definite	fpr_min_mean_0	fpr_min_mean_2	fpr_min_mean_4	fpr_min_mean_5	fpr_min_mean_6	fpr_min_mean_8	fpr_min_mean_10	fpr_min_mean_12.5
+slow_2y_P1P2	2	2	48	51	1.47	1.98	5.54	0.792	0.944	0	0.0196	0.0196	0.0196	0.0196	0.0196	0.0196	0	0

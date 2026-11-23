@@ -11,7 +11,7 @@ with a **synthetic backtest gate** that has to pass before a real number is repo
 > software. It is not a medical device, it has not been validated against histology or
 > clinical outcome, and it makes no diagnostic claim.
 
-![MSLesSeg patient P20, baseline to last follow-up: baseline lesions (cyan), new voxels on the warped follow-up (yellow), Jacobian expansion inside lesions with SEL candidate outlines (lime)](results/overview_P20.png)
+![MSLesSeg patient P20, baseline to last follow-up: baseline lesions (cyan), new voxels on the warped follow-up (yellow), Jacobian expansion inside lesions with SEL candidate outlines (lime)](https://raw.githubusercontent.com/CedricConday/lesiontrack/master/results/overview_P20.png)
 
 ## Why this exists
 
@@ -41,6 +41,9 @@ missing check.
    >= 12.5 %/year seed 18-connected components; each seed grows by hysteresis into
    neighbours expanding at >= 4 %/year, competing so distinct expansions stay distinct
    (marker watershed on the expansion map); candidates under 10 voxels are dropped.
+   Not Elliott's: candidates whose mean expansion over the whole interval is under 10 %
+   are dropped too (`--min-mean-total`; `--min-mean 0` gives the published rule). The
+   backtest is why, see Results.
 5. **Scores** (Elliott 2019 as described by Vanden Bulcke et al. 2025): *concentricity*
    is the robust slope of mean expansion per 1-voxel shell against depth from the
    candidate edge; *constancy* is the normalised residual of a robust linear fit of
@@ -55,12 +58,16 @@ missing check.
    +/-9 %/year, stable within +/-4 %/year, and trend_up / trend_down between (bands of
    Vanden Bulcke et al. 2025). A follow-up component with no baseline overlap is *new* if
    it clears the 1-voxel-dilated baseline mask and *adjacent_fragment* if it touches it;
-   a baseline component with no follow-up overlap is *resolved*.
+   a baseline component with no follow-up overlap is *resolved*. New and resolved calls
+   rest on two segmentations, so each is checked against the images: `flair_supported`
+   says whether FLAIR intensity there rose (new) or fell (resolved) by at least one
+   robust z.
 
 ## The backtest gate
 
 `lesiontrack backtest` takes a real baseline (T1w, FLAIR, lesion mask), picks lesions,
-expands each by a known volume factor (1.15, 1.25, 1.40) with a smooth radial
+expands each by a known volume factor (1.15, 1.25, 1.40, or your own with `--factors`
+and `--dt-years`) with a smooth radial
 deformation, perturbs the whole head rigidly, rescales intensities and adds noise, then
 runs the full pipeline on the pair and reports:
 
@@ -71,7 +78,7 @@ runs the full pipeline on the pair and reports:
   separates injected from spurious candidates
 
 It is the only place the pipeline is checked against a known answer. Run it on your own
-data before trusting a count. The numbers for MSLesSeg are in the section below.
+data, at the rates and interval you care about, before trusting a count.
 
 ## Install
 
@@ -79,7 +86,9 @@ data before trusting a count. The numbers for MSLesSeg are in the section below.
 pip install lesiontrack
 ```
 
-Python 3.10+. Wheels for greedy exist for Linux x86-64 and arm64 and macOS.
+Python 3.10+. Wheels for greedy exist for Linux x86-64 and arm64 and macOS. This README
+describes 0.3.0 (`lesiontrack --version`); 0.2.0 saved rounded warps and had no mean-rate
+floor, so upgrade before comparing numbers.
 
 ## Use
 
@@ -128,7 +137,7 @@ Per subject you get, on the baseline grid in halfway space:
 | `expansion_<tp>_pct_per_year.nii.gz` | Jacobian-derived local volume change |
 | `sel_candidates.nii.gz`, `sel_candidates.tsv` | candidate labels; size, peak and mean expansion, concentricity, constancy |
 | `baseline_lesion_labels.nii.gz`, `lesion_labels_<tp>.nii.gz` | lesion components |
-| `lesion_tracking.tsv` | one row per matched group with class, volumes, rate, merge/split flags |
+| `lesion_tracking.tsv` | one row per matched group with class, volumes, rate, merge/split flags, `flair_dz`, `flair_supported` |
 | `new_or_enlarging_<tp>.nii.gz` | follow-up lesion voxels outside the dilated baseline |
 | `overview_<tp>.png` | four axial slices: baseline, warped follow-up, expansion with SEL outlines |
 | `summary.json` | counts, volumes, intervals, every parameter used |
@@ -138,226 +147,82 @@ Per subject you get, on the baseline grid in halfway space:
 
 ## Results on public data
 
-### Backtest on MSLesSeg patient P1 (2026-09-26)
+Current numbers, lesiontrack 0.3.0, greedy engine. Every earlier version's numbers, the
+ANTs comparison and the per-patient tables are in [docs/VALIDATION.md](https://github.com/CedricConday/lesiontrack/blob/master/docs/VALIDATION.md).
 
-Three synthetic series (seeds 0, 1, 2), each with scans at 0, 0.5 and 1 year, eight of
-eighteen lesions expanded by nominal factors 1.15 / 1.25 / 1.40 (analytic mean inside the
-lesion 11 to 25 % because elongated lesions extend past the radial window), rigid
-perturbation about 1 degree and 1 voxel per scan, intensity rescale 0.9 to 1.1, 2 % noise.
-Default registration (greedy stationary-velocity, NCC 3x3x3, halfway space). Numbers
-re-measured 2026-09-27 with the corrected Jacobian on the same registrations (the
-2026-09-26 values, computed through greedy's `-rj`, are kept in `docs/BACKTEST_NOTES.md`).
+### Backtest: injected expansion of 15 to 40 % over one year
 
-| quantity | value |
-|---|---|
-| recovery fraction (measured / true, robust slope) | **1.16** |
-| recovery by lesion size: >= 500 / 100-500 / < 100 voxels (median) | 1.00 / 1.22 / 1.21 |
-| candidate sensitivity, Elliott thresholds | 1.00 |
-| candidate false positive rate, Elliott thresholds | 0.47 (1.00 on untouched lesions >= 500 voxels, 0.07 under 100) |
-| definite SEL (S >= 0, z-scored within the run): sensitivity / FPR | 0.67 / 0.37 |
-| noise floor: median peak per-voxel expansion in untouched lesions | 10.8 %/yr |
-| candidate mean expansion as a classifier, AUC | 0.99 to 1.00 |
+MSLesSeg patients P1 to P3, three seeds each, scans at 0, 0.5 and 1 year; 72 expanded and
+150 untouched lesions per condition. Lesion-level sensitivity / false positive rate:
 
-Three conclusions the tool would not have earned without the gate:
-
-1. **The Jacobian recovers the injected expansion in full**, slightly over on small
-   lesions (the radial window's falloff is counted in the mean). The earlier "under-reports
-   by 3x" was greedy's `-rj` on LAS images, see "The Jacobian is ours" below.
-2. **Elliott's candidate rule is noise-limited on confluent lesions.** A one-voxel peak
-   over 12.5 %/yr, grown by hysteresis to 4 %/yr, makes a 10-voxel candidate; every
-   untouched lesion over 500 voxels produced one. Concentricity and constancy, the
-   published filters, stayed weak on six more patients in 0.2.0; with unrounded warps
-   (0.3.0) S reaches AUC 0.76. See "Validation beyond P1" and "0.3.0" below.
-3. **The candidate's mean rate is the filter that works** (AUC 0.99). It is exposed as
-   `min_mean_pct_per_year`; since 0.3.0 it is on by default at 10 (`--min-mean 0` gives
-   Elliott's rule). Trade-off on this registration (mean over
-   the three seeds):
-
-| min mean (%/yr) | sensitivity | false positive rate |
-|---|---|---|
-| 0 (Elliott) | 1.00 | 0.47 |
-| 8 | 1.00 | 0.20 |
-| 10 | 1.00 | 0.07 |
-| 12.5 | 0.92 | 0.00 |
-
-Full record with the registration sweep: `docs/BACKTEST_NOTES.md`.
-
-### MSLesSeg cohort (24 patients, 2026-09-26, Jacobian re-measured 2026-09-27)
-
-All longitudinal MSLesSeg patients, baseline against their last scan (median interval
-1.5 years, range 0.16 to 6.0), default settings. One patient (P49) was refused by the
-input gate: its follow-up T1 in the released dataset has 0.1 % nonzero voxels.
-
-**Lesion tracking, all subjects, last follow-up** (baseline lesions 573, matched groups):
-new 216, resolved 250, enlarging 127, shrinking 115, stable 36, trend 45. That churn is
-real signal, not just segmentation noise: voxels the masks call new go from FLAIR z 0.73
-at baseline to 1.49 at follow-up and only 6 % were already lesion-bright; resolved voxels
-go from 1.45 to 0.87. But masks are segmented per timepoint in MSLesSeg, so "new" and
-"resolved" also carry every difference between two segmentations.
-
-**SEL candidates.** 484 candidates in 24 subjects, median 16 per subject (12.5 with mean
->= 8 %/yr), 97 definite; the literature reports about 2 to 4 SELs per patient over two
-years. On this registration the Elliott rule is noise-dominated on real data as it was on
-the backtest, and `min_mean_pct_per_year` around 10 is where the backtest puts the floor.
-
-**The Jacobian and the masks agree in rank, not in size.** Per subject, mask-based total
-lesion volume change and the Jacobian integrated over baseline lesions correlate at
-Spearman 0.41 (medians +12.5 % by mask, -6.3 % by Jacobian, brain-wide mean -1.5 %). Per
-1:1 matched lesion (n = 276) the correlation is 0.22; 0.25 for lesions over 100 voxels.
-Masks are segmented per timepoint in MSLesSeg, so their change carries every difference
-between two segmentations; the Jacobian sees only displacement of the surrounding tissue,
-and its median inside persisting lesions is negative.
-
-Cohort tables: `derivatives/mslesseg/cohort_summary.tsv`, `sel_cohort.tsv`,
-`check_volume_change_by_lesion.tsv`, `check_flair_consistency.tsv`
-(`scripts/summarize_cohort.py`, `scripts/cohort_checks.py`).
-
-### Validation beyond P1 (2026-11-20)
-
-_These are 0.2.0 numbers, taken from warps greedy had rounded to 0.1 voxel; the 0.3.0
-section below has them re-measured._
-
-Same backtest design as for P1 (three seeds, eight lesions expanded per seed, 24 injected
-lesions per backtest), lesiontrack 0.2.0 with the corrected Jacobian. The six extra
-MSLesSeg patients (P2 P3 P12 P13 P19 P22) were picked before any result was seen.
-`scripts/run_validation.sh` runs everything; `scripts/summarize_validation.py` writes
-`results/validation_backtests.tsv` and `results/validation_feature_auc.tsv`.
-
-**Seven MSLesSeg patients, greedy** (range over patients, median in brackets):
-
-| quantity | value |
-|---|---|
-| candidate sensitivity, Elliott thresholds | 1.00 in all seven |
-| candidate false positive rate | 0.25 to 0.81 (0.46) |
-| definite SEL (S >= 0): sensitivity / FPR | 0.58 to 0.92 (0.71) / 0.06 to 0.42 (0.18) |
-| recovery fraction | 0.98 to 1.25 |
-| noise floor, median peak in untouched lesions | 10.3 to 18.8 %/yr |
-
-How well each candidate feature separates injected from spurious candidates (AUC,
-candidate level, median and range over the seven patients):
-
-| feature | AUC |
-|---|---|
-| mean expansion rate | **1.00** (0.67 to 1.00) |
-| constancy residual (lower = more constant) | 0.78 (0.60 to 0.81) |
-| S = z(concentricity) - z(constancy) | 0.64 (0.56 to 0.74) |
-| concentricity | 0.58 (0.45 to 0.73) |
-
-The P1 finding holds on more patients: the published filters add little over chance on
-this design and the mean rate does the work. Two patients (P12 0.67, P19 0.74) are the
-exception; in both, the expanded lesions break into many small candidates (78 and 53
-injected candidates for 24 injected lesions) whose mean rate overlaps the noise.
-
-**ANTs SyN against greedy, same synthetic series** (P1 / P2 / P3):
-
-| quantity | greedy | ANTs |
-|---|---|---|
-| candidates per backtest | 154 / 55 / 61 | 33 / 29 / 27 |
-| candidate sensitivity | 1.00 / 1.00 / 1.00 | 1.00 / 1.00 / 1.00 |
-| candidate false positive rate | 0.47 / 0.81 / 0.25 | **0.20 / 0.24 / 0.03** |
-| definite SEL sensitivity | 0.71 / 0.71 / 0.79 | 0.58 / 0.50 / 0.54 |
-| definite SEL FPR | 0.40 / 0.38 / 0.06 | 0.10 / 0.05 / 0.00 |
-| recovery fraction | 1.16 / 1.21 / 1.14 | 1.06 / 1.04 / 1.02 |
-| noise floor (%/yr) | 10.8 / 16.0 / 10.3 | 10.0 / 9.7 / 6.5 |
-| run time, 4 cores | about 12 min | about 5.5 h |
-
-ANTs is smoother: a third or less of the spurious candidates, recovery closer to 1, a lower noise
-floor. It also loses about a quarter of the definite calls on truly expanding lesions, so S >= 0
-gets more specific and less sensitive. At about 27 times the run time it is the engine for
-a final analysis, not for a sweep. (P1 greedy here is the 2026-11-19 re-score, which
-scores every candidate; its definite numbers differ slightly from the table above.)
-
-**Lesjak et al. 2016, 20 patients** (two timepoints, 0.72 x 0.72 x 3 mm, expert masks of
-lesion *change* only). Lesion masks come from LST-AI (`jqmcginnis/lst-ai:v2.0.0rc1-cpu`,
-fast mode) on each timepoint; `scripts/prep_lesjak.py` prepares the inputs and
-`scripts/eval_lesjak.py` scores against the expert change. There is no SEL ground truth
-in this dataset, so it tests tracking, not SEL detection.
-
-| quantity | value |
-|---|---|
-| LST-AI change voxels against expert change: Dice pooled / median per patient | 0.38 / 0.33 |
-| expert change components touched: all / 1-10 / 10-50 / > 50 voxels | 453 of 846 / 52 of 185 / 219 of 434 / 182 of 227 |
-| tracked groups called changed (new, resolved, enlarging, shrinking): sensitivity / specificity / PPV | 0.95 / 0.08 / 0.22 |
-| Jacobian per baseline lesion (>= 10 voxels) as a classifier of expert change, AUC | 0.58 |
-| Jacobian against mask change rate, matched groups, Spearman | 0.31 (n = 594) |
-| SEL candidates: total / median per patient / on expert change | 318 / 9 / 121 |
-
-Tracking on per-timepoint segmentations calls almost everything changed: 1,426 of 2,020
-groups are new or resolved, against 282 expert-confirmed. The churn is the segmenter's,
-not the tracker's, but the tool reports it as change, and that is what a user gets.
-Backtests on three Lesjak patients (03, 06, 07, greedy) at this resolution: candidate
-sensitivity 1.00 / 1.00 / 0.96, FPR 0.22 / 0.09 / 0.12, recovery 1.02 / 1.03 / 1.00,
-noise floor 5.0 / 2.1 / 4.8 %/yr. Tables: `results/lesjak/`.
-
-### 0.3.0: unrounded warps, similarity step, mean-rate filter on (2026-11-21)
-
-Four changes, and every greedy number above re-run with them (`TAG=v031
-scripts/run_v030.sh`, tables in `results/v031/`, cohorts in `derivatives/v031/`). ANTs and
-the LST-AI arm were not re-run; their numbers above are 0.2.0, and the first change does
-not touch ANTs.
-
-1. **The warp is saved unrounded.** greedy rounds the warp it writes to 0.1 voxel unless
-   told otherwise (`-wp`, default 0.1), and lesiontrack takes the Jacobian from that file.
-   Every rate up to 0.2.0 sat on steps of about 5 %/yr at a one-year interval, coarser
-   than Elliott's 4 %/yr growth threshold. This is the largest change below.
-2. **The linear step fits one global scale** (`affine_dof = 7`, `--affine-dof 6` restores
-   rigid). A simulated scanner change, every follow-up rescaled by 1 %, made untouched
-   lesions look like they were expanding. The cost: whole-brain atrophy is absorbed as
-   well, so lesion change is measured relative to the brain.
-3. **`lesiontrack run` drops candidates under 10 %/yr mean rate** by default. `backtest`
-   still scores every candidate.
-4. **Earlier follow-ups land in the right frame.** For a third or later timepoint the
-   rigid and halfway matrices were composed in the wrong order. At the small rotations
-   seen here the two orders give the same alignment; it is fixed for larger ones.
-
-`summary.json` now reports the residual global scale away from lesions (QC only) and the
-halfway volume factor; tracking and candidate volumes are on the halfway grid, the
-baseline lesion volume is native.
-
-**P1 to P3, three seeds each, lesion level** (72 expanded, 150 untouched lesions per
-condition), sensitivity / false positive rate, 0.2.0 -> 0.3.0:
-
-| condition | Elliott candidate | definite S >= 0 | mean rate >= 10 |
+| condition | Elliott candidate | definite S >= 0 | default (mean rate floor) |
 |---|---|---|---|
-| no scanner change | 1.00 / 0.37 -> 1.00 / **0.15** | 0.74 / 0.17 -> 0.57 / **0.04** | 0.99 / 0.03 -> 0.99 / 0.03 |
-| 0.5 % scale change | 1.00 / 0.49 -> 1.00 / 0.12 | 0.74 / 0.19 -> 0.54 / 0.03 | 0.99 / 0.07 -> 0.99 / 0.03 |
-| 1 % scale change | 1.00 / 0.67 -> 1.00 / 0.14 | 0.79 / 0.29 -> 0.54 / 0.05 | 1.00 / **0.18** -> 0.99 / **0.03** |
-| FLAIR at 3 mm slices | 0.99 / 0.43 -> 0.99 / 0.23 | 0.64 / 0.18 -> 0.58 / 0.07 | 0.96 / 0.06 -> 0.96 / 0.05 |
-| Lesjak 03, 06, 07 | 0.99 / 0.12 -> 0.97 / 0.08 | 0.61 / 0.05 -> 0.61 / 0.03 | 0.96 / 0.03 -> 0.96 / 0.03 |
+| no scanner change | 1.00 / 0.15 | 0.57 / 0.04 | 0.99 / 0.03 |
+| 0.5 % scale change | 1.00 / 0.12 | 0.54 / 0.03 | 0.99 / 0.03 |
+| 1 % scale change | 1.00 / 0.14 | 0.54 / 0.05 | 0.99 / 0.03 |
+| FLAIR at 3 mm slices | 0.99 / 0.23 | 0.58 / 0.07 | 0.96 / 0.05 |
+| Lesjak 03, 06, 07 (0.72 x 0.72 x 3 mm) | 0.97 / 0.08 | 0.61 / 0.03 | 0.96 / 0.03 |
 
-A 1 % scale change now costs nothing. The Elliott rule and S >= 0 lose most of their
-false positives; S >= 0 also loses sensitivity (0.74 -> 0.57), so it is now a specific
-but conservative call. The mean rate was already near its ceiling and stays there.
+Over seven MSLesSeg patients (P1 P2 P3 P12 P13 P19 P22, picked before any result was
+seen; median and range):
 
-**Seven MSLesSeg patients, greedy, 0.2.0 -> 0.3.0** (median, range):
+| quantity | value |
+|---|---|
+| recovery fraction (measured / injected, robust slope) | 1.17 |
+| candidate false positive rate, Elliott thresholds | 0.27 (0.04 to 0.59) |
+| noise floor: median peak per-voxel rate in untouched lesions | 8.9 %/yr (5.1 to 14.4) |
+| candidate AUC, injected against spurious: mean rate | 0.99 (0.87 to 1.00) |
+| candidate AUC: S / constancy residual / concentricity | 0.76 / 0.76 / 0.62 |
 
-| quantity | 0.2.0 | 0.3.0 |
-|---|---|---|
-| candidates per backtest | 154 (55 to 278) | 37 (29 to 152) |
-| candidate FPR | 0.46 (0.25 to 0.81) | 0.27 (0.04 to 0.59) |
-| definite SEL sensitivity / FPR | 0.71 / 0.18 | 0.71 / 0.10 |
-| recovery fraction | 1.16 | 1.17 |
-| noise floor, median peak in untouched lesions | 10.8 %/yr | 8.9 %/yr (5.1 to 14.4) |
-| AUC mean rate | 1.00 (0.67 to 1.00) | 0.99 (0.87 to 1.00) |
-| AUC constancy residual | 0.78 | 0.76 (0.61 to 0.94) |
-| AUC S | 0.64 | **0.76** (0.63 to 0.78) |
-| AUC concentricity | 0.58 | 0.62 (0.31 to 0.76) |
+What the gate showed:
 
-With unrounded rates S carries real information (0.76), though the mean rate still
-separates best. P13 stays the hardest patient (candidate FPR 0.59).
+1. **The Jacobian recovers the injected expansion**, slightly over on small lesions.
+2. **Elliott's candidate rule is noise-limited on large lesions.** One voxel over
+   12.5 %/yr, grown by hysteresis to 4 %/yr, makes a candidate; S >= 0 removes most of
+   those and about 40 % of the true ones with them.
+3. **The candidate's mean rate separates best**, which is why `run` applies a floor on it.
 
-**Greedy 0.3.0 against ANTs 0.2.0** (P1 / P2 / P3): candidates 37 / 35 / 29 against 33 /
-29 / 27; candidate FPR 0.27 / 0.48 / 0.04 against 0.20 / 0.24 / 0.03; definite sensitivity
-0.50 / 0.50 / 0.71 against 0.58 / 0.50 / 0.54; noise floor 8.9 / 12.3 / 5.1 against 10.0 /
-9.7 / 6.5 %/yr. Most of the gap in the ANTs table above was greedy's rounding; ANTs
-keeps an edge on P2 and in recovery (1.02 to 1.06 against 1.14 to 1.21).
+### Backtest: slow expansion
 
-**Cohorts with the defaults.** MSLesSeg (24 patients): 232 candidates, median 6 per
-patient (P2 none), 68 definite; 0.2.0 without the filter gave 484, 16 and 97. Mask against
-Jacobian volume change per subject: Spearman 0.40 (0.41). The halfway volume factor spans
-0.975 to 1.010, which is how much global scale the linear step took up. Lesjak (20
-patients): 208 candidates (median 6.5), 45 definite, 85 on expert change (318 / 62 / 121);
-tracking is unchanged, it depends on the masks alone.
+The design above injects 11 to 25 %/yr inside the lesion, and the floor was first chosen
+on it. SELs are defined by slow expansion, so the backtest was repeated at nominal 3, 5
+and 8 %/yr with scans at 0, 1 and 2 years (`scripts/run_slow.sh`). P1 and P2, three seeds
+each, 48 expanded and 51 untouched lesions, share of lesions with a candidate (2026-11-23):
+
+| injected rate | Elliott candidate | floor 5 %/yr (default at 2 years) | fixed 10 %/yr (0.3.0.dev0) |
+|---|---|---|---|
+| 3 %/yr (n = 18) | 0.22 | 0.22 | 0.06 |
+| 5 %/yr (n = 18) | 0.33 | 0.33 | 0.11 |
+| 8 %/yr (n = 12) | 0.92 | 0.92 | 0.50 |
+| untouched (false positive rate) | 0.02 | 0.02 | 0.00 |
+
+Two things follow. A fixed floor in %/yr is wrong for longer intervals: noise in %/yr
+about halves over two years (mean rate of untouched lesions, SD 2.0 against 3.7 %/yr), and
+a 10 %/yr floor removed half the lesions expanding at 8 %/yr to remove one false positive.
+The default is therefore a floor on total change, 10 % over the interval. And **uniform
+expansion at 3 to 5 %/yr is mostly missed by Elliott's rule itself** on this registration:
+few such lesions hold a voxel at the 12.5 %/yr seed. The lesion's mean Jacobian rate still
+separates expanded from untouched lesions (AUC 0.94), so the signal is in the map more
+than in the candidates. P3 and the one-year series are added to docs/VALIDATION.md as
+they finish.
+
+### Cohorts with the defaults
+
+Measured with 0.3.0.dev0 (fixed 10 %/yr floor; the re-run with the floor on total change is
+in docs/VALIDATION.md). MSLesSeg, 24 patients, baseline against last scan, median interval
+1.5 years: 232 SEL candidates, median 6 per patient, 68 definite; Elliott's rule without a
+floor gave 484 and 16 on 0.2.0, and the literature reports about 2 to 4 SELs per patient
+over two years. Mask-based against Jacobian volume change per subject: Spearman 0.40. One
+patient (P49) is refused by the input gate: its follow-up T1 is 0.1 % nonzero.
+
+Lesjak et al. 2016, 20 patients, LST-AI masks, scored against expert masks of lesion
+change (there is no SEL ground truth, so this tests tracking): tracked groups called
+changed have sensitivity 0.95 and specificity 0.08, because 1,426 of 2,020 groups are new
+or resolved by the masks against 282 expert-confirmed. The churn is the segmenter's.
+`flair_supported` is the answer to it: the FLAIR change separates expert-confirmed from
+unconfirmed new lesions at AUC 0.83 (resolved 0.70), and at the default threshold keeps
+0.84 of the confirmed new lesions while dropping 0.65 of the unconfirmed. The threshold
+was chosen on these same 20 patients.
 
 ## Data used
 
@@ -402,9 +267,15 @@ older record are not redone; their Jacobian is recomputed from the stored warp.
   Bulcke et al. 2025 found only weak lesion-level agreement (Dice about 0.4) between SEL
   masks from different segmenters or resolutions. Subject-level counts were stable;
   lesion-level identity was not. Expect the same here.
+* Slow uniform expansion is missed. Elliott's seed needs a voxel at 12.5 %/yr; lesions
+  injected at 3 to 5 %/yr over two years got a candidate in about a quarter of cases. The injected expansion is a
+  uniform scaling, not the centre-weighted pattern SELs are described by, so real SELs
+  may fare better or worse; nothing public can tell.
+* The mean-rate floor is this package's, not Elliott's, and it was chosen on synthetic
+  expansion. `--min-mean 0` reports the published rule.
 * Masks are taken as given. A segmenter that hallucinates at follow-up will produce
-  "new" lesions; the tool does not second-guess it. On Lesjak with LST-AI masks that is
-  specificity 0.08 for "changed".
+  "new" lesions; the class is kept and `flair_supported` says whether the images agree.
+  On Lesjak with LST-AI masks the unfiltered call has specificity 0.08 for "changed".
 * Since 0.3.0 the linear step absorbs a global scale, including real whole-brain atrophy:
   lesion expansion is relative to the brain. The simulated scanner change is a pure linear
   scale; a real scanner change also distorts non-linearly, and that is not tested.
