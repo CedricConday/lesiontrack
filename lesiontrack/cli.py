@@ -49,7 +49,12 @@ def cmd_run(a: argparse.Namespace) -> int:
         subjects = {k: v for k, v in subjects.items() if k in set(a.subject)}
         if not subjects:
             raise SystemExit("no matching subject in manifest")
-    sel = SELParams(**({} if a.min_mean is None else {"min_mean_pct_per_year": a.min_mean}))
+    sel = {}
+    if a.min_mean is not None:  # an explicit yearly floor replaces the default one on total change
+        sel = {"min_mean_pct_per_year": a.min_mean, "min_mean_total_pct": 0.0}
+    if a.min_mean_total is not None:
+        sel["min_mean_total_pct"] = a.min_mean_total
+    sel = SELParams(**sel)
     params = Params(reg=RegParams(threads=a.threads, engine=a.engine,
                                   **({} if a.affine_dof is None else {"affine_dof": a.affine_dof})), sel=sel)
     out = Path(a.out)
@@ -119,7 +124,7 @@ def cmd_backtest(a: argparse.Namespace) -> int:
     seeds = [int(x) for x in a.seeds.split(",")]
     params = Params(reg=RegParams(threads=a.threads, engine=a.engine,
                                    **({} if a.affine_dof is None else {"affine_dof": a.affine_dof})),
-                    sel=SELParams(min_mean_pct_per_year=a.min_mean))
+                    sel=SELParams(min_mean_pct_per_year=a.min_mean, min_mean_total_pct=0.0))
     tables, all_metrics, cand_tables = [], [], []
     fractions = [float(x) for x in a.timepoints.split(",")]
     if fractions[-1] != 1.0:
@@ -257,9 +262,13 @@ def main(argv: list[str] | None = None) -> int:
     r.add_argument("--subject", action="append", help="restrict to these subjects (repeatable)")
     r.add_argument("--threads", type=int, default=4)
     r.add_argument("--engine", choices=("greedy", "ants"), default="greedy", help="deformable registration engine (rigid and reslicing are always greedy)")
+    r.add_argument("--min-mean-total", type=float, default=None,
+                   help="drop SEL candidates whose mean expansion over the whole interval is below this "
+                        f"(%%); default {SELParams().min_mean_total_pct:g}, i.e. {SELParams().min_mean_total_pct:g} / "
+                        "interval in %%/yr; 0 = off")
     r.add_argument("--min-mean", type=float, default=None,
-                   help=f"drop SEL candidates whose mean expansion is below this (%%/yr); default "
-                        f"{SELParams().min_mean_pct_per_year:g}, 0 = Elliott's rule")
+                   help="drop SEL candidates whose mean expansion is below this (%%/yr), instead of the "
+                        "default floor on total change; 0 = Elliott's rule, no floor")
     r.add_argument("--affine-dof", type=int, choices=(6, 7), default=None,
                    help=f"linear step: 6 = rigid, 7 = rigid plus one global scale (default {RegParams().affine_dof})")
     r.set_defaults(func=cmd_run)
@@ -293,7 +302,7 @@ def main(argv: list[str] | None = None) -> int:
     b.add_argument("--min-mean", type=float, default=0.0,
                    help="drop candidates whose mean expansion is below this (%%/yr). Default 0 so the "
                         "backtest scores every candidate and reports the trade-off; `run` defaults to "
-                        f"{SELParams().min_mean_pct_per_year:g}")
+                        f"{SELParams().min_mean_total_pct:g} %% over the interval")
     b.add_argument("--affine-dof", type=int, choices=(6, 7), default=None,
                    help=f"linear step: 6 = rigid, 7 = rigid plus one global scale (default {RegParams().affine_dof})")
     b.add_argument("--scanner-scale-pct", type=float, default=0.0,

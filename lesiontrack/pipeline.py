@@ -13,10 +13,17 @@ import pandas as pd
 from . import __version__
 from .candidates import candidate_table, sel_candidates
 from .config import Params
-from .registration import (PairResult, Timepoint, global_scale, read_matrix, jacobian_pct_per_year, reference_mask,
-                           register_pair)
+from .registration import (
+    PairResult,
+    Timepoint,
+    global_scale,
+    jacobian_pct_per_year,
+    read_matrix,
+    reference_mask,
+    register_pair,
+)
 from .scores import concentricity, constancy
-from .tracking import label_lesions, summarize, track_pair
+from .tracking import flair_support, label_lesions, summarize, track_pair
 
 
 @dataclass
@@ -74,7 +81,7 @@ def run_subject(subject: str, timepoints: list[Timepoint], out_dir: Path,
 
     # SEL candidates from baseline to the last follow-up (Elliott 2019).
     lesion_labels = label_lesions(mask_bl, params.sel.connectivity)
-    cand = sel_candidates(expansion[last.follow_up], mask_bl, params.sel)
+    cand = sel_candidates(expansion[last.follow_up], mask_bl, params.sel, last.dt_years)
     nib.save(nib.Nifti1Image(cand.astype(np.int32), ref_img.affine), out_dir / "sel_candidates.nii.gz")
     nib.save(nib.Nifti1Image(lesion_labels, ref_img.affine), out_dir / "baseline_lesion_labels.nii.gz")
     table = candidate_table(cand, expansion[last.follow_up], lesion_labels, voxel_mm3, params.sel)
@@ -104,6 +111,8 @@ def run_subject(subject: str, timepoints: list[Timepoint], out_dir: Path,
     for p in pairs:
         mask_fu = np.asarray(nib.load(p.followup_mask).dataobj) > 0
         t, maps = track_pair(mask_bl, mask_fu, p.dt_years, voxel_mm3, params.track)
+        t = flair_support(t, maps, np.asarray(nib.load(p.baseline_flair).dataobj),
+                          np.asarray(nib.load(p.followup_flair).dataobj), brain, params.track)
         t.insert(0, "follow_up", p.follow_up)
         t.insert(0, "subject", subject)
         t["dt_years"] = p.dt_years
@@ -135,6 +144,7 @@ def run_subject(subject: str, timepoints: list[Timepoint], out_dir: Path,
         # volume by 1/halfway_volume_factor, a follow-up volume by it, for native space).
         "halfway_volume_factor": halfway_det,
         "baseline_lesion_volume_mm3": float(mask_bl.sum() * voxel_mm3 / halfway_det),
+        "sel_min_mean_pct_per_year": params.sel.min_mean_at(last.dt_years),
         "sel_candidates": len(table),
         "sel_candidate_volume_mm3": float(table["volume_mm3"].sum()) if len(table) else 0.0,
         "tracking": {p.follow_up: summarize(tracking[tracking["follow_up"] == p.follow_up], voxel_mm3) for p in pairs},

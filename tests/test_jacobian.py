@@ -1,6 +1,6 @@
 """The Jacobian determinant is computed in the voxel frame, whatever the image orientation."""
-import numpy as np
 import nibabel as nib
+import numpy as np
 import pytest
 
 from lesiontrack.registration import jacobian_determinant

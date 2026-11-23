@@ -12,8 +12,7 @@ from lesiontrack.registration import half_transform
 from lesiontrack.scores import cohort_score, concentricity, constancy, huber_fit
 from lesiontrack.tracking import track_pair
 
-
-ELLIOTT = SELParams(min_mean_pct_per_year=0.0)  # Elliott 2019 as published, no mean-rate filter
+ELLIOTT = SELParams(min_mean_pct_per_year=0.0, min_mean_total_pct=0.0)  # Elliott 2019 as published, no mean-rate filter
 
 
 def ball(shape, centre, r):
@@ -181,7 +180,13 @@ def test_min_mean_drops_weak_candidates():
     exp[ball(shape, (20, 20, 20), 2)] = 13.0   # one small seed, candidate mean stays near 5
     assert sel_candidates(exp, mask, ELLIOTT).max() == 1
     assert sel_candidates(exp, mask, SELParams(min_mean_pct_per_year=8.0)).max() == 0
-    assert sel_candidates(exp, mask).max() == 0  # the default (10 %/yr) drops it too
+    # the default is a floor on total change: 10 % over the interval
+    assert sel_candidates(exp, mask, dt_years=1.0).max() == 0   # 10 %/yr at one year
+    assert sel_candidates(exp, mask, dt_years=4.0).max() == 1   # 2.5 %/yr at four years
+    assert sel_candidates(exp, mask).max() == 1                 # no interval given: no floor to scale
+    both = SELParams(min_mean_pct_per_year=8.0)                 # an absolute floor applies as well
+    assert sel_candidates(exp, mask, both, dt_years=4.0).max() == 0
+    assert SELParams().min_mean_at(2.0) == 5.0 and both.min_mean_at(2.0) == 8.0 and ELLIOTT.min_mean_at(0.5) == 0.0
 
 
 def test_zero_margin_does_not_flood_the_baseline():
@@ -353,7 +358,7 @@ def test_global_scale_resists_local_change_and_refuses_a_tiny_reference():
 def test_defaults_are_mean_rate_filter_and_similarity_step():
     from lesiontrack.config import RegParams
 
-    assert SELParams().min_mean_pct_per_year == 10.0
+    assert SELParams().min_mean_total_pct == 10.0 and SELParams().min_mean_pct_per_year == 0.0
     assert RegParams().affine_dof == 7
 
 
@@ -404,3 +409,44 @@ def test_cached_framed_pairs_from_before_the_fix_are_not_reused():
     assert not _same_registration(old, cur)
     unframed = _params_record(RegParams(), None)
     assert _same_registration({k: v for k, v in unframed.items() if k != "frame_version"}, unframed)
+
+
+def test_flair_support_flags_new_and_resolved_by_intensity_change():
+    from lesiontrack.tracking import flair_support
+
+    rng = np.random.default_rng(0)
+    shape = (40, 40, 40)
+    bl = np.zeros(shape, bool)
+    fu = np.zeros(shape, bool)
+    bl[5:9, 5:9, 5:9] = True      # resolved, FLAIR really drops
+    bl[5:9, 20:24, 5:9] = True    # resolved by the masks only
+    fu[20:24, 5:9, 5:9] = True    # new, FLAIR really rises
+    fu[20:24, 20:24, 5:9] = True  # new by the masks only
+    bl[30:34, 30:34, 30:34] = fu[30:34, 30:34, 30:34] = True  # persistent
+    f0 = 100 + rng.normal(0, 5, shape).astype(np.float32)
+    f1 = 100 + rng.normal(0, 5, shape).astype(np.float32)
+    f0[5:9, 5:9, 5:9] += 40
+    f1[20:24, 5:9, 5:9] += 40
+    f0[30:34, 30:34, 30:34] += 40
+    f1[30:34, 30:34, 30:34] += 40
+    table, maps = track_pair(bl, fu, 1.0, 1.0)
+    out = flair_support(table, maps, f0, f1, np.ones(shape, bool))
+    by = {(r["class"], round(r["cx"]), round(r["cy"])): r for _, r in out.iterrows()}
+    assert by[("resolved", 6, 6)]["flair_supported"] and by[("resolved", 6, 6)]["flair_dz"] < -5
+    assert not by[("resolved", 6, 22)]["flair_supported"]
+    assert by[("new", 22, 6)]["flair_supported"] and by[("new", 22, 6)]["flair_dz"] > 5
+    assert not by[("new", 22, 22)]["flair_supported"]
+    persistent = out[out["class"] == "stable"].iloc[0]
+    assert pd.isna(persistent["flair_supported"]) and abs(persistent["flair_dz"]) < 1
+    # a uniform intensity rescale between scans is not a change
+    out2 = flair_support(table, maps, f0, f1 * 1.3, np.ones(shape, bool))
+    assert list(out2["flair_supported"].fillna(False)) == list(out["flair_supported"].fillna(False))
+
+
+def test_flair_support_empty_table():
+    from lesiontrack.tracking import flair_support
+
+    z = np.zeros((6, 6, 6), bool)
+    table, maps = track_pair(z, z, 1.0, 1.0)
+    out = flair_support(table, maps, z.astype(float), z.astype(float), ~z)
+    assert len(out) == 0 and {"flair_dz", "flair_supported"} <= set(out.columns)

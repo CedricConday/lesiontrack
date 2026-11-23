@@ -15,6 +15,10 @@ Classes (rates are percent of baseline volume per year):
   trend_up / trend_down   between the stable and change thresholds
   adjacent_fragment       follow-up component with no baseline overlap that touches the
              dilated baseline mask: an edge fragment, not counted as new
+
+Masks segmented independently per timepoint differ for reasons that are not biology, and
+every such difference lands in "new" or "resolved". :func:`flair_support` adds the one
+check that does not depend on the masks: did FLAIR intensity itself change there.
 """
 
 from __future__ import annotations
@@ -126,11 +130,73 @@ def track_pair(mask_baseline: np.ndarray, mask_followup: np.ndarray, dt_years: f
     return table, {"baseline": lb, "followup": lf, "new_or_enlarging_voxels": new_or_enlarging}
 
 
+def robust_z(image: np.ndarray, reference: np.ndarray) -> np.ndarray:
+    """Intensity as a robust z-score against the voxels in ``reference`` (median, MAD)."""
+    ref = image[reference]
+    if ref.size == 0:
+        raise ValueError("empty reference region")
+    med = float(np.median(ref))
+    mad = float(np.median(np.abs(ref - med))) * 1.4826
+    if mad <= 0:
+        raise ValueError("reference region has no intensity spread")
+    return ((image - med) / mad).astype(np.float32)
+
+
+def flair_support(table: pd.DataFrame, maps: dict, flair_baseline: np.ndarray, flair_followup: np.ndarray,
+                  brain: np.ndarray, params: TrackParams | None = None) -> pd.DataFrame:
+    """Add ``flair_dz`` and ``flair_supported`` to a :func:`track_pair` table.
+
+    Both FLAIR images are z-scored against brain tissue at least two voxels away from
+    either lesion mask. ``flair_dz`` is the median of (follow-up z - baseline z) over the
+    group's voxels in either mask. ``flair_supported`` is set for two classes only: a
+    *new* lesion is supported when ``flair_dz >= flair_support_z`` (it got brighter), a
+    *resolved* one when ``flair_dz <= -flair_support_z``; it is empty for every other
+    class. The class itself is not changed: an unsupported "new" is still what the masks
+    say, flagged as resting on the segmenter alone.
+    """
+    params = params or TrackParams()
+    lb, lf = maps["baseline"], maps["followup"]
+    out = table.copy()
+    if not len(out):
+        out["flair_dz"] = pd.Series(dtype=float)
+        out["flair_supported"] = pd.Series(dtype="boolean")
+        return out
+    st = ndi.generate_binary_structure(3, params.connectivity)
+    reference = (np.asarray(brain) > 0) & ~ndi.binary_dilation((lb > 0) | (lf > 0), structure=st, iterations=2)
+    dz = robust_z(np.asarray(flair_followup, dtype=np.float32), reference) - \
+        robust_z(np.asarray(flair_baseline, dtype=np.float32), reference)
+    med_b = ndi.median(dz, lb, np.arange(1, int(lb.max()) + 1)) if lb.max() else np.array([])
+    med_f = ndi.median(dz, lf, np.arange(1, int(lf.max()) + 1)) if lf.max() else np.array([])
+    vals, supported = [], []
+    for b_ids, f_ids, cls in zip(out["baseline_ids"], out["followup_ids"], out["class"]):
+        b = [int(x) for x in str(b_ids).split(",") if x]
+        f = [int(x) for x in str(f_ids).split(",") if x]
+        if len(b) + len(f) == 1:  # the common case, and the only one for new and resolved
+            v = float(med_b[b[0] - 1]) if b else float(med_f[f[0] - 1])
+        else:
+            v = float(np.median(dz[np.isin(lb, b) | np.isin(lf, f)]))
+        vals.append(v)
+        if cls == "new":
+            supported.append(v >= params.flair_support_z)
+        elif cls == "resolved":
+            supported.append(v <= -params.flair_support_z)
+        else:
+            supported.append(pd.NA)
+    out["flair_dz"] = vals
+    out["flair_supported"] = pd.array(supported, dtype="boolean")
+    return out
+
+
 def summarize(table: pd.DataFrame, voxel_mm3: float) -> dict:
     counts = table["class"].value_counts().to_dict() if len(table) else {}
+    supported = {}
+    if len(table) and "flair_supported" in table:
+        for cls in ("new", "resolved"):
+            supported[cls] = int(table.loc[table["class"] == cls, "flair_supported"].fillna(False).sum())
     return {
         "n_groups": len(table),
         "classes": {k: int(v) for k, v in counts.items()},
+        "flair_supported": supported,
         "volume_baseline_mm3": float(table["volume_baseline_mm3"].sum()) if len(table) else 0.0,
         "volume_followup_mm3": float(table["volume_followup_mm3"].sum()) if len(table) else 0.0,
     }

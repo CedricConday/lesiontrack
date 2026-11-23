@@ -73,6 +73,8 @@ for sdir in sorted(out.glob("patient*")):
         groups.append({"subject": name, "group_id": r["group_id"], "class": r["class"],
                        "n_voxels": int(vox.sum()), "pct_per_year": r["pct_per_year"],
                        "expert_changed": bool(gt_near[vox].any()),
+                       "flair_dz": r.get("flair_dz", float("nan")),
+                       "flair_supported": r.get("flair_supported", float("nan")),
                        "jacobian_mean_pct_per_year": float(exp[np.isin(lb, b)].mean()) if b else float("nan")})
     for k in range(1, int(lb.max()) + 1):
         sel = lb == k
@@ -108,6 +110,9 @@ for df, nm in ((S, "by_subject"), (G, "by_group"), (L, "by_baseline_lesion"), (C
 scored = G[G["class"].isin(CHANGED | UNCHANGED)]
 called = scored["class"].isin(CHANGED)
 ec = scored["expert_changed"]
+# The same call, with new and resolved counted only where FLAIR intensity moved with them.
+sup = scored["flair_supported"].astype("boolean").fillna(False).astype(bool)
+called_sup = scored["class"].isin({"enlarging", "shrinking"}) | (scored["class"].isin({"new", "resolved"}) & sup)
 matched = G[G["jacobian_mean_pct_per_year"].notna() & G["class"].ne("resolved") & G["pct_per_year"].notna()]
 summary = {
     "subjects": len(S),
@@ -123,21 +128,29 @@ summary = {
     "mask_change_components_ge3": {"n": int(S["mask_change_components_ge3"].sum()),
                                    "on_expert_change": int(S["mask_change_components_on_expert"].sum())},
     "tracking_groups": {
-        "n_scored": int(len(scored)), "adjacent_fragments_not_scored": int((G["class"] == "adjacent_fragment").sum()),
+        "n_scored": len(scored), "adjacent_fragments_not_scored": int((G["class"] == "adjacent_fragment").sum()),
         "expert_changed": int(ec.sum()),
         "sensitivity_called_changed": float(called[ec].mean()) if ec.any() else float("nan"),
         "specificity_called_unchanged": float((~called[~ec]).mean()) if (~ec).any() else float("nan"),
         "ppv_called_changed": float(ec[called].mean()) if called.any() else float("nan"),
+        "flair_supported": {
+            "sensitivity_called_changed": float(called_sup[ec].mean()) if ec.any() else float("nan"),
+            "specificity_called_unchanged": float((~called_sup[~ec]).mean()) if (~ec).any() else float("nan"),
+            "ppv_called_changed": float(ec[called_sup].mean()) if called_sup.any() else float("nan"),
+            "by_class": {c: {"n": int((scored["class"] == c).sum()), "supported": int(((scored["class"] == c) & sup).sum()),
+                             "expert_changed": int(((scored["class"] == c) & ec).sum()),
+                             "supported_and_expert_changed": int(((scored["class"] == c) & sup & ec).sum())}
+                         for c in ("new", "resolved")}},
         "by_class": {c: {"n": int((G["class"] == c).sum()), "expert_changed": int(G[G["class"] == c]["expert_changed"].sum())}
                      for c in sorted(G["class"].unique())}},
     "jacobian_per_baseline_lesion_ge10_voxels": {
-        "n": int(len(L)), "expert_changed": int(L["expert_changed"].sum()),
+        "n": len(L), "expert_changed": int(L["expert_changed"].sum()),
         "auc_abs_mean": _auc(L["jacobian_abs_mean"], L["expert_changed"]),
         "auc_signed_mean": _auc(L["jacobian_mean"], L["expert_changed"]),
         "auc_peak": _auc(L["jacobian_peak"], L["expert_changed"]),
         "auc_has_sel_candidate": _auc(L["has_candidate"].astype(float), L["expert_changed"]),
         "spearman_jacobian_vs_mask_rate_matched_groups": float(spearmanr(matched["jacobian_mean_pct_per_year"], matched["pct_per_year"]).statistic) if len(matched) > 2 else float("nan"),
-        "n_matched_groups": int(len(matched))},
+        "n_matched_groups": len(matched)},
     "sel_candidates": {"n": int(S["sel_candidates"].sum()), "median_per_subject": float(S["sel_candidates"].median()),
                        "on_expert_change": int(S["sel_candidates_on_expert_change"].sum())},
 }

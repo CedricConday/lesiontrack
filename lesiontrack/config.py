@@ -16,12 +16,23 @@ class SELParams:
     min_voxels: int = 10  # reliability criterion, Elliott 2019
     connectivity: int = 2  # scipy structure rank: 2 = 18-connectivity in 3D
     # Not in Elliott 2019. A candidate's mean expansion separates injected expansion from
-    # registration noise where concentricity and constancy do not: median candidate AUC 1.00
-    # against 0.58 and 0.78 over seven MSLesSeg backtests (README, "Validation beyond P1").
-    # On by default since 0.3.0; 10 keeps every injected lesion on P1 and cuts the false
-    # positive rate from 0.47 to 0.07. 0 restores Elliott's rule. `lesiontrack backtest`
-    # reports the trade-off at several values for a user's own registration.
-    min_mean_pct_per_year: float = 10.0
+    # registration noise where concentricity and constancy do not (candidate AUC 0.99 against
+    # 0.62 and 0.76 over seven MSLesSeg backtests, docs/VALIDATION.md). The floor is on the
+    # total change over the interval, not on the yearly rate: registration noise is a
+    # property of one registration, so in %/yr it shrinks with the interval (mean rate of
+    # untouched lesions, SD 3.7 %/yr at one year, 1.7 at two). 10 % total is 10 %/yr at one
+    # year, where it keeps 0.99 of lesions injected at 15 %/yr or more and cuts the false
+    # positive rate from 0.15 to 0.05, and 5 %/yr at two. 0.3.0.dev0 used a fixed 10 %/yr,
+    # which at two years removed most lesions expanding at 8 %/yr and no false positive
+    # (2026-11-23, "Slow expansion" in docs/VALIDATION.md). 0 turns it off.
+    min_mean_total_pct: float = 10.0
+    # An absolute floor in %/yr, applied as well when above 0. Off by default.
+    min_mean_pct_per_year: float = 0.0
+
+    def min_mean_at(self, dt_years: float | None) -> float:
+        """The mean-rate floor in %/yr for a pair ``dt_years`` apart (the larger of the two)."""
+        total = self.min_mean_total_pct / dt_years if dt_years and self.min_mean_total_pct > 0 else 0.0
+        return max(total, self.min_mean_pct_per_year)
 
     def __post_init__(self) -> None:
         if self.je1_pct_per_year < self.je2_pct_per_year:
@@ -36,6 +47,13 @@ class TrackParams:
     stable_pct_per_year: float = 4.0
     min_change_voxels: int = 3  # below this a percentage is noise on a tiny lesion
     new_lesion_margin_voxels: int = 1  # follow-up component must clear the dilated baseline
+    # Not from the literature. A "new" or "resolved" call rests on two independent
+    # segmentations; it is marked supported when FLAIR itself moved the same way: the median
+    # change in robust z (units: MAD of non-lesion brain) over the group is at least this.
+    # On Lesjak 2016 with LST-AI masks, against expert change, 1.0 keeps 0.84 of the
+    # confirmed new lesions and drops 0.65 of the unconfirmed (AUC 0.83); for resolved,
+    # 0.60 and 0.75 (AUC 0.70). Chosen and measured on the same 20 patients (2026-11-23).
+    flair_support_z: float = 1.0
     connectivity: int = 2
 
 

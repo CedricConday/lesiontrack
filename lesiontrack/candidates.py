@@ -27,8 +27,12 @@ def structure(connectivity: int) -> np.ndarray:
 
 
 def sel_candidates(expansion_pct_per_year: np.ndarray, lesion_mask: np.ndarray,
-                   params: SELParams | None = None) -> np.ndarray:
-    """Label map of SEL candidates (0 = background), consecutively numbered."""
+                   params: SELParams | None = None, dt_years: float | None = None) -> np.ndarray:
+    """Label map of SEL candidates (0 = background), consecutively numbered.
+
+    ``dt_years`` is the interval the expansion map covers; the mean-rate floor on total
+    change (``min_mean_total_pct``) needs it and is skipped without it.
+    """
     params = params or SELParams()
     exp = np.asarray(expansion_pct_per_year, dtype=np.float32)
     mask = np.asarray(lesion_mask) > 0
@@ -48,10 +52,11 @@ def sel_candidates(expansion_pct_per_year: np.ndarray, lesion_mask: np.ndarray,
     counts = np.bincount(labels.ravel())
     keep = np.flatnonzero(counts >= params.min_voxels)
     keep = keep[keep != 0]
-    if params.min_mean_pct_per_year > 0 and keep.size:
+    min_mean = params.min_mean_at(dt_years)
+    if min_mean > 0 and keep.size:
         sums = np.bincount(labels.ravel(), weights=exp.ravel(), minlength=counts.size)
         means = sums[keep] / counts[keep]
-        keep = keep[means >= params.min_mean_pct_per_year]
+        keep = keep[means >= min_mean]
     lut = np.zeros(counts.size, dtype=np.int32)
     lut[keep] = np.arange(1, keep.size + 1, dtype=np.int32)
     return lut[labels]
