@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "lesiontrack"
-version = "0.3.0"
+version = "0.3.1"
 description = "Longitudinal multiple sclerosis lesion evolution: lesion tracking and slowly expanding lesion (SEL) detection with a synthetic backtest gate."
 readme = "README.md"
 license = {text = "MIT"}

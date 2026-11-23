@@ -87,8 +87,9 @@ pip install lesiontrack
 ```
 
 Python 3.10+. Wheels for greedy exist for Linux x86-64 and arm64 and macOS. This README
-describes 0.3.0 (`lesiontrack --version`); 0.2.0 saved rounded warps and had no mean-rate
-floor, so upgrade before comparing numbers.
+describes 0.3.x (`lesiontrack --version`; 0.3.1 is 0.3.0 with the complete validation text,
+the code is the same); 0.2.0 saved rounded warps and had no mean-rate floor, so upgrade
+before comparing numbers.
 
 ## Use
 

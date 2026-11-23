@@ -5,7 +5,7 @@ type: software
 authors:
   - family-names: Conday
     given-names: Cedric
-version: 0.3.0
+version: 0.3.1
 date-released: "2026-09-26"
 license: MIT
 repository-code: "https://github.com/CedricConday/lesiontrack"
