@@ -263,6 +263,9 @@ def score(truth: dict, baseline_lesion_labels: np.ndarray, expansion_pct_per_yea
     rows = []
     untouched_voxels = []
     cand_rows = _candidate_rows(truth, baseline_lesion_labels, expansion_pct_per_year, candidate_labels)
+    # Highest candidate mean rate per parent lesion: the lesion is still detected under a
+    # mean-rate filter at threshold t exactly when this is >= t, so any t can be scored later.
+    best_mean = cand_rows.groupby("parent_lesion_id")["mean_pct_per_year"].max().to_dict() if len(cand_rows) else {}
     for les in truth["lesions"]:
         k = les["lesion_id"]
         sel = baseline_lesion_labels == k
@@ -285,6 +288,7 @@ def score(truth: dict, baseline_lesion_labels: np.ndarray, expansion_pct_per_yea
             "measured_peak_pct_per_year": float(vals.max()),
             "recovery": measured / true_rate if expanded and true_rate else float("nan"),
             "detected": detected, "detected_definite": definite, "expanded": expanded,
+            "max_candidate_mean_pct_per_year": best_mean.get(k, float("nan")),
         })
     table = pd.DataFrame(rows)
     exp = table[table["expanded"]]
@@ -396,7 +400,7 @@ def _auc(values, positive) -> float:
 
 
 def _min_mean_tradeoff(_unused, cand_rows: pd.DataFrame, truth: dict, lesion_labels: np.ndarray,
-                       candidate_labels: np.ndarray, thresholds=(0.0, 6.0, 8.0, 10.0, 12.5)) -> dict:
+                       candidate_labels: np.ndarray, thresholds=(0.0, 2.0, 4.0, 6.0, 8.0, 10.0, 12.5)) -> dict:
     """Lesion-level sensitivity and false positive rate if candidates below a mean rate were dropped."""
     expanded = {les["lesion_id"] for les in truth["lesions"] if les["volume_factor"] > 1.0}
     present = {les["lesion_id"] for les in truth["lesions"] if (lesion_labels == les["lesion_id"]).any()}
