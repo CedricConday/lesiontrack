@@ -290,3 +290,33 @@ Neither repeat reproduced the first. Candidates shared by the two 4-thread runs:
 first run lacks. So greedy's multi-threaded result is not bit-reproducible and candidates
 near a threshold can flip. The registration cache keys on the thread count, so a cached
 tree is only reused at the thread count it was made with.
+
+## 0.3.2: lesion masks resliced without the similarity scale (2026-11-25)
+
+Since 0.3.0 the linear step is a similarity. Nearest-neighbour reslicing of the lesion masks under its
+scale (a fraction of a percent from 1) duplicated one voxel layer per axis at follow-up and dropped one at
+baseline, so a lesion cut by such a plane read as enlarging. mscard's calibration on 24 MSLesSeg subjects
+found it: 14 of 593 unchanged lesions called enlarging (+9 to +39 %/yr), against 1 of 594 under 0.2.0. On
+120 lesions of four of those subjects, the same lesion pushed through the halfway transform and its inverse
+differed by 8 % or more for 14; through the rotation and translation alone, for none (largest 0.2 %).
+0.3.2 reslices masks that way. Lesion volumes are again each timepoint's own mm³, and a mask sits off its
+image by at most |1 − scale| times its distance from the grid centre (about 0.25 mm at 100 mm).
+
+After the fix, mscard's calibration: 2 of 597 unchanged lesions called enlarging or shrinking (smooth
+profile 1 of 597). Four lesions of 5 to 27 mm³ that do shrink in the truth are now called resolved: their
+follow-up remnant sits one voxel from the baseline lesion and no longer overlaps it.
+
+The greedy backtests for P1 to P3, re-run on the cached registrations (`scripts/run_v032.sh`,
+`results/v032/`), are unchanged except P2's definite-SEL figures:
+
+| | 0.3.1 (P1/P2/P3) | 0.3.2 (P1/P2/P3) |
+|---|---|---|
+| FPR | 0.27/0.48/0.04 | 0.27/0.48/0.04 |
+| Definite SEL sensitivity | 0.50/0.50/0.71 | 0.50/0.54/0.71 |
+| Definite SEL FPR | 0.10/0.14/0.00 | 0.10/0.19/0.00 |
+| Recovery | 1.17/1.21/1.14 | 1.17/1.21/1.14 |
+| Noise floor (%/yr) | 8.9/12.3/5.2 | 8.9/12.3/5.2 |
+
+The P2 change is inside that patient's per-seed spread (definite SEL FPR 0.14/0.71/0.57 across seeds at
+0.3.0); part of P2's registrations were redone because the cached frame path named the old directory, and a
+re-run of the same registration is not bit-identical.
