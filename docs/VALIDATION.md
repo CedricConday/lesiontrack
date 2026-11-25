@@ -252,7 +252,35 @@ over a year, so the floor is lower than 10 %/yr for them. Lesjak: 162 candidates
 7, 46 definite, 82 on expert change (dev0: 208 / 6.5 / 45 / 85); its median interval is
 0.87 years, so the floor is higher. Tracking with FLAIR support on Lesjak: sensitivity
 0.95 -> 0.81, specificity 0.08 -> 0.59, PPV 0.22 -> 0.35 (threshold chosen in-sample).
-The ANTs backtests at 0.3.0 are appended here when they finish.
+**ANTs at 0.3.0 against greedy at 0.3.0 (2026-11-24).** The same three synthetic series,
+both engines on lesiontrack 0.3.0 with unrounded warps, 4 threads, three seeds each
+(`scripts/run_ants030.sh 4`; metrics in `results/v0.3.0/ants/`). P1 / P2 / P3:
+
+| quantity | greedy 0.3.0 | ANTs 0.3.0 |
+|---|---|---|
+| candidates per backtest | 37 / 35 / 29 | 36 / 29 / 28 |
+| candidate sensitivity | 1.00 / 1.00 / 1.00 | 1.00 / 1.00 / 1.00 |
+| candidate false positive rate | 0.27 / 0.48 / 0.04 | 0.23 / 0.24 / 0.03 |
+| definite SEL sensitivity | 0.50 / 0.50 / 0.71 | 0.58 / 0.58 / 0.54 |
+| definite SEL FPR | 0.10 / 0.14 / 0.00 | 0.07 / 0.05 / 0.00 |
+| recovery fraction | 1.17 / 1.21 / 1.14 | **1.07 / 1.05 / 1.03** |
+| noise floor (%/yr) | 8.9 / 12.3 / 5.2 | 10.4 / 9.9 / 6.9 |
+| AUC mean rate | 1.00 / 0.99 / 0.99 | 0.96 / 1.00 / 1.00 |
+| AUC S | 0.67 / 0.63 / 0.76 | 0.67 / 0.88 / 0.91 |
+| run time per patient, 4 cores | about 12 min | about 5.2 h |
+
+With greedy's rounding fixed, most of the gap closes. One difference is consistent:
+recovery. Greedy over-reads by 14 to 21 % (per seed 1.08 to 1.23), ANTs by 3 to 7 % (0.95
+to 1.10). The rest sits inside the seed-to-seed spread and should not be read as an
+engine effect. P2's candidate FPR looks halved (0.48 against 0.24), but the per-seed
+values are 0.14 / 0.71 / 0.57 against 0.43 / 0.29 / 0.00. S separates better on ANTs for P2
+and P3 (0.88 and 0.91 against 0.63 and 0.76). The noise floor is not lower with ANTs:
+it is higher on P1 and P3 and lower on P2. ANTs at 0.3.0 differs from ANTs at 0.2.0 by at
+most 3 candidates and 0.08 in any rate, so the 0.3.0 changes did not reach the ANTs path,
+as expected. Greedy stays the default. At about 26 times the run time ANTs is for a
+final analysis, not for a sweep. Run time is from P2 and P3 (18,680 s and 18,784 s). P1 is
+left out: its wall time includes the run being paused for most of a day. Three patients
+with three seeds each is a small sample.
 
 **Run-to-run reproducibility (2026-11-23).** Lesjak patient03 was registered three times
 with identical settings: the v031 run (4 threads), once at 1 thread, once more at 4.

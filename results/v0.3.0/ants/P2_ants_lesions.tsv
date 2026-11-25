@@ -1,0 +1,46 @@
+seed	lesion_id	n_voxels	size_stratum	nominal_pct_per_year	true_pct_per_year	measured_mean_pct_per_year	measured_peak_pct_per_year	recovery	detected	detected_definite	expanded	max_candidate_mean_pct_per_year
+0	1	73	small_lt100	40	39.333	44.326	61.252	1.1269	True	True	True	44.326
+0	2	109	medium_100_500	25	24.989	26.456	32.948	1.0587	True	False	True	26.456
+0	3	129	medium_100_500	15	14.959	21.124	34.622	1.4122	True	False	True	21.124
+0	4	35	small_lt100	15	13.93	22.753	28.803	1.6334	True	True	True	22.753
+0	6	74	small_lt100	15	14.845	18.986	25.337	1.279	True	True	True	18.986
+0	7	201	medium_100_500	25	24.3	25.815	36.326	1.0624	True	True	True	25.815
+0	10	151	medium_100_500	40	39.997	39.249	50.669	0.9813	True	True	True	39.249
+0	15	76	small_lt100	25	25	28.386	33.248	1.1355	True	False	True	28.386
+0	5	455	medium_100_500	0	-0.0013886	-1.0731	8.8238		False	False	False	
+0	8	144	medium_100_500	0	-6.3235	-1.6774	4.982		False	False	False	
+0	9	48	small_lt100	0	0	6.3719	13.956		True	False	False	8.2608
+0	11	250	medium_100_500	0	0	-0.61016	4.9385		False	False	False	
+0	12	428	medium_100_500	0	0	3.3368	12.715		True	True	False	6.555
+0	13	40	small_lt100	0	0	4.4202	8.8379		False	False	False	
+0	14	48	small_lt100	0	-0.51291	8.1302	18.282		True	False	False	9.8774
+1	1	73	small_lt100	15	14.403	19.991	27.443	1.388	True	True	True	19.991
+1	2	109	medium_100_500	15	14.994	15.321	22.035	1.0218	True	False	True	15.321
+1	4	35	small_lt100	25	24.465	37.095	48.399	1.5162	True	True	True	37.095
+1	5	455	medium_100_500	25	24.961	25.056	30.303	1.0038	True	False	True	25.056
+1	8	144	medium_100_500	40	40	43.755	58.179	1.0939	True	True	True	43.755
+1	11	250	medium_100_500	15	14.998	15.833	21.404	1.0556	True	False	True	15.833
+1	12	428	medium_100_500	40	34.508	30.664	51.329	0.8886	True	True	True	31.364
+1	15	76	small_lt100	25	25	28.81	35.502	1.1524	True	True	True	28.81
+1	3	129	medium_100_500	0	0	9.4087	20.074		True	False	False	11.628
+1	6	74	small_lt100	0	0	5.2213	13.807		True	False	False	7.7339
+1	7	201	medium_100_500	0	0	2.6884	9.9086		False	False	False	
+1	9	48	small_lt100	0	0	1.6872	7.3274		False	False	False	
+1	10	151	medium_100_500	0	-4.2226	-1.5484	11.671		False	False	False	
+1	13	40	small_lt100	0	0	4.6895	6.6072		False	False	False	
+1	14	48	small_lt100	0	0	3.1011	11.926		False	False	False	
+2	2	109	medium_100_500	25	24.989	24.831	34.036	0.99368	True	False	True	24.831
+2	3	129	medium_100_500	25	24.928	27.668	37.157	1.1099	True	True	True	27.668
+2	4	35	small_lt100	25	25	24.455	29.076	0.9782	True	False	True	24.455
+2	5	455	medium_100_500	15	14.977	15.106	20.416	1.0086	True	False	True	15.106
+2	7	201	medium_100_500	15	13.679	14.125	20.987	1.0326	True	True	True	14.237
+2	11	250	medium_100_500	40	39.994	36.244	49.038	0.90623	True	True	True	36.244
+2	14	48	small_lt100	40	39.764	35.466	44.746	0.89193	True	True	True	35.466
+2	15	76	small_lt100	15	15	17.374	21.696	1.1583	True	False	True	17.374
+2	1	73	small_lt100	0	-0.43015	4.4719	10.215		False	False	False	
+2	6	74	small_lt100	0	0	4.2825	8.7904		False	False	False	
+2	8	144	medium_100_500	0	0	3.6755	7.7727		False	False	False	
+2	9	48	small_lt100	0	0	6.1511	11.089		False	False	False	
+2	10	151	medium_100_500	0	-0.091771	-0.27353	4.9873		False	False	False	
+2	12	428	medium_100_500	0	0	3.5369	11.307		False	False	False	
+2	13	40	small_lt100	0	0	3.4719	6.4962		False	False	False	
