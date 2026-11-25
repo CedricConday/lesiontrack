@@ -152,7 +152,7 @@ def cmd_backtest(a: argparse.Namespace) -> int:
         pair = res.pairs[-1]
         resampled = sdir / "run" / "truth_lesion_labels_halfway.nii.gz"
         run_greedy(f"-d 3 -rf {pair.baseline_t1} -ri NN -rt int "
-                   f"-rm {synth_dir / 'baseline_lesion_labels.nii.gz'} {resampled} -r {pair.halfway_matrix},-1")
+                   f"-rm {synth_dir / 'baseline_lesion_labels.nii.gz'} {resampled} -r {pair.baseline_mask_matrix}")
         truth_labels = np.asarray(nib.load(resampled).dataobj).astype(np.int32)
         exp = np.asarray(nib.load(sdir / "run" / f"expansion_{pair.follow_up}_pct_per_year.nii.gz").dataobj)
         cand = np.asarray(nib.load(sdir / "run" / "sel_candidates.nii.gz").dataobj)

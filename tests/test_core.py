@@ -450,3 +450,48 @@ def test_flair_support_empty_table():
     table, maps = track_pair(z, z, 1.0, 1.0)
     out = flair_support(table, maps, z.astype(float), z.astype(float), ~z)
     assert len(out) == 0 and {"flair_dz", "flair_supported"} <= set(out.columns)
+
+
+def test_rigid_part_drops_scale_and_agrees_at_centre():
+    from scipy.spatial.transform import Rotation
+
+    from lesiontrack.registration import rigid_part
+
+    rot = Rotation.from_euler("xyz", [0.6, -0.3, 0.2], degrees=True).as_matrix()
+    mat = np.eye(4)
+    mat[:3, :3] = 0.9974 * rot
+    mat[:3, 3] = [0.4, -0.2, 0.1]
+    centre = np.array([-0.5, -17.5, 18.5])
+    r = rigid_part(mat, centre)
+    assert np.allclose(r[:3, :3], rot, atol=1e-9)
+    assert np.allclose(r[:3, :3] @ centre + r[:3, 3], mat[:3, :3] @ centre + mat[:3, 3])
+    pure = np.eye(4)
+    pure[:3, :3], pure[:3, 3] = rot, [1.0, 2.0, 3.0]
+    assert np.allclose(rigid_part(pure, centre), pure)
+
+
+def test_mask_reslice_without_scale_keeps_lesion_volume(tmp_path):
+    """Regression (0.3.2): NN under a similarity's scale duplicated whole voxel layers.
+
+    A slab a few voxels thick that a duplication plane cuts gains a layer through the
+    similarity and loses one through its inverse; through the rigid part it keeps its count.
+    """
+    import nibabel as nib
+
+    from lesiontrack.registration import _reslice, grid_centre, rigid_part, write_matrix
+
+    shape = (200, 40, 40)
+    m = np.zeros(shape, np.uint8)
+    m[95:105, 10:30, 10:30] = 1  # the 0.995 scale duplicates a plane near x = 100
+    aff = np.eye(4)
+    nib.save(nib.Nifti1Image(m, aff), tmp_path / "mask.nii.gz")
+    sim = np.diag([0.995, 1.0, 1.0, 1.0])
+    write_matrix(tmp_path / "sim.mat", sim)
+    write_matrix(tmp_path / "rig.mat", rigid_part(sim, grid_centre(tmp_path / "mask.nii.gz")))
+    counts = {}
+    for tag in ("sim", "rig"):
+        _reslice(tmp_path / "mask.nii.gz", tmp_path / "mask.nii.gz", tmp_path / f"{tag}.nii.gz",
+                 str(tmp_path / f"{tag}.mat"), "NN", 1, None)
+        counts[tag] = int(np.asarray(nib.load(tmp_path / f"{tag}.nii.gz").dataobj).sum())
+    assert counts["rig"] == int(m.sum())
+    assert counts["sim"] != int(m.sum())  # the artefact the fix removes is real in this geometry

@@ -70,6 +70,42 @@ def half_transform(mat: np.ndarray) -> np.ndarray:
     return np.real(half)
 
 
+# Lesion masks are resliced with the rotation and translation of the linear transform only.
+# Since 0.3.0 the linear step is a similarity, and nearest-neighbour resampling under a scale
+# a fraction of a percent from 1 does not shrink or grow a mask evenly: it duplicates (scale < 1)
+# or drops (scale > 1) one whole voxel layer every 1/|1 - scale| voxels, about one plane per axis
+# across a brain. A lesion cut by such a plane gained a layer at follow-up and lost one at
+# baseline, and was called enlarging (mscard calibration, 2026-11-25: 14 of 593 unchanged lesions,
+# changes of +9 to +39 %/yr). Without the scale the reslice keeps every lesion's voxel count,
+# so lesion volumes are each timepoint's own mm^3, as before 0.3.0. The mask sits off its image by
+# |1 - scale| times the distance from the grid centre: about 0.25 mm at 100 mm for a 0.25 % scale.
+MASK_RESLICE_VERSION = "rigid-part-1"  # bump when mask reslicing changes; cached pairs reslice masks again
+
+
+def rigid_part(mat: np.ndarray, centre: np.ndarray) -> np.ndarray:
+    """The rotation and translation of a similarity or affine 4x4, without its scale.
+
+    The rotation is the orthogonal polar factor of the linear part. The translation is
+    chosen so the result agrees with ``mat`` at ``centre`` (physical coordinates, the
+    frame the matrix is written in).
+    """
+    u, _, vt = np.linalg.svd(mat[:3, :3])
+    rot = u @ vt
+    if np.linalg.det(rot) < 0:
+        raise ValueError("transform contains a reflection")
+    out = np.eye(4)
+    out[:3, :3] = rot
+    out[:3, 3] = mat[:3, :3] @ centre + mat[:3, 3] - rot @ centre
+    return out
+
+
+def grid_centre(path: Path) -> np.ndarray:
+    """Physical (RAS, mm) centre of an image grid, greedy's matrix frame."""
+    img = nib.load(path)
+    ijk = (np.asarray(img.shape[:3], dtype=float) - 1.0) / 2.0
+    return img.affine[:3, :3] @ ijk + img.affine[:3, 3]
+
+
 @dataclass
 class Timepoint:
     name: str
@@ -97,6 +133,7 @@ class PairResult:
     warp: Path
     jacobian: Path
     halfway_matrix: Path
+    baseline_mask_matrix: Path | None = None  # reslices a baseline label image like the baseline mask
 
 
 def _check_paths(*paths: Path | None) -> None:
@@ -132,7 +169,25 @@ def _existing_pair(baseline: Timepoint, follow: Timepoint, out_dir: Path, tag: s
         followup_t1_warped=out_dir / f"{tag}_followup_T1w_warped.nii.gz",
         warp=out_dir / f"{tag}_warp.nii.gz", jacobian=out_dir / f"{tag}_jacobian.nii.gz",
         halfway_matrix=out_dir / f"{tag}_halfway.mat",
+        baseline_mask_matrix=out_dir / f"{tag}_baseline_mask.mat",
     )
+
+
+def _reslice_masks(baseline: Timepoint, follow: Timepoint, out_dir: Path, tag: str,
+                   frame: Path | None, threads: int, log: Path | None) -> tuple[Path, Path]:
+    """Both lesion masks into the frame without the linear scale (see MASK_RESLICE_VERSION)."""
+    half = out_dir / f"{tag}_halfway.mat"
+    frame_mat = half if frame is None else frame
+    fu_to_frame = half if frame is None else out_dir / f"{tag}_to_frame.mat"
+    centre = grid_centre(baseline.t1)
+    bl_mat, fu_mat = out_dir / f"{tag}_baseline_mask.mat", out_dir / f"{tag}_followup_mask.mat"
+    write_matrix(bl_mat, rigid_part(np.linalg.inv(read_matrix(frame_mat)), centre))
+    write_matrix(fu_mat, rigid_part(read_matrix(fu_to_frame), centre))
+    bl_out = out_dir / f"{tag}_baseline_mask_halfway.nii.gz"
+    fu_out = out_dir / f"{tag}_followup_mask_halfway.nii.gz"
+    _reslice(baseline.t1, baseline.mask, bl_out, str(bl_mat), "NN", threads, log)
+    _reslice(baseline.t1, follow.mask, fu_out, str(fu_mat), "NN", threads, log)
+    return bl_out, fu_out
 
 
 class RegistrationError(RuntimeError):
@@ -185,7 +240,7 @@ def followup_to_frame(rigid: np.ndarray, frame: np.ndarray) -> np.ndarray:
 
 def _params_record(params: RegParams, frame: Path | None) -> dict:
     return {"reg": dict(params.__dict__), "frame": str(frame) if frame else None, "jacobian": JACOBIAN_VERSION,
-            "frame_version": FRAME_VERSION}
+            "frame_version": FRAME_VERSION, "mask_reslice": MASK_RESLICE_VERSION}
 
 
 def _same_registration(previous: dict | None, current: dict) -> bool:
@@ -241,9 +296,16 @@ def register_pair(baseline: Timepoint, follow: Timepoint, out_dir: Path,
         previous = json.loads(record.read_text()) if record.exists() else None
         current = _params_record(params, frame)
         if _same_registration(previous, current):
+            stale = False
             if previous.get("jacobian") != JACOBIAN_VERSION or not done.exists():
                 # Same warp, older Jacobian (greedy's -rj, or an earlier version of ours): cheap to redo.
                 jacobian_determinant(out_dir / f"{tag}_warp.nii.gz", done)
+                stale = True
+            if previous.get("mask_reslice") != MASK_RESLICE_VERSION:
+                # Same warp, masks resliced the pre-0.3.2 way (with the similarity's scale): cheap to redo.
+                _reslice_masks(baseline, follow, out_dir, tag, frame, params.threads, log)
+                stale = True
+            if stale:
                 record.write_text(json.dumps({**current, "rigid_qc": previous.get("rigid_qc")}, indent=2))
             return _existing_pair(baseline, follow, out_dir, tag)
     thr = params.threads
@@ -283,13 +345,14 @@ def register_pair(baseline: Timepoint, follow: Timepoint, out_dir: Path,
     ref = baseline.t1
     bl = {}
     fu = {}
-    for what, interp in (("T1w", "LINEAR"), ("FLAIR", "LINEAR"), ("mask", "NN")):
-        src_bl = getattr(baseline, {"T1w": "t1", "FLAIR": "flair", "mask": "mask"}[what])
-        src_fu = getattr(follow, {"T1w": "t1", "FLAIR": "flair", "mask": "mask"}[what])
+    for what in ("T1w", "FLAIR"):
+        src_bl = getattr(baseline, {"T1w": "t1", "FLAIR": "flair"}[what])
+        src_fu = getattr(follow, {"T1w": "t1", "FLAIR": "flair"}[what])
         bl[what] = name("baseline", what)
         fu[what] = name("followup", what)
-        _reslice(ref, src_bl, bl[what], f"{frame_mat},-1", interp, thr, log)
-        _reslice(ref, src_fu, fu[what], f"{fu_to_frame}", interp, thr, log)
+        _reslice(ref, src_bl, bl[what], f"{frame_mat},-1", "LINEAR", thr, log)
+        _reslice(ref, src_fu, fu[what], f"{fu_to_frame}", "LINEAR", thr, log)
+    bl["mask"], fu["mask"] = _reslice_masks(baseline, follow, out_dir, tag, frame, thr, log)
     bl_brain = None
     if baseline.brainmask is not None:
         bl_brain = name("baseline", "brainmask")
@@ -327,6 +390,7 @@ def register_pair(baseline: Timepoint, follow: Timepoint, out_dir: Path,
         baseline_brainmask=bl_brain,
         followup_t1=fu["T1w"], followup_flair=fu["FLAIR"], followup_mask=fu["mask"],
         followup_t1_warped=warped, warp=warp, jacobian=jac, halfway_matrix=half,
+        baseline_mask_matrix=out_dir / f"{tag}_baseline_mask.mat",
     )
 
 
