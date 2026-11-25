@@ -87,9 +87,11 @@ pip install lesiontrack
 ```
 
 Python 3.10+. Wheels for greedy exist for Linux x86-64 and arm64 and macOS. This README
-describes 0.3.x (`lesiontrack --version`; 0.3.1 is 0.3.0 with the complete validation text,
-the code is the same); 0.2.0 saved rounded warps and had no mean-rate floor, so upgrade
-before comparing numbers.
+describes 0.3.x (`lesiontrack --version`). Use 0.3.2: in 0.3.0 and 0.3.1 the lesion masks
+were resliced with the similarity's scale, which added or dropped a voxel layer on some
+lesions and called a few unchanged ones enlarging (see docs/VALIDATION.md, "0.3.2"). 0.3.1
+is 0.3.0 with the complete validation text. 0.2.0 saved rounded warps and had no mean-rate
+floor, so upgrade before comparing numbers.
 
 ## Use
 
