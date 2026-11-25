@@ -317,6 +317,6 @@ The greedy backtests for P1 to P3, re-run on the cached registrations (`scripts/
 | Recovery | 1.17/1.21/1.14 | 1.17/1.21/1.14 |
 | Noise floor (%/yr) | 8.9/12.3/5.2 | 8.9/12.3/5.2 |
 
-The P2 change is inside that patient's per-seed spread (definite SEL FPR 0.14/0.71/0.57 across seeds at
-0.3.0); part of P2's registrations were redone because the cached frame path named the old directory, and a
+The P2 change is one more definite-SEL false call, in seed 2 (per seed 0.00/0.14/0.29 at 0.3.1,
+0.00/0.14/0.43 at 0.3.2); the per-seed spread of P2's plain FPR is 0.14/0.71/0.57 in both. Part of P2's registrations were redone because the cached frame path named the old directory, and a
 re-run of the same registration is not bit-identical.
